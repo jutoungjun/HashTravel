@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".HotDetailActivity"></activity>
+        <activity android:name=".DetailDashboardViewItem"></activity>
+        <activity android:name=".DetailDashboardView" />
+        <activity android:name=".PlaceDetailActivity" />
         <activity android:name=".WriteBordActivity" />
         <activity
             android:name=".MainActivity"
