@@ -7,13 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HotDetailFragment extends Fragment {
+public class PlaceDetailFragment extends Fragment {
     private static final String ARG_PLACE_INDEX = "arg_place_index";
 
     private ImageView imageView;
@@ -21,15 +22,15 @@ public class HotDetailFragment extends Fragment {
 
     private DashBoardDao dao = DashBoardDao.getInstance();
 
-    public HotDetailFragment() {
+    public PlaceDetailFragment() {
         // Required empty public constructor
     }
 
 
     // Factory 메소드
     // TODO 후에 index로 말고 장소 아이디로 가져오기
-    public static HotDetailFragment newFragment(int index) {
-        HotDetailFragment fragment = new HotDetailFragment();
+    public static PlaceDetailFragment newFragment(int index) {
+        PlaceDetailFragment fragment = new PlaceDetailFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PLACE_INDEX, index);
         fragment.setArguments(args);
@@ -41,7 +42,7 @@ public class HotDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_hot_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_place_detail, container, false);
 
         imageView = view.findViewById(R.id.detailImage);
         textName = view.findViewById(R.id.detailName);
@@ -52,7 +53,7 @@ public class HotDetailFragment extends Fragment {
         int position = args.getInt(ARG_PLACE_INDEX);
 
         DashBoard dashBoard = dao.getDsahBoardList().get(position);
-//        imageView.setImageResource(dashBoard.getPhotoId());
+        imageView.setImageResource(dashBoard.getPhotoId());
         textName.setText(dashBoard.getCategory());
 
         textDesc.setText(dashBoard.getDescription());

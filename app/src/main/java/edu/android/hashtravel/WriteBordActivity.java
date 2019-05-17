@@ -1,40 +1,26 @@
 package edu.android.hashtravel;
+
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
-
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class WriteBordActivity extends AppCompatActivity {
 
-    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-    private Spinner spinnerCategory, spinnerContinent, spinnerCountry;
-    private String category, continent, country;
-    private EditText textSubject, textDesc, textTag;
-//
+    private Spinner spinnerContinent, spinnerCountry;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_bord);
         getSupportActionBar().hide();
 
-        spinnerCategory = findViewById(R.id.spinnerCategory);
         spinnerContinent = findViewById(R.id.spinnerWrContinent);
         spinnerCountry = findViewById(R.id.spinnerWrCountry);
-
-        textSubject = findViewById(R.id.textSubject);
-        textDesc = findViewById(R.id.textDesc);
-        textTag = findViewById(R.id.textTag);
-
 
         spinnerContinent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -60,39 +46,10 @@ public class WriteBordActivity extends AppCompatActivity {
                 spinnerCountry.setAdapter(adpter);
             }
 
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-
-
-
-
-
-    } // end onCreate()
-
-    public void onClickInputDashBoard(View view) {
-        category = spinnerCategory.getSelectedItem().toString();
-        continent = spinnerContinent.getSelectedItem().toString();
-        country = spinnerCountry.getSelectedItem().toString();
-
-        // TODO
-        String key = mDatabase.child("posts").push().getKey();
-
-        DashBoard dashBoard = new DashBoard(null,category, continent, country, textSubject.getText().toString(), textDesc.getText().toString(), textTag.getText().toString(), 0, null);
-
-        Map<String, Object> postValues = dashBoard.toMap();
-        Map<String, Object> childUpdates = new HashMap<>();
-        // TODO userId값으로 넣기
-        childUpdates.put("/posts/" + "Lsdjfklsjfdklsjdf/" +key, postValues);
-
-
-        mDatabase.updateChildren(childUpdates);
-
-        Toast.makeText(this, "입력 완료", Toast.LENGTH_SHORT).show();
-
     }
 }
-
