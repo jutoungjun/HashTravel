@@ -20,7 +20,7 @@ public class WriteBordActivity extends AppCompatActivity {
     private Spinner spinnerCategory, spinnerContinent, spinnerCountry;
     private String category, continent, country;
     private EditText textSubject, textDesc, textTag;
-
+//
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
