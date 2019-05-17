@@ -1,14 +1,19 @@
 package edu.android.hashtravel;
 
 
+import com.google.firebase.database.Exclude;
+
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 public class DashBoard {
 
 
-    private int articleNo; // 게시글 글넘버
-    private String userId; // 유저 아이디
+    private String userId; // Key값 유저 아이디
+    private String postKey; // Key값 게시글 키
     private String category; // 게시글 카테고리
     private String continent; // 대륙
     private String country; // 나라
@@ -18,12 +23,17 @@ public class DashBoard {
     private String hashTag; // 해쉬태그 내용
     private Date date;
     private int likes; // 좋아요수
+    private Map<String, Boolean> stars = new HashMap<>();
+
 
     // TODO : 사진 어떻게 DB에 저장할지 찾아보기 !
-    private int photoId; // 사진 리소스 아이디
+    private String photoId; // 사진 리소스 아이디(Storage 사용)
 
     // TODO : 생성자 생각해보기
-    public DashBoard(String category, String continent, String country, String subject, String description, String hashTag, int likes, int photoId) {
+    public DashBoard() {}
+
+    public DashBoard(String userId, String category, String continent, String country, String subject, String description, String hashTag, int likes, String photoId) {
+        this.userId = userId;
         this.category = category;
         this.continent = continent;
         this.country = country;
@@ -34,12 +44,19 @@ public class DashBoard {
         this.photoId = photoId;
     }
 
-    public int getArticleNo() {
-        return articleNo;
-    }
-
-    public void setArticleNo(int articleNo) {
-        this.articleNo = articleNo;
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("uid" , userId);
+        result.put("category", category);
+        result.put("continent", continent);
+        result.put("country", country);
+        result.put("subject", subject);
+        result.put("description", description);
+        result.put("hashTag", hashTag);
+        result.put("likes",likes);
+        result.put("photoId", photoId);
+        return result;
     }
 
     public String getUserId() {
@@ -48,6 +65,14 @@ public class DashBoard {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getPostKey() {
+        return postKey;
+    }
+
+    public void setPostKey(String postKey) {
+        this.postKey = postKey;
     }
 
     public String getCategory() {
@@ -114,45 +139,19 @@ public class DashBoard {
         this.likes = likes;
     }
 
-    public int getPhotoId() {
+    public Map<String, Boolean> getStars() {
+        return stars;
+    }
+
+    public void setStars(Map<String, Boolean> stars) {
+        this.stars = stars;
+    }
+
+    public String getPhotoId() {
         return photoId;
     }
 
-    public void setPhotoId(int photoId) {
+    public void setPhotoId(String photoId) {
         this.photoId = photoId;
     }
-
-    //
-//    static class Place {
-//        private String name; // 여행지 이름
-//        private String desc; // 여행지 설명
-//        private float rating; // 여행지 별점 점수
-//        private int photoId; // 여행지 사진 리소스 아이디
-//
-//        public Place(String name, String desc, float rating, int photoId) {
-//            this.name = name;
-//            this.desc = desc;
-//            this.rating = rating;
-//            this.photoId = photoId;
-//        }
-//
-//        public String getName() {
-//            return name;
-//        }
-//
-//        public String getDesc() {
-//            return desc;
-//        }
-//
-//        public float getRating() {
-//            return rating;
-//        }
-//
-//        public int getPhotoId() {
-//            return photoId;
-//        }
-//    }
-
-
-
 }

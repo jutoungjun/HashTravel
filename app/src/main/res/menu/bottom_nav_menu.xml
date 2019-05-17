@@ -12,8 +12,8 @@
         android:title="@string/title_dashboard" />
 
     <item
-        android:id="@+id/navigation_hotplace"
+        android:id="@+id/navigation_hotPost"
         android:icon="@drawable/hotplace"
-        android:title="@string/title_hotPlace" />
+        android:title="@string/title_hotPost" />
 
 </menu>

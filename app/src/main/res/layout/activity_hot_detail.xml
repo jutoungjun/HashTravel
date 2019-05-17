@@ -5,6 +5,6 @@
     android:id="@+id/detailContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PlaceDetailActivity">
+    tools:context=".HotDetailActivity">
 
 </android.support.constraint.ConstraintLayout>
