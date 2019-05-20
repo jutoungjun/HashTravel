@@ -84,7 +84,7 @@ public class DashboardFragment extends Fragment {
         } else if(position == 6){
             adpter = ArrayAdapter.createFromResource(view.getContext(), R.array.Oceania_, android.R.layout.simple_spinner_item);
         } else {
-            adpter = ArrayAdapter.createFromResource(view.getContext(), R.array.empty, android.R.layout.simple_spinner_item);
+            adpter = ArrayAdapter.createFromResource(view.getContext(), R.array.initialCountry, android.R.layout.simple_spinner_item);
         }
 
         adpter.setDropDownViewResource(android.R.layout.simple_spinner_item);
