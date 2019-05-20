@@ -113,14 +113,9 @@ public class MainActivity extends AppCompatActivity
         if(mAuth.getCurrentUser() == null) {
             logInAndOut.setTitle("로그인");
             userId.setText("로그인 해주세요");
-
-
         }else{
             logInAndOut.setTitle("로그 아웃");
-
             userId.setText(mAuth.getCurrentUser().getEmail());
-
-
             myInfo.setEnabled(true);
             Write.setEnabled(true);
         }
@@ -145,7 +140,6 @@ public class MainActivity extends AppCompatActivity
             public void onPageScrolled(int postion, float positonOffset, int positionOffsetPixels) {
 
             }
-
             @Override
             public void onPageSelected(int postion) {
                 if(bottomMenuItem != null) {
@@ -158,7 +152,6 @@ public class MainActivity extends AppCompatActivity
                 bottomMenuItem = bottomView.getMenu().getItem(postion);
 
             }
-
             @Override
             public void onPageScrollStateChanged(int state) {
 
@@ -209,6 +202,8 @@ public class MainActivity extends AppCompatActivity
                             Toast.makeText(MainActivity.this, "로그인", Toast.LENGTH_SHORT).show();
                             logInAndOut.setTitle("로그 아웃");
                             userId.setText(mAuth.getCurrentUser().getEmail());
+                            myInfo.setEnabled(true);
+                            Write.setEnabled(true);
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -259,9 +254,8 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // TODO 네비게이션뷰 아이템 클릭했을때 기능 구현
         int id = item.getItemId();
-
+        //TODO 추가적으로 필요한 인텐트?
         if (id == R.id.logInAndOut) {
             logInAndOut();
         } else if (id == R.id.myInfo) {
@@ -272,6 +266,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.write) {
             // 글쓰기 액티비티로 이동
             Intent intent = new Intent(this, WriteBordActivity.class);
+            intent.putExtra("mAuth", mAuth.getCurrentUser());
             startActivity(intent);
         } else if (id == R.id.notice) {
             Intent intent = new Intent(this, Notice.class);
@@ -288,8 +283,7 @@ public class MainActivity extends AppCompatActivity
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, RC_SIGN_IN);
 
-            myInfo.setEnabled(true);
-            Write.setEnabled(true);
+
 
         }else{
             // Firebase sign out
@@ -307,11 +301,6 @@ public class MainActivity extends AppCompatActivity
                             Write.setEnabled(false);
                         }
                     });
-
-
-
-
-
         }
     }
 }

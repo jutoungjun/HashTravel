@@ -1,4 +1,5 @@
 package edu.android.hashtravel;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -21,7 +24,7 @@ public class WriteBordActivity extends AppCompatActivity {
     private Spinner spinnerCategory, spinnerContinent, spinnerCountry;
     private String category, continent, country;
     private EditText textSubject, textDesc, textTag;
-
+    private FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +83,9 @@ public class WriteBordActivity extends AppCompatActivity {
         continent = spinnerContinent.getSelectedItem().toString();
         country = spinnerCountry.getSelectedItem().toString();
 
+        Intent intent = getIntent();
+        firebaseUser = intent.getExtras().getParcelable("mAuth");
+
         // TODO
         String key = mDatabase.child("posts").push().getKey();
 
@@ -88,7 +94,7 @@ public class WriteBordActivity extends AppCompatActivity {
         Map<String, Object> postValues = dashBoard.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
         // TODO userId값으로 넣기
-        childUpdates.put("/posts/" + "Lsdjfklsjfdklsjdf/" +key, postValues);
+        childUpdates.put("/posts/" + firebaseUser.getUid() +"/" +key, postValues);
 
 
         mDatabase.updateChildren(childUpdates);

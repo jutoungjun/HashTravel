@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class DashboardFragment extends Fragment {
 
 
-
+    private static final String TAG = "fragmentRecycle";
     private Spinner continentSpinner, countrySpinner;
 //    private String[] continents = {"Asia", "Europe", "America", "South America", "Africa", "Oceania"};
     private View view;
@@ -34,12 +35,54 @@ public class DashboardFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i(TAG, "onStart의 시작?");
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG, "onResume의 시작?");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i(TAG, "onPause의 시작?");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.i(TAG, "onStop의 시작?");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.i(TAG, "onDestroyView의 시작");
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "onDestroy의 시작");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.i(TAG, "onDetach의 시작");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Log.i(TAG, "onCreateView의 생성");
         view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
 //        FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -70,7 +113,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getWriteBoard();
-                
+
             }
         });
 
