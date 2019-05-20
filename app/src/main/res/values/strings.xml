@@ -91,4 +91,10 @@
         <item>계획,정보공유</item>
         <item>동행</item>
     </string-array>
+
+    <string-array name="initialCountry">
+        <item>All</item>
+        <item></item>
+    </string-array>
+
 </resources>

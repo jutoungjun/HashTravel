@@ -11,17 +11,21 @@
         <item
             android:id="@+id/nav_myRead"
             android:icon="@drawable/my_read"
+            android:enabled="false"
             android:title="내 글 보기" />
         <item
             android:id="@+id/nav_favoriteCountry"
             android:icon="@drawable/favorite"
+            android:enabled="false"
             android:title="관심 국가" />
         <item
             android:id="@+id/nav_write"
+            android:enabled="false"
             android:icon="@drawable/write"
             android:title="글 쓰기" />
         <item
             android:id="@+id/nav_myInfo"
+            android:enabled="false"
             android:icon="@drawable/my_info"
             android:title="내 정보" />
         <item
