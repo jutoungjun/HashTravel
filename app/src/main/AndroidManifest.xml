@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".DetailDashboardViewItem"></activity>
         <activity android:name=".DetailDashboardView" />
-        <activity android:name=".PlaceDetailActivity" />
+        <activity android:name=".PostDetailActivity" />
         <activity android:name=".WriteBordActivity" />
         <activity
             android:name=".MainActivity"

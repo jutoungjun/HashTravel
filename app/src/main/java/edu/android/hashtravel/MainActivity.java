@@ -16,9 +16,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.TextView;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -74,7 +71,7 @@ public class MainActivity extends AppCompatActivity
         // ViewPager에 Fragment 추가
         adapter.addFragment(new HomeFragment(), "homefragment");
         adapter.addFragment(new DashboardFragment(), "dashboard");
-        adapter.addFragment(new HotPlaceFragment(), "hotplace");
+        adapter.addFragment(new HotPostFragment(), "hotplace");
         viewPager.setAdapter(adapter);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
