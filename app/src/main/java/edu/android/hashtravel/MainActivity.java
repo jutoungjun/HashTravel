@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity
     private BottomNavigationView bottomView;
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
-    private MenuItem bottomMenuItem, logInAndOut, myInfo, favoriteCountry, myRead, Write;
+    private MenuItem bottomMenuItem, logInAndOut, myInfo, Write;
 
 
 
@@ -88,8 +88,6 @@ public class MainActivity extends AppCompatActivity
 
         logInAndOut = navigationView.getMenu().findItem(R.id.logInAndOut);
         myInfo = navigationView.getMenu().findItem(R.id.myInfo);
-        favoriteCountry = navigationView.getMenu().findItem(R.id.favoriteCountry);
-        myRead = navigationView.getMenu().findItem(R.id.myRead);
         Write = navigationView.getMenu().findItem(R.id.write);
 
         bottomView= findViewById(R.id.bottom_view);
@@ -124,22 +122,21 @@ public class MainActivity extends AppCompatActivity
 
 
             myInfo.setEnabled(true);
-            favoriteCountry.setEnabled(true);
-            myRead.setEnabled(true);
             Write.setEnabled(true);
         }
 
         // ViewPager에 Fragment 추가
         adapter.addFragment(new HomeFragment(), "homefragment");
         Fragment dashboardFragment = new DashboardFragment(); // Fragment 생성
-        if(mAuth.getCurrentUser() != null){
-            Bundle bundle = new Bundle(1); // 파라미터는 전달할 데이터 개수
-            bundle.putParcelable("userId", mAuth.getCurrentUser()); // key , value
-            dashboardFragment.setArguments(bundle);
-        }else{
+        if(mAuth.getCurrentUser() == null){
 
+            adapter.addFragment(new DashboardFragment(), "dashboard");
+        }else{
+            Bundle bundle = new Bundle(1); // 파라미터는 전달할 데이터 개수
+            bundle.putString("userId", mAuth.getCurrentUser().getDisplayName()); // key , value
+            dashboardFragment.setArguments(bundle);
+            adapter.addFragment(dashboardFragment, "dashboard");
         }
-        adapter.addFragment(dashboardFragment, "dashboard");
         adapter.addFragment(new HotPostFragment(), "hotplace");
         viewPager.setAdapter(adapter);
 
@@ -267,19 +264,18 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.logInAndOut) {
             logInAndOut();
-
-        } else if (id == R.id.myRead) {
-
-        } else if (id == R.id.favoriteCountry) {
-
+        } else if (id == R.id.myInfo) {
+          Intent intent = new Intent(this, UserInfo.class);
+          intent.putExtra("email", mAuth.getCurrentUser().getEmail());
+          intent.putExtra("name", mAuth.getCurrentUser().getDisplayName());
+          startActivity(intent);
         } else if (id == R.id.write) {
             // 글쓰기 액티비티로 이동
             Intent intent = new Intent(this, WriteBordActivity.class);
             startActivity(intent);
-        } else if (id == R.id.myInfo) {
-
         } else if (id == R.id.notice) {
-
+            Intent intent = new Intent(this, Notice.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -293,8 +289,6 @@ public class MainActivity extends AppCompatActivity
             startActivityForResult(signInIntent, RC_SIGN_IN);
 
             myInfo.setEnabled(true);
-            favoriteCountry.setEnabled(true);
-            myRead.setEnabled(true);
             Write.setEnabled(true);
 
         }else{
@@ -310,8 +304,6 @@ public class MainActivity extends AppCompatActivity
                             logInAndOut.setTitle("로그인");
                             userId.setText("로그인 해주세요");
                             myInfo.setEnabled(false);
-                            favoriteCountry.setEnabled(false);
-                            myRead.setEnabled(false);
                             Write.setEnabled(false);
                         }
                     });

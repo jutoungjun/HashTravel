@@ -29,23 +29,12 @@ public class DashboardFragment extends Fragment {
 //    private String[] continents = {"Asia", "Europe", "America", "South America", "Africa", "Oceania"};
     private View view;
     private ImageButton buttonWrite;
+    private String user;
     public DashboardFragment() {
         // Required empty public constructor
     }
-    FirebaseUser user;
 
-    @Override
-    public void onStart() {
-        super.onStart();
 
-        //TODO
-        Bundle bundle = getArguments();
-        if(bundle != null){
-            user = bundle.getParcelable("userId");
-
-        }
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,19 +51,26 @@ public class DashboardFragment extends Fragment {
         countrySpinner = view.findViewById(R.id.countrySpinner);
         buttonWrite = view.findViewById(R.id.buttonWrite);
 
-        //TODO
-        if(user != null){
-            buttonWrite.setEnabled(true);
+        buttonWrite.setEnabled(false);
+        if(getArguments() != null){
+            user = getArguments().getString("userId");
 
         }else{
-            buttonWrite.setEnabled(false);
-
-
+            user = null;
         }
+
+        //TODO
+        if(user == null){
+            buttonWrite.setEnabled(false);
+        }else{
+            buttonWrite.setEnabled(true);
+        }
+
         buttonWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getWriteBoard();
+                
             }
         });
 
@@ -121,4 +117,6 @@ public class DashboardFragment extends Fragment {
         adpter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         countrySpinner.setAdapter(adpter);
     }
+
+
 }
