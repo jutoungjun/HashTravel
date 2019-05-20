@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,18 +15,39 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final int RC_SIGN_IN = 11;
     private TextView userId;
     private BottomNavigationView bottomView;
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
-    private MenuItem bottomMenuItem;
+    private MenuItem bottomMenuItem, logInAndOut, myInfo, favoriteCountry, myRead, Write;
+
+
+
+    // 구글 사용자 정보?
+    private FirebaseAuth mAuth;
+    // 구글 클라이언트
+    private GoogleSignInClient mGoogleSignInClient;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -64,15 +86,60 @@ public class MainActivity extends AppCompatActivity
         // userId 찾음
         userId = navigationView.getHeaderView(0).findViewById(R.id.userId);
 
+        logInAndOut = navigationView.getMenu().findItem(R.id.logInAndOut);
+        myInfo = navigationView.getMenu().findItem(R.id.myInfo);
+        favoriteCountry = navigationView.getMenu().findItem(R.id.favoriteCountry);
+        myRead = navigationView.getMenu().findItem(R.id.myRead);
+        Write = navigationView.getMenu().findItem(R.id.write);
+
         bottomView= findViewById(R.id.bottom_view);
         viewPager = findViewById(R.id.viewpager_id);
 
         bottomView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
+
+        // 구글 사용자 옵션 불러오기? 시작
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        // [START initialize_auth]
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+        // [END initialize_auth]
+
+        if(mAuth.getCurrentUser() == null) {
+            logInAndOut.setTitle("로그인");
+            userId.setText("로그인 해주세요");
+
+
+        }else{
+            logInAndOut.setTitle("로그 아웃");
+
+            userId.setText(mAuth.getCurrentUser().getEmail());
+
+
+            myInfo.setEnabled(true);
+            favoriteCountry.setEnabled(true);
+            myRead.setEnabled(true);
+            Write.setEnabled(true);
+        }
+
         // ViewPager에 Fragment 추가
         adapter.addFragment(new HomeFragment(), "homefragment");
-        adapter.addFragment(new DashboardFragment(), "dashboard");
+        Fragment dashboardFragment = new DashboardFragment(); // Fragment 생성
+        if(mAuth.getCurrentUser() != null){
+            Bundle bundle = new Bundle(1); // 파라미터는 전달할 데이터 개수
+            bundle.putParcelable("userId", mAuth.getCurrentUser()); // key , value
+            dashboardFragment.setArguments(bundle);
+        }else{
+
+        }
+        adapter.addFragment(dashboardFragment, "dashboard");
         adapter.addFragment(new HotPostFragment(), "hotplace");
         viewPager.setAdapter(adapter);
 
@@ -101,13 +168,64 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
     }
+
+    // [START onactivityresult]
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account);
+            } catch (ApiException e) {
+                // Google Sign In failed, update UI appropriately
+                Toast.makeText(this, "Google sign in failed", Toast.LENGTH_SHORT).show();
+                // [START_EXCLUDE]
+
+                // [END_EXCLUDE]
+            }
+        }
+    }
+    // [END onactivityresult]
+
+    // [START auth_with_google]
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        Toast.makeText(this, "firebaseAuthWithGoogle:" , Toast.LENGTH_SHORT).show();
+        // [START_EXCLUDE silent]
+//        showProgressDialog();
+        // [END_EXCLUDE]
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Toast.makeText(MainActivity.this, "signInWithCredential:success", Toast.LENGTH_SHORT).show();
+
+                            Toast.makeText(MainActivity.this, "로그인", Toast.LENGTH_SHORT).show();
+                            logInAndOut.setTitle("로그 아웃");
+                            userId.setText(mAuth.getCurrentUser().getEmail());
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(MainActivity.this, "signInWithCredential:failure", Toast.LENGTH_SHORT).show();
+
+                        }
+
+                        // [START_EXCLUDE]
+//                        hideProgressDialog();
+                        // [END_EXCLUDE]
+                    }
+                });
+    }
+    // [END auth_with_google]
 
     @Override
     public void onBackPressed() {
@@ -147,20 +265,20 @@ public class MainActivity extends AppCompatActivity
         // TODO 네비게이션뷰 아이템 클릭했을때 기능 구현
         int id = item.getItemId();
 
-        if (id == R.id.nav_logIn) {
+        if (id == R.id.logInAndOut) {
+            logInAndOut();
 
+        } else if (id == R.id.myRead) {
 
-        } else if (id == R.id.nav_myRead) {
+        } else if (id == R.id.favoriteCountry) {
 
-        } else if (id == R.id.nav_favoriteCountry) {
-
-        } else if (id == R.id.nav_write) {
+        } else if (id == R.id.write) {
             // 글쓰기 액티비티로 이동
             Intent intent = new Intent(this, WriteBordActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_myInfo) {
+        } else if (id == R.id.myInfo) {
 
-        } else if (id == R.id.nav_notice) {
+        } else if (id == R.id.notice) {
 
         }
 
@@ -169,4 +287,40 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    private void logInAndOut() {
+        if(mAuth.getCurrentUser() == null){
+            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+            startActivityForResult(signInIntent, RC_SIGN_IN);
+
+            myInfo.setEnabled(true);
+            favoriteCountry.setEnabled(true);
+            myRead.setEnabled(true);
+            Write.setEnabled(true);
+
+        }else{
+            // Firebase sign out
+            mAuth.signOut();
+
+            // Google revoke access
+            mGoogleSignInClient.revokeAccess().addOnCompleteListener(this,
+                    new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(MainActivity.this, "로그 아웃", Toast.LENGTH_SHORT).show();
+                            logInAndOut.setTitle("로그인");
+                            userId.setText("로그인 해주세요");
+                            myInfo.setEnabled(false);
+                            favoriteCountry.setEnabled(false);
+                            myRead.setEnabled(false);
+                            Write.setEnabled(false);
+                        }
+                    });
+
+
+
+
+
+        }
+    }
 }
+

@@ -1,6 +1,7 @@
 package edu.android.hashtravel;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+
+import com.google.firebase.auth.FirebaseUser;
 
 
 /**
@@ -18,12 +23,28 @@ import android.widget.Spinner;
  */
 public class DashboardFragment extends Fragment {
 
+
+
     private Spinner continentSpinner, countrySpinner;
 //    private String[] continents = {"Asia", "Europe", "America", "South America", "Africa", "Oceania"};
     private View view;
     private ImageButton buttonWrite;
     public DashboardFragment() {
         // Required empty public constructor
+    }
+    FirebaseUser user;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        //TODO
+        Bundle bundle = getArguments();
+        if(bundle != null){
+            user = bundle.getParcelable("userId");
+
+        }
+
     }
 
     @Override
@@ -40,6 +61,16 @@ public class DashboardFragment extends Fragment {
         continentSpinner = view.findViewById(R.id.continectSpinner);
         countrySpinner = view.findViewById(R.id.countrySpinner);
         buttonWrite = view.findViewById(R.id.buttonWrite);
+
+        //TODO
+        if(user != null){
+            buttonWrite.setEnabled(true);
+
+        }else{
+            buttonWrite.setEnabled(false);
+
+
+        }
         buttonWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
