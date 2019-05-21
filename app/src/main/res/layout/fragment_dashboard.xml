@@ -80,7 +80,7 @@
             app:layout_constraintGuide_percent="0.2" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/dashBoardrecyclerView"
             android:layout_width="381dp"
             android:layout_height="320dp"
             android:layout_marginStart="8dp"
@@ -101,7 +101,7 @@
             android:backgroundTint="#F9F9F9"
             android:src="@drawable/write"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+            app:layout_constraintTop_toBottomOf="@+id/dashBoardrecyclerView" />
 
         <TextView
             android:id="@+id/textView"
@@ -111,10 +111,10 @@
             android:gravity="center_vertical"
             android:text="글쓰기"
             app:layout_constraintBottom_toBottomOf="@+id/buttonWrite"
-            app:layout_constraintEnd_toEndOf="@+id/recyclerView"
+            app:layout_constraintEnd_toEndOf="@+id/dashBoardrecyclerView"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/buttonWrite"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerView"
+            app:layout_constraintTop_toBottomOf="@+id/dashBoardrecyclerView"
             app:layout_constraintVertical_bias="0.888" />
 
         <LinearLayout

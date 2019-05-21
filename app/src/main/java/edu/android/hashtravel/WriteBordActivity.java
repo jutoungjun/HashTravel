@@ -89,12 +89,12 @@ public class WriteBordActivity extends AppCompatActivity {
         // TODO
         String key = mDatabase.child("posts").push().getKey();
 
-        DashBoard dashBoard = new DashBoard(null,category, continent, country, textSubject.getText().toString(), textDesc.getText().toString(), textTag.getText().toString(), 0, null);
+        DashBoard dashBoard = new DashBoard(firebaseUser.getUid(),category, continent, country, textSubject.getText().toString(), textDesc.getText().toString(), textTag.getText().toString(), 0, null);
 
         Map<String, Object> postValues = dashBoard.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
         // TODO userId값으로 넣기
-        childUpdates.put("/posts/" + firebaseUser.getUid() +"/" +key, postValues);
+        childUpdates.put("/posts/"+ key, postValues);
 
 
         mDatabase.updateChildren(childUpdates);

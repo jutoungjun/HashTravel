@@ -11,8 +11,7 @@ import java.util.Map;
 
 public class DashBoard {
 
-
-    private String userId; // Key값 유저 아이디
+    private String uid; // Key값 유저 아이디
     private String postKey; // Key값 게시글 키
     private String category; // 게시글 카테고리
     private String continent; // 대륙
@@ -32,8 +31,8 @@ public class DashBoard {
     // TODO : 생성자 생각해보기
     public DashBoard() {}
 
-    public DashBoard(String userId, String category, String continent, String country, String subject, String description, String hashTag, int likes, String photoId) {
-        this.userId = userId;
+    public DashBoard(String uid, String category, String continent, String country, String subject, String description, String hashTag, int likes, String photoId) {
+        this.uid = uid;
         this.category = category;
         this.continent = continent;
         this.country = country;
@@ -47,7 +46,7 @@ public class DashBoard {
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("uid" , userId);
+        result.put("uid" , uid);
         result.put("category", category);
         result.put("continent", continent);
         result.put("country", country);
@@ -60,11 +59,11 @@ public class DashBoard {
     }
 
     public String getUserId() {
-        return userId;
+        return uid;
     }
 
     public void setUserId(String userId) {
-        this.userId = userId;
+        this.uid = userId;
     }
 
     public String getPostKey() {
