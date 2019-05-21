@@ -64,7 +64,7 @@ public class HotPostFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_hot_post, container, false);
 
 
-        recyclerView = view.findViewById(R.id.dashBoardrecyclerView);
+        recyclerView = view.findViewById(R.id.dashBoardRecyclerView);
         recyclerView.setHasFixedSize(true);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));

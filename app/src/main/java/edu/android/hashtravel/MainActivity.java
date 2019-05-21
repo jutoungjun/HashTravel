@@ -15,8 +15,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +28,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 public class MainActivity extends AppCompatActivity
@@ -244,8 +243,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.delteUser) {
+            deleteUser();
         }
 
         return super.onOptionsItemSelected(item);
@@ -269,7 +268,7 @@ public class MainActivity extends AppCompatActivity
             intent.putExtra("mAuth", mAuth.getCurrentUser());
             startActivity(intent);
         } else if (id == R.id.notice) {
-            Intent intent = new Intent(this, Notice.class);
+            Intent intent = new Intent(this, NoticeActivity.class);
             startActivity(intent);
         }
 
@@ -282,9 +281,6 @@ public class MainActivity extends AppCompatActivity
         if(mAuth.getCurrentUser() == null){
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, RC_SIGN_IN);
-
-
-
         }else{
             // Firebase sign out
             mAuth.signOut();
@@ -303,5 +299,43 @@ public class MainActivity extends AppCompatActivity
                     });
         }
     }
+
+    public void deleteUser() {
+        // [START delete_user]
+        // Firebase sign out
+
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            user.delete()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+
+                            }else{
+
+                            }
+                        }
+                    });
+            // [END delete_user]
+        }else{
+            Toast.makeText(this, "로그인을 해주세요", Toast.LENGTH_SHORT).show();
+        }
+        mAuth.signOut();
+
+        // Google revoke access
+        mGoogleSignInClient.revokeAccess().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        logInAndOut.setTitle("로그인");
+                        userId.setText("로그인 해주세요");
+                        myInfo.setEnabled(false);
+                        Write.setEnabled(false);
+                        Toast.makeText(MainActivity.this, "User account deleted.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        }
+
 }
 

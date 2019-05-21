@@ -1,7 +1,6 @@
 package edu.android.hashtravel;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,13 +16,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,9 +40,6 @@ public class DashboardFragment extends Fragment {
     private Spinner continentSpinner, countrySpinner;
 //    private String[] continents = {"Asia", "Europe", "America", "South America", "Africa", "Oceania"};
 
-
-    private ImageButton buttonWrite;
-    private String user;
     public DashboardFragment() {
         // Required empty public constructor
     }
@@ -64,35 +58,11 @@ public class DashboardFragment extends Fragment {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        mRecyclerView = view.findViewById(R.id.dashBoardrecyclerView);
+        mRecyclerView = view.findViewById(R.id.dashBoardRecyclerView);
         mRecyclerView.setHasFixedSize(true);
 
         continentSpinner = view.findViewById(R.id.continectSpinner);
         countrySpinner = view.findViewById(R.id.countrySpinner);
-        buttonWrite = view.findViewById(R.id.buttonWrite);
-
-        buttonWrite.setEnabled(false);
-        if(getArguments() != null){
-            user = getArguments().getString("userId");
-
-        }else{
-            user = null;
-        }
-
-        //TODO
-        if(user == null){
-            buttonWrite.setEnabled(false);
-        }else{
-            buttonWrite.setEnabled(true);
-        }
-
-        buttonWrite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getWriteBoard();
-
-            }
-        });
 
         continentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -150,7 +120,7 @@ public class DashboardFragment extends Fragment {
                 final String postKey = postRef.getKey();
 
                 Log.i(TAG,postKey);
-                Log.i(TAG, getUid());
+//                Log.i(TAG, getUid());
                 // TODO
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -240,9 +210,9 @@ public class DashboardFragment extends Fragment {
         }
     }
 
-    public String getUid() {
-        return FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-    }
+//    public String getUid() {
+//        return FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+//    }
 
     public Query getQuery(DatabaseReference databaseReference){
         // [START recent_posts_query]
