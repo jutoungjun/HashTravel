@@ -161,7 +161,7 @@ public class DashboardFragment extends Fragment {
                     }
                 });
 
-                viewHolder.bindToPost(model, getUid(),new View.OnClickListener() {
+                viewHolder.bindToPost(model, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         DatabaseReference gpostRef = mDatabase.child("posts").child(postRef.getKey());
