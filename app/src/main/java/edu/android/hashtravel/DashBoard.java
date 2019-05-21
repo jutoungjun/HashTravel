@@ -46,7 +46,7 @@ public class DashBoard {
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("uid" , uid);
+        result.put("uid", uid);
         result.put("category", category);
         result.put("continent", continent);
         result.put("country", country);

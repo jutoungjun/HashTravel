@@ -141,7 +141,6 @@ public class DashboardFragment extends Fragment {
                 });
             }
         };
-
         mRecyclerView.setAdapter(mAdapter);
     } // end onActivityCreated()
 
