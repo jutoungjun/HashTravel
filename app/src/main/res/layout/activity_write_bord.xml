@@ -134,6 +134,12 @@
             android:ems="10"
             android:gravity="start|top"
             android:inputType="textMultiLine" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="175dp"
+            android:layout_height="169dp"
+            app:srcCompat="@android:drawable/ic_menu_report_image" />
     </FrameLayout>
 
     <LinearLayout

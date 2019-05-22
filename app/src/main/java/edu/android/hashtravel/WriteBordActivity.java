@@ -1,20 +1,42 @@
 package edu.android.hashtravel;
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Picture;
+import android.net.Uri;
+import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,12 +47,21 @@ public class WriteBordActivity extends AppCompatActivity {
     private String category, continent, country;
     private EditText textSubject, textDesc, textTag;
     private FirebaseUser firebaseUser;
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private Button mButtonChooseImage;
+    private ImageView mimageView;
+    private Uri mImageUri;
+    private StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_bord);
         getSupportActionBar().hide();
+
+        storageReference = FirebaseStorage.getInstance().getReference();
+        mButtonChooseImage = findViewById(R.id.button2);
+        mimageView = findViewById(R.id.imageView6);
 
         spinnerCategory = findViewById(R.id.spinnerCategory);
         spinnerContinent = findViewById(R.id.spinnerWrContinent);
@@ -40,7 +71,13 @@ public class WriteBordActivity extends AppCompatActivity {
         textDesc = findViewById(R.id.textDesc);
         textTag = findViewById(R.id.textTag);
 
-
+        mButtonChooseImage.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                openFileChooser();
+                uploadFile();
+            }
+        });
         spinnerContinent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -65,7 +102,6 @@ public class WriteBordActivity extends AppCompatActivity {
                 spinnerCountry.setAdapter(adpter);
             }
 
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -78,8 +114,38 @@ public class WriteBordActivity extends AppCompatActivity {
 
     } // end onCreate()
 
+    private void openFileChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
+
+    private void uploadFile(){
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                        && data != null && data.getData() != null) {
+            mImageUri = data.getData();
+        }
+        InputStream in = null;
+        try {
+            in = getContentResolver().openInputStream(data.getData());
+            Bitmap img = BitmapFactory.decodeStream(in);
+            in.close();
+            mimageView.setImageBitmap(img);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
     public void onClickInputDashBoard(View view) {
-        category = spinnerCategory.getSelectedItem().toString();
+                category = spinnerCategory.getSelectedItem().toString();
         continent = spinnerContinent.getSelectedItem().toString();
         country = spinnerCountry.getSelectedItem().toString();
 
@@ -98,6 +164,41 @@ public class WriteBordActivity extends AppCompatActivity {
         mDatabase.updateChildren(childUpdates);
 
         Toast.makeText(this, "입력 완료", Toast.LENGTH_SHORT).show();
+
+        if(mImageUri != null) {
+
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("uploading...");
+            progressDialog.show();
+
+            StorageReference riversRef = storageReference.child("image/*");
+
+            riversRef.putFile(mImageUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            progressDialog.dismiss();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred())
+                                    /taskSnapshot.getTotalByteCount();
+                            progressDialog.setMessage(((int) progress) + "% upload..");
+                        }
+                    });
+
+        }else{
+
+        }
+
 
     }
 }
