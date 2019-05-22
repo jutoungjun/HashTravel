@@ -37,7 +37,7 @@ public class DashboardFragment extends Fragment {
 
 
     private static final String TAG = "fragmentRecycle";
-    private Spinner continentSpinner, countrySpinner;
+    private Spinner categorySpinner, continentSpinner, countrySpinner;
 //    private String[] continents = {"Asia", "Europe", "America", "South America", "Africa", "Oceania"};
 
     public DashboardFragment() {
@@ -60,6 +60,7 @@ public class DashboardFragment extends Fragment {
         mRecyclerView = view.findViewById(R.id.dashBoardRecyclerView);
         mRecyclerView.setHasFixedSize(true);
 
+        categorySpinner = view.findViewById(R.id.categorySpinner);
         continentSpinner = view.findViewById(R.id.continectSpinner);
         countrySpinner = view.findViewById(R.id.countrySpinner);
 
