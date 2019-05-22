@@ -37,6 +37,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -165,13 +167,18 @@ public class WriteBordActivity extends AppCompatActivity {
 
         Toast.makeText(this, "입력 완료", Toast.LENGTH_SHORT).show();
 
+
         if(mImageUri != null) {
 
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("uploading...");
             progressDialog.show();
 
-            StorageReference riversRef = storageReference.child("image/*");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_HHmmss");
+            Date now = new Date();
+            String filename = formatter.format(now) + ".png";
+
+            StorageReference riversRef = storageReference.getStorage().getReference("images/" + filename);
 
             riversRef.putFile(mImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
