@@ -53,7 +53,6 @@ public class DashboardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Log.i(TAG, "onCreateView의 생성");
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -164,13 +163,7 @@ public class DashboardFragment extends Fragment {
             }
         });
     }
-
-
-    private void getWriteBoard() {
-        Intent intent = new Intent(getActivity(), WriteBordActivity.class);
-        startActivity(intent);
-    }
-
+    
     public void setSpinnerCountry(int position, Spinner countrySpinner) {
         ArrayAdapter<CharSequence> adpter;
         if(position == 1) {

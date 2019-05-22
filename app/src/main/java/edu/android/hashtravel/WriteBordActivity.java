@@ -125,7 +125,6 @@ public class WriteBordActivity extends AppCompatActivity {
 
     private void uploadFile(){
 
-
     }
 
     @Override
@@ -170,7 +169,7 @@ public class WriteBordActivity extends AppCompatActivity {
         }
 
         DashBoard dashBoard = null;
-        if(!subject.equals("") && !desc.equals("") && !(hashTag.equals(""))) {
+        if(!subject.equals("") && !desc.equals("") && !hashTag.equals("")) {
             dashBoard = new DashBoard(firebaseUser.getUid(),category, continent, country, subject, desc, hashTag, 0, null);
         }
 
