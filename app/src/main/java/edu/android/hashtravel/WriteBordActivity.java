@@ -163,11 +163,9 @@ public class WriteBordActivity extends AppCompatActivity {
 
         if(subject.equals("")) {
             Toast.makeText(this, "제목을 입력해주세요.", Toast.LENGTH_SHORT).show();
-        }
-        if(desc.equals("")) {
+        } else if(desc.equals("")) {
             Toast.makeText(this, "내용을 입력해주세요.", Toast.LENGTH_SHORT).show();
-        }
-        if(hashTag.equals("")) {
+        } else if(hashTag.equals("")) {
             Toast.makeText(this, "태그를 입력해주세요.", Toast.LENGTH_SHORT).show();
         }
 
