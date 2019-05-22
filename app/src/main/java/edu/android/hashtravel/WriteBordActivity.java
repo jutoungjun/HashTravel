@@ -147,7 +147,8 @@ public class WriteBordActivity extends AppCompatActivity {
 
     }
     public void onClickInputDashBoard(View view) {
-                category = spinnerCategory.getSelectedItem().toString();
+
+        category = spinnerCategory.getSelectedItem().toString();
         continent = spinnerContinent.getSelectedItem().toString();
         country = spinnerCountry.getSelectedItem().toString();
 
@@ -156,56 +157,74 @@ public class WriteBordActivity extends AppCompatActivity {
 
         String key = mDatabase.child("posts").push().getKey();
 
-        DashBoard dashBoard = new DashBoard(firebaseUser.getUid(),category, continent, country, textSubject.getText().toString(), textDesc.getText().toString(), textTag.getText().toString(), 0, null);
+        String subject = textSubject.getText().toString();
+        String desc = textDesc.getText().toString();
+        String hashTag = textTag.getText().toString();
 
-        Map<String, Object> postValues = dashBoard.toMap();
-        Map<String, Object> childUpdates = new HashMap<>();
-         childUpdates.put("/posts/"+ key, postValues);
+        if(subject.equals("")) {
+            Toast.makeText(this, "제목을 입력해주세요.", Toast.LENGTH_SHORT).show();
+        }
+        if(desc.equals("")) {
+            Toast.makeText(this, "내용을 입력해주세요.", Toast.LENGTH_SHORT).show();
+        }
+        if(hashTag.equals("")) {
+            Toast.makeText(this, "태그를 입력해주세요.", Toast.LENGTH_SHORT).show();
+        }
 
+        DashBoard dashBoard = null;
+        if(!subject.equals("") && !desc.equals("") && !(hashTag.equals(""))) {
+            dashBoard = new DashBoard(firebaseUser.getUid(),category, continent, country, subject, desc, hashTag, 0, null);
+        }
 
-        mDatabase.updateChildren(childUpdates);
+        if(dashBoard != null) {
+            Map<String, Object> postValues = dashBoard.toMap();
+            Map<String, Object> childUpdates = new HashMap<>();
+            childUpdates.put("/posts/" + key, postValues);
+            mDatabase.updateChildren(childUpdates);
 
-        Toast.makeText(this, "입력 완료", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "입력 완료", Toast.LENGTH_SHORT).show();
 
+            if(mImageUri != null) {
 
-        if(mImageUri != null) {
+                final ProgressDialog progressDialog = new ProgressDialog(this);
+                progressDialog.setTitle("uploading...");
+                progressDialog.show();
 
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("uploading...");
-            progressDialog.show();
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_HHmmss");
+                Date now = new Date();
+                String filename = formatter.format(now) + ".png";
 
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_HHmmss");
-            Date now = new Date();
-            String filename = formatter.format(now) + ".png";
+                StorageReference riversRef = storageReference.getStorage().getReference("images/" + filename);
 
-            StorageReference riversRef = storageReference.getStorage().getReference("images/" + filename);
+                riversRef.putFile(mImageUri)
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                progressDialog.dismiss();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                progressDialog.dismiss();
+                            }
+                        })
+                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                double progress = (100.0 * taskSnapshot.getBytesTransferred())
+                                        /taskSnapshot.getTotalByteCount();
+                                progressDialog.setMessage(((int) progress) + "% upload..");
+                            }
+                        });
 
-            riversRef.putFile(mImageUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            progressDialog.dismiss();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred())
-                                    /taskSnapshot.getTotalByteCount();
-                            progressDialog.setMessage(((int) progress) + "% upload..");
-                        }
-                    });
+            }else{
 
-        }else{
+            }
 
+            this.finish();
         }
 
 
-    }
+    } // end onClickInputDashBoard
 }
