@@ -67,7 +67,7 @@ public class DashboardFragment extends Fragment {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-              setSpinnerCountry(position, countrySpinner);
+                setSpinnerCountry(position, countrySpinner);
             }
 
             @Override
@@ -77,7 +77,7 @@ public class DashboardFragment extends Fragment {
         });
 
 
-       return view;
+        return view;
     }
 
     @Override
@@ -125,7 +125,7 @@ public class DashboardFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(getActivity(), DetailDashboardView.class);
-                        intent.putExtra(DetailDashboardView.EXTRA_POST_KEY, postKey);
+                        intent.putExtra(DetailDashboardView.EXTRA_POST, model);
                         startActivity(intent);
                     }
                 });
@@ -163,7 +163,7 @@ public class DashboardFragment extends Fragment {
             }
         });
     }
-    
+
     public void setSpinnerCountry(int position, Spinner countrySpinner) {
         ArrayAdapter<CharSequence> adpter;
         if(position == 1) {

@@ -3,15 +3,16 @@ package edu.android.hashtravel;
 
 import com.google.firebase.database.Exclude;
 
-import java.util.Date;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
-public class DashBoard {
+public class DashBoard implements Serializable {
 
     private String uid; // Key값 유저 아이디
+    private String username;
     private String postKey; // Key값 게시글 키
     private String category; // 게시글 카테고리
     private String continent; // 대륙
@@ -20,7 +21,7 @@ public class DashBoard {
     private String description; // 글내용
     // TODO 해쉬태그 List<String> ?
     private String hashTag; // 해쉬태그 내용
-    private Date date;
+    private String date;
     private int likes; // 좋아요수
     private Map<String, Boolean> stars = new HashMap<>();
 
@@ -31,8 +32,12 @@ public class DashBoard {
     // TODO : 생성자 생각해보기
     public DashBoard() {}
 
-    public DashBoard(String uid, String category, String continent, String country, String subject, String description, String hashTag, int likes, String photoId) {
+
+
+    public DashBoard(String uid, String username, String date, String category, String continent, String country, String subject, String description, String hashTag, int likes, String photoId) {
         this.uid = uid;
+        this.username = username;
+        this.date = date;
         this.category = category;
         this.continent = continent;
         this.country = country;
@@ -47,6 +52,8 @@ public class DashBoard {
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("uid", uid);
+        result.put("username" , username);
+        result.put("date", date);
         result.put("category", category);
         result.put("continent", continent);
         result.put("country", country);
@@ -64,6 +71,22 @@ public class DashBoard {
 
     public void setUserId(String userId) {
         this.uid = userId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getPostKey() {
@@ -122,13 +145,6 @@ public class DashBoard {
         this.hashTag = hashTag;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
 
     public int getLikes() {
         return likes;

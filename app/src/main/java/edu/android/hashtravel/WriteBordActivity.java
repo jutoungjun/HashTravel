@@ -168,9 +168,13 @@ public class WriteBordActivity extends AppCompatActivity {
             Toast.makeText(this, "태그를 입력해주세요.", Toast.LENGTH_SHORT).show();
         }
 
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        Date now = new Date();
+        String date = formatter.format(now);
+
         DashBoard dashBoard = null;
         if(!subject.equals("") && !desc.equals("") && !hashTag.equals("")) {
-            dashBoard = new DashBoard(firebaseUser.getUid(),category, continent, country, subject, desc, hashTag, 0, null);
+            dashBoard = new DashBoard(firebaseUser.getUid(), firebaseUser.getDisplayName(), date, category, continent, country, subject, desc, hashTag, 0, null);
         }
 
         if(dashBoard != null) {
@@ -187,9 +191,8 @@ public class WriteBordActivity extends AppCompatActivity {
                 progressDialog.setTitle("uploading...");
                 progressDialog.show();
 
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_HHmmss");
-                Date now = new Date();
-                String filename = formatter.format(now) + ".png";
+
+                String filename = date + ".png";
 
                 StorageReference riversRef = storageReference.getStorage().getReference("images/" + filename);
 
