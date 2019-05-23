@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/homeContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -131,9 +132,9 @@
                 android:text="Asia"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/guideline3"
-                app:layout_constraintEnd_toEndOf="@+id/imageButton"
-                app:layout_constraintStart_toStartOf="@+id/imageButton"
-                app:layout_constraintTop_toBottomOf="@+id/imageButton" />
+                app:layout_constraintEnd_toEndOf="@+id/btnAsia"
+                app:layout_constraintStart_toStartOf="@+id/btnAsia"
+                app:layout_constraintTop_toBottomOf="@+id/btnAsia" />
 
             <TextView
                 android:id="@+id/textView9"
@@ -144,9 +145,9 @@
                 android:text="Europe"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/guideline3"
-                app:layout_constraintEnd_toEndOf="@+id/imageButton2"
-                app:layout_constraintStart_toStartOf="@+id/imageButton2"
-                app:layout_constraintTop_toBottomOf="@+id/imageButton2" />
+                app:layout_constraintEnd_toEndOf="@+id/btnEurope"
+                app:layout_constraintStart_toStartOf="@+id/btnEurope"
+                app:layout_constraintTop_toBottomOf="@+id/btnEurope" />
 
             <TextView
                 android:id="@+id/textView10"
@@ -157,9 +158,9 @@
                 android:text="America"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/guideline3"
-                app:layout_constraintEnd_toEndOf="@+id/imageButton3"
-                app:layout_constraintStart_toStartOf="@+id/imageButton3"
-                app:layout_constraintTop_toBottomOf="@+id/imageButton3" />
+                app:layout_constraintEnd_toEndOf="@+id/btnAmerica"
+                app:layout_constraintStart_toStartOf="@+id/btnAmerica"
+                app:layout_constraintTop_toBottomOf="@+id/btnAmerica" />
 
             <TextView
                 android:id="@+id/textView11"
@@ -170,10 +171,10 @@
                 android:text="Africa"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/imageButton4"
+                app:layout_constraintEnd_toEndOf="@+id/btnAfrica"
                 app:layout_constraintHorizontal_bias="0.622"
-                app:layout_constraintStart_toStartOf="@+id/imageButton4"
-                app:layout_constraintTop_toBottomOf="@+id/imageButton4"
+                app:layout_constraintStart_toStartOf="@+id/btnAfrica"
+                app:layout_constraintTop_toBottomOf="@+id/btnAfrica"
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
@@ -185,10 +186,10 @@
                 android:text="Oceania"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/imageButton5"
+                app:layout_constraintEnd_toEndOf="@+id/btnOceania"
                 app:layout_constraintHorizontal_bias="0.333"
-                app:layout_constraintStart_toStartOf="@+id/imageButton5"
-                app:layout_constraintTop_toBottomOf="@+id/imageButton5"
+                app:layout_constraintStart_toStartOf="@+id/btnOceania"
+                app:layout_constraintTop_toBottomOf="@+id/btnOceania"
                 app:layout_constraintVertical_bias="0.039" />
 
             <TextView
@@ -200,14 +201,14 @@
                 android:text="South Ameirca"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/imageButton6"
-                app:layout_constraintStart_toStartOf="@+id/imageButton6"
-                app:layout_constraintTop_toBottomOf="@+id/imageButton6"
+                app:layout_constraintEnd_toEndOf="@+id/btnSouthAmerica"
+                app:layout_constraintStart_toStartOf="@+id/btnSouthAmerica"
+                app:layout_constraintTop_toBottomOf="@+id/btnSouthAmerica"
                 app:layout_constraintVertical_bias="0.041" />
 
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/btnAsia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -227,7 +228,7 @@
                 app:layout_constraintGuide_percent="0.45" />
 
             <ImageButton
-                android:id="@+id/imageButton2"
+                android:id="@+id/btnEurope"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -240,7 +241,7 @@
                 app:srcCompat="@drawable/leaningpisa" />
 
             <ImageButton
-                android:id="@+id/imageButton3"
+                android:id="@+id/btnAmerica"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -253,7 +254,7 @@
                 app:srcCompat="@drawable/hollywood" />
 
             <ImageButton
-                android:id="@+id/imageButton4"
+                android:id="@+id/btnAfrica"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -266,7 +267,7 @@
                 app:srcCompat="@drawable/mask" />
 
             <ImageButton
-                android:id="@+id/imageButton5"
+                android:id="@+id/btnOceania"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -279,7 +280,7 @@
                 app:srcCompat="@drawable/sydney_opera_house" />
 
             <ImageButton
-                android:id="@+id/imageButton6"
+                android:id="@+id/btnSouthAmerica"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
