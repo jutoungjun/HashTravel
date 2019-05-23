@@ -4,7 +4,9 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Picture;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -59,7 +61,8 @@ public class WriteBordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_bord);
-        getSupportActionBar().hide();
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#ffffbb33")));
+        getWindow().setStatusBarColor(Color.parseColor("#ffffbb33"));
 
         storageReference = FirebaseStorage.getInstance().getReference();
         mButtonChooseImage = findViewById(R.id.button2);

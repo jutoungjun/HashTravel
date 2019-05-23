@@ -1,6 +1,8 @@
 package edu.android.hashtravel;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -15,7 +17,8 @@ public class DetailDashboardView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_dashboard_view);
-        getSupportActionBar().hide();
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#ffffbb33")));
+        getWindow().setStatusBarColor(Color.parseColor("#ffffbb33"));
 
         detailPostCategory = findViewById(R.id.detailPostCategory);
         detailPostSubject = findViewById(R.id.detailPostSubject);
