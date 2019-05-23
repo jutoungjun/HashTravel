@@ -14,13 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,6 +46,7 @@ public class DashboardFragment extends Fragment {
     private FirebaseRecyclerAdapter<DashBoard, DashBoardViewHolder> mAdapter;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mManager;
+    private String category, continent, country;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,7 +60,7 @@ public class DashboardFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
 
         categorySpinner = view.findViewById(R.id.categorySpinner);
-        continentSpinner = view.findViewById(R.id.continectSpinner);
+        continentSpinner = view.findViewById(R.id.continentSpinner);
         countrySpinner = view.findViewById(R.id.countrySpinner);
 
         continentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -211,12 +210,12 @@ public class DashboardFragment extends Fragment {
         // [START recent_posts_query]
         // Last 100 posts, these are automatically the 100 most recent
         // due to sorting by push() keys
-        Query recentPostsQuery = databaseReference.child("posts")
-                .limitToFirst(100);
+        Query recentPostsQuery = databaseReference.child("posts").orderByChild("category").equalTo("여행후기");
         // [END recent_posts_query]
 
         return recentPostsQuery;
 
     }
+
 
 }

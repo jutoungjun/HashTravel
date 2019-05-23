@@ -30,7 +30,7 @@
                 android:entries="@array/category" />
 
             <Spinner
-                android:id="@+id/continectSpinner"
+                android:id="@+id/continentSpinner"
                 android:layout_width="wrap_content"
 
                 android:layout_height="wrap_content"
