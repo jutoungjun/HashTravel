@@ -9,7 +9,7 @@ public class DetailDashboardView extends AppCompatActivity {
 //TODO
     public static final String EXTRA_POST = "post_key";
     private TextView detailPostCategory, detailPostSubject, detailPostUsername,
-            detailPostDate, detailPostDesc;
+            detailPostDate, detailPostDesc, detailPostHashTag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +22,7 @@ public class DetailDashboardView extends AppCompatActivity {
         detailPostUsername = findViewById(R.id.detailPostUsername);
         detailPostDate = findViewById(R.id.detailPostDate);
         detailPostDesc = findViewById(R.id.detailPostDesc);
+        detailPostHashTag = findViewById(R.id.detailPostHashTag);
 
         Intent intent = getIntent();
         DashBoard dashBoard = (DashBoard) intent.getSerializableExtra(EXTRA_POST);
@@ -30,6 +31,7 @@ public class DetailDashboardView extends AppCompatActivity {
         detailPostUsername.setText(dashBoard.getUsername());
         detailPostDate.setText(dashBoard.getDate());
         detailPostDesc.setText(dashBoard.getDescription());
+        detailPostHashTag.setText(dashBoard.getHashTag());
 
     }
 }
