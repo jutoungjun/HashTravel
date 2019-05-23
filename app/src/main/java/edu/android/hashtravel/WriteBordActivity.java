@@ -112,8 +112,6 @@ public class WriteBordActivity extends AppCompatActivity {
 
 
 
-
-
     } // end onCreate()
 
     private void openFileChooser() {

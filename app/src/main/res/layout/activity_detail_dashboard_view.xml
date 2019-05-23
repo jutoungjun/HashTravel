@@ -113,10 +113,11 @@
                     android:text="사용자 아이디" />
 
                 <ImageButton
-                    android:id="@+id/imageButton16"
+                    android:id="@+id/btnIntentDasgboardview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="8dp"
+                    android:onClick="IntentdashBoardView"
                     android:layout_weight="0"
                     app:srcCompat="@android:drawable/btn_star_big_on" />
             </LinearLayout>
