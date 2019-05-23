@@ -19,6 +19,7 @@ import android.widget.Spinner;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
 
 
 /**
@@ -41,16 +43,24 @@ public class DashboardFragment extends Fragment {
     public DashboardFragment() {
         // Required empty public constructor
     }
-
     private DatabaseReference mDatabase;
+    private DatabaseReference mRef;
+    private Query mQuery;
+    private ValueEventListener mListener;
+    private ChildEventListener mQueryListener;
+
     private FirebaseRecyclerAdapter<DashBoard, DashBoardViewHolder> mAdapter;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mManager;
     private String category, continent, country;
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.i(TAG, "onCreateView");
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
@@ -63,11 +73,51 @@ public class DashboardFragment extends Fragment {
         continentSpinner = view.findViewById(R.id.continentSpinner);
         countrySpinner = view.findViewById(R.id.countrySpinner);
 
-        continentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                category = categorySpinner.getSelectedItem().toString();
+                Log.i(TAG, "태그선택" + category);
+                if (mAdapter != null) {
+                    mAdapter.stopListening();
+                }
+                cleanBasicListener();
+                cleanBasicQuery();
 
+                if(category.equals("전체")) {
+                    postView(0);
+                } else {
+                    postView(1);
+                }
+
+                mAdapter.startListening();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        continentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 setSpinnerCountry(position, countrySpinner);
+                continent = continentSpinner.getSelectedItem().toString();
+
+                if (mAdapter != null) {
+                    mAdapter.stopListening();
+                }
+                cleanBasicListener();
+                cleanBasicQuery();
+
+                if(category.equals("전체")) {
+                    postView(0);
+                } else {
+                    postView(1);
+                }
+
+                mAdapter.startListening();
+
             }
 
             @Override
@@ -82,6 +132,8 @@ public class DashboardFragment extends Fragment {
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        Log.i(TAG, "onActivityCreated");
+
         super.onActivityCreated(savedInstanceState);
 
         // Set up Layout Manager, reverse layout
@@ -90,21 +142,24 @@ public class DashboardFragment extends Fragment {
         mManager.setStackFromEnd(true);
         mRecyclerView.setLayoutManager(mManager);
 
-        // Set up FirebaseRecyclerAdapter with the Query
-        Query postsQuery = getQuery(mDatabase);
+    } // end onActivityCreated()
+
+    private void postView(int type) {
+        switch (type) {
+            case 0:
+                // Set up FirebaseRecyclerAdapter with the Query
+                mQuery = basicQuery(mDatabase);
+                break;
+            case 1:
+                mQuery = categoryQuery(mDatabase);
+                break;
+        }
 
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<DashBoard>()
-                .setQuery(postsQuery, DashBoard.class)
+                .setQuery(mQuery, DashBoard.class)
                 .build();
 
         mAdapter = new FirebaseRecyclerAdapter<DashBoard, DashBoardViewHolder>(options) {
-
-            @Override
-            public int getItemCount() {
-                return super.getItemCount();
-            }
-
-
             @Override
             public DashBoardViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
                 LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
@@ -141,7 +196,7 @@ public class DashboardFragment extends Fragment {
             }
         };
         mRecyclerView.setAdapter(mAdapter);
-    } // end onActivityCreated()
+    }
 
     private void onlikeClicked(DatabaseReference postRef) {
         postRef.runTransaction(new Transaction.Handler() {
@@ -190,7 +245,10 @@ public class DashboardFragment extends Fragment {
     public void onStart() {
         super.onStart();
         if(mAdapter != null) {
-            mAdapter.startListening();
+            Log.i(TAG, "onStart");
+//            mAdapter.startListening();
+//            basicQuery(mDatabase);
+
         }
     }
 
@@ -198,7 +256,10 @@ public class DashboardFragment extends Fragment {
     public void onStop() {
         super.onStop();
         if(mAdapter != null) {
-            mAdapter.stopListening();
+            Log.i(TAG, "onSTop");
+//            mAdapter.stopListening();
+//            cleanBasicListener();
+//            cleanBasicQuery();
         }
     }
 
@@ -206,16 +267,29 @@ public class DashboardFragment extends Fragment {
 //        return FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
 //    }
 
-    public Query getQuery(DatabaseReference databaseReference){
+    public Query basicQuery(DatabaseReference databaseReference) {
+        Query query = databaseReference.child("posts").limitToFirst(100);
+        return query;
+    }
+
+    public Query categoryQuery(DatabaseReference databaseReference){
         // [START recent_posts_query]
         // Last 100 posts, these are automatically the 100 most recent
         // due to sorting by push() keys
-        Query recentPostsQuery = databaseReference.child("posts").orderByChild("category").equalTo("여행후기");
-        // [END recent_posts_query]
-
-        return recentPostsQuery;
-
+        Log.i(TAG, "카테고리" + category);
+        Query categoryQuery = databaseReference.child("posts").orderByChild("category").equalTo(category);
+        return categoryQuery;
     }
 
+    public void cleanBasicListener() {
+        if (mRef != null) {
+            mRef.removeEventListener(mListener);
+        }
+    }
 
+    public void cleanBasicQuery(){
+        if (mQuery != null && mQueryListener != null) {
+            mQuery.removeEventListener(mQueryListener);
+        }
+    }
 }
