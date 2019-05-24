@@ -1,187 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView2"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".WriteBordActivity">
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
-    <LinearLayout
-        android:id="@+id/linearLayout7"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-    </LinearLayout>
-
-    <LinearLayout
-
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout7">
-
-        <Spinner
-            android:id="@+id/spinnerCategory"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/imageLinearLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:entries="@array/category" />
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textDesc">
 
-        <Spinner
-            android:id="@+id/spinnerWrContinent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:entries="@array/continent" />
+            <ImageView
+                android:id="@+id/writeImage1"
+                android:layout_width="50dp"
+                android:layout_height="150dp"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                app:layout_constraintEnd_toStartOf="@+id/writeImage2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textDesc"
+                android:scaleType="centerCrop" />
 
-        <Spinner
-            android:id="@+id/spinnerWrCountry"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:entries="@array/initialCountry" />
+            <ImageView
+                android:id="@+id/writeImage2"
+                android:layout_width="50dp"
+                android:layout_height="150dp"
+                android:layout_margin="8dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/writeImage3"
+                app:layout_constraintTop_toBottomOf="@+id/textDesc"
+                app:layout_constraintVertical_bias="0.0"
+                android:scaleType="centerCrop"/>
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/writeImage3"
+                android:layout_width="50dp"
+                android:layout_height="150dp"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
 
-    <EditText
-        android:id="@+id/textSubject"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="제목"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="Button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.026"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textSubject" />
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@+id/button2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button2"
-        app:layout_constraintTop_toTopOf="@+id/button2">
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="81dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/common_google_signin_btn_text_dark_normal" />
-
-        <ImageButton
-            android:id="@+id/imageButton7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/common_google_signin_btn_icon_light_focused" />
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            app:srcCompat="?attr/actionModeCloseDrawable" />
-    </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/frameLayout"
-        android:layout_width="390dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2">
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textDesc"
+                android:scaleType="centerCrop"/>
+        </LinearLayout>
 
         <EditText
             android:id="@+id/textDesc"
-            android:layout_width="389dp"
-            android:layout_height="342dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:ems="10"
-            android:gravity="start|top"
-            android:inputType="textMultiLine" />
-
-        <ImageView
-            android:id="@+id/imageView6"
-            android:layout_width="175dp"
-            android:layout_height="169dp"
-            app:srcCompat="@android:drawable/ic_menu_report_image" />
-    </FrameLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="396dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout">
+            android:inputType="textMultiLine"
+            android:maxLines="100"
+            android:minLines="1"
+            android:hint="내용을 입력해주세요"
+            android:scrollbars="vertical"
+            android:background="@null"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textSubject" />
 
         <EditText
-            android:id="@+id/textTag"
-            android:layout_width="wrap_content"
+            android:id="@+id/textSubject"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:ems="10"
-            android:hint="#태그"
-            android:inputType="textPersonName" />
-    </LinearLayout>
+            android:hint="제목을 20자 내로 적어주세요"
+            android:inputType="textPersonName"
+            android:maxLength="20"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/writeSpinnerContinent"
+            android:entries="@array/initialCountry" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
-
-        <Button
-            android:id="@+id/buttonCancel"
-            android:layout_width="wrap_content"
+        <Spinner
+            android:id="@+id/writeSpinnerCountry"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:text="취소" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/writeSpinnerContinent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/buttonInput"
-            android:onClick="onClickInputDashBoard"
-            android:layout_width="wrap_content"
+        <Spinner
+            android:id="@+id/writeSpinnerContinent"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:text="입력" />
-    </LinearLayout>
+            app:layout_constraintStart_toEndOf="@+id/writeSpinnerCategory"
+            app:layout_constraintTop_toTopOf="parent"
+            android:entries="@array/continent"/>
 
-</android.support.constraint.ConstraintLayout>
+        <Spinner
+            android:id="@+id/writeSpinnerCategory"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            app:layout_constraintEnd_toStartOf="@+id/writeSpinnerContinent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:entries="@array/category"/>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="395dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageLinearLayout">
+
+            <EditText
+                android:id="@+id/textTag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="#HashTag"
+                android:inputType="textMultiLine"
+                android:maxLines="100"
+                android:minLines="1" />
+
+            <Button
+                android:id="@+id/imageInputButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="#ffffff"
+                android:layout_margin="10dp"
+                android:text="사진 추가"
+                android:textSize="20sp"
+                android:drawableLeft="@drawable/album"/>
+
+            <Button
+                android:id="@+id/imageDeleteButton"
+                android:text="모든 사진 취소"
+                android:textSize="20sp"
+                android:layout_width="match_parent"
+                android:background="#ffffff"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:drawableLeft="@drawable/album_delete"/>
+
+            <Button
+                android:id="@+id/writeFinishButton"
+                android:text="게시글 작성"
+                android:background="#ffffff"
+                android:textSize="20sp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:scaleType="matrix"
+                android:layout_margin="10dp"
+                android:drawableLeft="@drawable/write_finish"/>
+
+
+
+        </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>
