@@ -50,7 +50,6 @@ public class DashboardFragment extends Fragment {
     private Spinner categorySpinner, continentSpinner, countrySpinner;
     private String[] continents = {"All","Asia", "Europe", "America", "Africa", "Oceania", "South America"};
 
-
     private DatabaseReference mDatabase;
     private DatabaseReference mRef;
     private Query mQuery;
@@ -216,8 +215,8 @@ public class DashboardFragment extends Fragment {
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(getActivity(), DetailDashboardView.class);
-                        intent.putExtra(DetailDashboardView.EXTRA_POST, model);
+                        Intent intent = new Intent(getActivity(), DetailDashboardActivity.class);
+                        intent.putExtra(DetailDashboardActivity.EXTRA_POST, model);
                         startActivity(intent);
                     }
                 });

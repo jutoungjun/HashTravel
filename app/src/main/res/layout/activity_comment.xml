@@ -12,7 +12,7 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".DetailDashboardViewItem">
+            tools:context=".CommentActivity">
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -112,6 +112,7 @@
 
                         <ImageButton
                             android:id="@+id/imagelike"
+                            android:onClick="onClicklike"
                             android:layout_width="35dp"
                             android:layout_height="35dp"
                             android:layout_margin="4dp"

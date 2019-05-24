@@ -4,6 +4,7 @@ package edu.android.hashtravel;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,11 +13,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.Transaction;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,38 +31,15 @@ import com.google.firebase.database.ValueEventListener;
 public class HotPostFragment extends Fragment {
 
     public static final String KEY_PLACE_ID = "place_id";
-    private RecyclerView recyclerView;
-    private TextView textTag;
-    private DashBoardDao dashBoardDao = DashBoardDao.getInstance();
-    private DashBoard dashBoard;
-
-    private int mPostNum;
 
     public HotPostFragment() {//
         // Required empty public constructor
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // 데이터베이스에서 게시글 정보 읽기
-        // TODO 게시글 리스트 !
-        ValueEventListener postListner = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                dashBoard = dataSnapshot.getValue(DashBoard.class);
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                Toast.makeText(getContext(), "게시글 정보 불러오기 실패", Toast.LENGTH_SHORT).show();
-            }
-        };
-    }
+    private DatabaseReference mDatabase;
+    private FirebaseRecyclerAdapter<DashBoard, HotpostViewHolder> mAdapter;
+    private RecyclerView mRecycler;
+    private LinearLayoutManager mManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,75 +47,120 @@ public class HotPostFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_hot_post, container, false);
 
-
-        recyclerView = view.findViewById(R.id.dashBoardRecyclerView);
-        recyclerView.setHasFixedSize(true);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-
-        HotPostAdapter adapter = new HotPostAdapter();
-
-        recyclerView.setAdapter(adapter);
-        // 연습
-        textTag = view.findViewById(R.id.textTag);
-//        textTag.setText( dashBoard.getHashTag());
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mRecycler = view.findViewById(R.id.hotPostRecyclerView);
+        mRecycler.setHasFixedSize(true);
 
         return view;
     }
 
-    public class HotPostAdapter extends RecyclerView.Adapter<HotPostAdapter.ViewHolder> {
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-        @NonNull
-        @Override
-        public HotPostAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View itemView = getLayoutInflater().inflate(R.layout.hotpost_item, parent, false);
+        mManager = new LinearLayoutManager(getActivity());
+        mManager.setReverseLayout(true);
+        mManager.setStackFromEnd(true);
+        mRecycler.setLayoutManager(mManager);
 
-            ViewHolder holder = new ViewHolder(itemView);
-            return holder;
-        }
+        Query hotPostquery = mDatabase.child("posts").orderByChild("likes").limitToLast(5);
+        FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<DashBoard>()
+                .setQuery(hotPostquery, DashBoard.class)
+                .build();
 
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int position) {
-//            DashBoard dashBoard = dashBoardDao.getDsahBoardList().get(position);
-
-//            viewHolder.imageView.setImageResource( dashBoard.getPhotoId());
-//            viewHolder.textTag.setText( dashBoard.getHashTag());
-//            viewHolder.textLikeNum.setText(dashBoard.getLikes());
-
-            // TODO
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showPlaceDetail(position);
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return dashBoardDao.getDsahBoardList().size();
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            private ImageView imageView;
-            private TextView textTag, textLikeNum;
-
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-                imageView = itemView.findViewById(R.id.placeImageView);
-                textTag = itemView.findViewById(R.id.hotTextTag);
-                textLikeNum = itemView.findViewById(R.id.textLikeNum);
+        mAdapter = new FirebaseRecyclerAdapter<DashBoard, HotpostViewHolder>(options) {
+            @Override
+            public HotpostViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+                LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+                return new HotpostViewHolder(inflater.inflate(R.layout.hotpost_item, viewGroup, false));
             }
+
+            @Override
+            protected void onBindViewHolder(HotpostViewHolder viewHolder, int position, final DashBoard model) {
+                final DatabaseReference postRef = getRef(position);
+
+                // Set click listener for the whole post view
+                final String postKey = postRef.getKey();
+
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getActivity(), DetailDashboardActivity.class);
+                        intent.putExtra(DetailDashboardActivity.EXTRA_POST, model);
+                        startActivity(intent);
+                    }
+                });
+
+                viewHolder.bindToPost(model, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DatabaseReference gpostRef = mDatabase.child("posts").child(postRef.getKey());
+                        // Run two transactions
+
+                        onlikeClicked(gpostRef);
+                    }
+                });
+            }
+        };
+        mRecycler.setAdapter(mAdapter);
+
+    }
+
+
+    class HotpostViewHolder extends RecyclerView.ViewHolder {
+        private ImageView hotpostImage;
+        private TextView hotTextTag, hotLikeNum;
+
+        public HotpostViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            hotpostImage = itemView.findViewById(R.id.hotPostImage);
+            hotTextTag = itemView.findViewById(R.id.hotTextTag);
+            hotLikeNum= itemView.findViewById(R.id.textLikeNum);
+        }
+
+        public void bindToPost(DashBoard dashBoard, View.OnClickListener likeClickListener) {
+
+            hotTextTag.setText(dashBoard.getHashTag());
+            hotLikeNum.setText(dashBoard.getLikes() +"");
+
         }
     }
 
-    private void showPlaceDetail(int position) {
+    private void onlikeClicked(DatabaseReference postRef) {
+        postRef.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                DashBoard d = mutableData.getValue(DashBoard.class);
+                if(d == null) {
+                    return Transaction.success(mutableData);
+                }
 
-        Intent intent = new Intent(getContext(), DetailDashboardView.class);
-        // TODO position말고 게시글 넘버로 후에 구현
-        intent.putExtra(KEY_PLACE_ID, position);
-        startActivity(intent);
+                mutableData.setValue(d);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+
+            }
+        });
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(mAdapter != null) {
+            mAdapter.startListening();
+        }
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(mAdapter != null) {
+            mAdapter.stopListening();
+        }
+    }
 
 }

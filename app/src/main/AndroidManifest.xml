@@ -13,8 +13,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".NoticeActivity"></activity>
         <activity android:name=".UserInfo" />
-        <activity android:name=".DetailDashboardViewItem" />
-        <activity android:name=".DetailDashboardView" />
+        <activity android:name=".CommentActivity" />
+        <activity android:name=".DetailDashboardActivity" />
         <activity android:name=".WriteBordActivity" />
         <activity
             android:name=".MainActivity"

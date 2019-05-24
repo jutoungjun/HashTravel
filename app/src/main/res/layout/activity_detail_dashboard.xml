@@ -4,38 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetailDashboardView">
+    tools:context=".DetailDashboardActivity">
 
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+            android:layout_marginTop="0dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-
-            <TextView
-                android:id="@+id/detailPostCategory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="게시판 제목"
-                android:textSize="24sp"/>
-
-            <TextView
-                android:id="@+id/detailPostSubject"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="게시글 제목"
-                android:textSize="20sp"/>
-
             <LinearLayout
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -61,63 +47,86 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
                         android:text="글 주인 ID"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/detailPostDate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:text="날짜"
                         android:maxLength="13"
-                        android:textSize="16sp"/>
+                        android:text="날짜"
+                        android:textSize="16sp" />
                 </LinearLayout>
 
             </LinearLayout>
 
+
             <TextView
                 android:id="@+id/detailPostDesc"
-                android:layout_width="match_parent"
-                android:layout_height="320dp"
+                android:layout_width="401dp"
+                android:layout_height="160dp"
                 android:layout_margin="8dp"
                 android:hint="게시글 내용"
                 android:textSize="16sp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
             <TextView
                 android:id="@+id/detailPostHashTag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:textSize="16sp"
-                android:hint="#태그" />
+                android:hint="#태그"
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="66dp"
+                android:layout_margin="8dp"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/textView22"
-                    android:layout_width="72dp"
+                <LinearLayout
+                    android:layout_width="328dp"
                     android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    android:layout_weight="0"
-                    android:text="사용자 아이디" />
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/btnIntentDasgboardview"
+                    <ImageButton
+                        android:id="@+id/imageButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0"
+                        android:backgroundTint="@color/fui_bgGoogle"
+                        app:srcCompat="@drawable/like2" />
+
+                    <TextView
+                        android:id="@+id/likeNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0"
+                        android:text="숫자 넣어주세요" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/Intent_comment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    android:onClick="IntentdashBoardView"
-                    android:layout_weight="0"
-                    app:srcCompat="@android:drawable/btn_star_big_on" />
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:onClick="onClickComment"
+                    android:text="버튼에 댓글숫자 EX(댓글 : x) 넣어주세여" />
+
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="8dp" />
+                android:layout_height="match_parent" />
 
         </LinearLayout>
     </ScrollView>
