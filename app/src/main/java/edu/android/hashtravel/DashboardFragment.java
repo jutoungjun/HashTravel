@@ -35,7 +35,7 @@ public class DashboardFragment extends Fragment {
 
     private static DashboardFragment instance = null;
 
-    private DashboardFragment() {
+    public DashboardFragment() {
         // Required empty public constructor ?
     }
 
@@ -46,10 +46,9 @@ public class DashboardFragment extends Fragment {
         return instance;
     }
 
-
     private static final String TAG = "fragmentRecycle";
     private Spinner categorySpinner, continentSpinner, countrySpinner;
-//    private String[] continents = {"Asia", "Europe", "America", "South America", "Africa", "Oceania"};
+    private String[] continents = {"All","Asia", "Europe", "America", "Africa", "Oceania", "South America"};
 
 
     private DatabaseReference mDatabase;
@@ -174,6 +173,24 @@ public class DashboardFragment extends Fragment {
         Query cquery = mDatabase.child("posts").orderByChild("continent").equalTo(btnContinent);
         setData(cquery);
         mAdapter.startListening();
+
+        // TODO 스피너 지정해주기
+
+//        categorySpinner.setSelection(0);
+//        if(btnContinent.equals(continents[1])) {
+//            continentSpinner.setSelection(1);
+//        } else if (btnContinent.equals(continents[2])) {
+//            continentSpinner.setSelection(2);
+//        } else if (btnContinent.equals(continents[3])) {
+//            continentSpinner.setSelection(3);
+//        } else if (btnContinent.equals(continents[4])) {
+//            continentSpinner.setSelection(4);
+//        } else if (btnContinent.equals(continents[5])) {
+//            continentSpinner.setSelection(5);
+//        } else if (btnContinent.equals(continents[6])) {
+//            continentSpinner.setSelection(6);
+//        }
+//        countrySpinner.setSelection(0);
 
     }
 

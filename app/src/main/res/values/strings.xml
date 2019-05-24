@@ -15,7 +15,7 @@
     <string name="menu_send">Send</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_hotPlace">HotPlace</string>
+    <string name="title_hotPost">HotPost</string>
 
     <string-array name="empty"></string-array>
     <string-array name="continent">
@@ -23,9 +23,9 @@
         <item>Asia</item>
         <item>Europe</item>
         <item>America</item>
-        <item>South America</item>
         <item>Africa</item>
         <item>Oceania</item>
+        <item>South America</item>
     </string-array>
 
     <string-array name="Asia_Country">

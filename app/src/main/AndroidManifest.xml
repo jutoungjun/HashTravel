@@ -15,7 +15,6 @@
         <activity android:name=".UserInfo" />
         <activity android:name=".DetailDashboardViewItem" />
         <activity android:name=".DetailDashboardView" />
-        <activity android:name=".PostDetailActivity" />
         <activity android:name=".WriteBordActivity" />
         <activity
             android:name=".MainActivity"

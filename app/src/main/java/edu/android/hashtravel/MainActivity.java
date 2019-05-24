@@ -343,12 +343,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onContinentSelected(String selectContinent) {
         DashboardFragment dashboardFragment = DashboardFragment.getInstance();
-//        getSupportFragmentManager()
-//                .beginTransaction()
-//                .add(, dashboardFragment)
-//                .commit();
         viewPager.setCurrentItem(1);
-
         dashboardFragment.postContinentView(selectContinent);
     }
 }
