@@ -56,13 +56,7 @@ public class DetailDashboardActivity extends AppCompatActivity {
 
     public void onClickLike(View view) {
         // TODO Firebase에 좋아요 수 업데이트 하기
-//        int like = dashBoard.getLikes();
-//        Log.i("detail", like +"");
-//
-//        Log.i("detail", dashBoard.getPostKey() );
-//        dashBoard.setLikes(++like);
-
-        String postkey =getIntent().getStringExtra(EXTRA_REF);
+        String postkey = getIntent().getStringExtra(EXTRA_REF);
         DatabaseReference postRef = FirebaseDatabase.getInstance().getReference().child("posts").child(postkey);
         postRef.runTransaction(new Transaction.Handler() {
             @Override
