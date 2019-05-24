@@ -22,16 +22,16 @@ private int  CHECK_NUM;
 
     }
 
-    public void onClicklike(View view) {
-
-        if (CHECK_NUM == 0) {
-            button.setImageResource(R.drawable.like1);
-            CHECK_NUM = 1;
-        }else  {
-            button.setImageResource(R.drawable.like2);
-            CHECK_NUM =0;
-        }
-
-
-    }
+//    public void onClicklike(View view) {
+//
+//        if (CHECK_NUM == 0) {
+//            button.setImageResource(R.drawable.like1);
+//            CHECK_NUM = 1;
+//        }else  {
+//            button.setImageResource(R.drawable.like2);
+//            CHECK_NUM =0;
+//        }
+//
+//
+//    }
 }

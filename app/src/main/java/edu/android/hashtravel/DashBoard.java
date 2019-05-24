@@ -33,7 +33,6 @@ public class DashBoard implements Serializable {
     public DashBoard() {}
 
 
-
     public DashBoard(String uid, String username, String date, String category, String continent, String country, String subject, String description, String hashTag, int likes, String photoId) {
         this.uid = uid;
         this.username = username;

@@ -63,7 +63,7 @@ public class HotPostFragment extends Fragment {
         mManager.setStackFromEnd(true);
         mRecycler.setLayoutManager(mManager);
 
-        Query hotPostquery = mDatabase.child("posts").orderByChild("likes").limitToLast(5);
+        Query hotPostquery = mDatabase.child("posts").orderByChild("likes").limitToLast(10);
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<DashBoard>()
                 .setQuery(hotPostquery, DashBoard.class)
                 .build();
@@ -87,6 +87,7 @@ public class HotPostFragment extends Fragment {
                     public void onClick(View v) {
                         Intent intent = new Intent(getActivity(), DetailDashboardActivity.class);
                         intent.putExtra(DetailDashboardActivity.EXTRA_POST, model);
+                        intent.putExtra(DetailDashboardActivity.EXTRA_REF, postKey);
                         startActivity(intent);
                     }
                 });

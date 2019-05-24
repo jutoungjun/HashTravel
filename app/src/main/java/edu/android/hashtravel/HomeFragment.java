@@ -53,7 +53,6 @@ public class HomeFragment extends Fragment {
         btnOceania = view.findViewById(R.id.btnOceania);
         btnSouthAmerica = view.findViewById(R.id.btnSouthAmerica);
 
-        // TODO
         btnAsia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
