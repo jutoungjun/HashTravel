@@ -11,13 +11,11 @@
 
         <item
             android:id="@+id/myInfo"
-            android:enabled="false"
             android:icon="@drawable/my_info"
             android:title="내 정보" />
 
         <item
             android:id="@+id/write"
-            android:enabled="false"
             android:icon="@drawable/write"
             android:title="글 쓰기" />
 
