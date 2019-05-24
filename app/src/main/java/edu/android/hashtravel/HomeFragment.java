@@ -14,6 +14,12 @@ import android.widget.ImageButton;
  */
 public class HomeFragment extends Fragment {
 
+    interface ContinentSelectCallback {
+        void onContinentSelected(String continent);
+    }
+
+    private ContinentSelectCallback callback;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -22,12 +28,17 @@ public class HomeFragment extends Fragment {
     private ImageButton btnAsia, btnEurope, btnAmerica, btnAfrica, btnOceania, btnSouthAmerica;
     private View view;
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         // TODO 콜백 MainActivity에서 프래그먼트 교체하는거 생성
+        if(context instanceof ContinentSelectCallback) {
+            callback = (ContinentSelectCallback) context;
+        } else {
+            throw new AssertionError(context + "는 반드시 ContinentSelectCallback을 구현해야 합니다.");
+        }
     }
+
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -47,40 +58,40 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // 콜백 메소드 구현
+                callback.onContinentSelected("Asia");
             }
         });
 
         btnEurope.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                callback.onContinentSelected("Europe");
             }
         });
         btnAmerica.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                callback.onContinentSelected("America");
             }
         });
         btnAfrica.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                callback.onContinentSelected("Africa");
             }
         });
         btnOceania.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                callback.onContinentSelected("Oceania");
             }
         });
         btnSouthAmerica.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                callback.onContinentSelected("South America");
             }
         });
-
 
         return view;
     }

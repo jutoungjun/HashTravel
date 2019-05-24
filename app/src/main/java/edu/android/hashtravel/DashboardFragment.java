@@ -1,6 +1,5 @@
 package edu.android.hashtravel;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -35,14 +33,25 @@ import com.google.firebase.database.ValueEventListener;
  */
 public class DashboardFragment extends Fragment {
 
+    private static DashboardFragment instance = null;
+
+    private DashboardFragment() {
+        // Required empty public constructor ?
+    }
+
+    public static DashboardFragment getInstance() {
+        if(instance == null) {
+            instance = new DashboardFragment();
+        }
+        return instance;
+    }
+
 
     private static final String TAG = "fragmentRecycle";
     private Spinner categorySpinner, continentSpinner, countrySpinner;
 //    private String[] continents = {"Asia", "Europe", "America", "South America", "Africa", "Oceania"};
 
-    public DashboardFragment() {
-        // Required empty public constructor
-    }
+
     private DatabaseReference mDatabase;
     private DatabaseReference mRef;
     private Query mQuery;
@@ -53,8 +62,6 @@ public class DashboardFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mManager;
     private String category, continent, country;
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -115,9 +122,7 @@ public class DashboardFragment extends Fragment {
                 } else {
                     postView(1);
                 }
-
                 mAdapter.startListening();
-
             }
 
             @Override
@@ -125,7 +130,6 @@ public class DashboardFragment extends Fragment {
 
             }
         });
-
 
         return view;
     }
@@ -148,15 +152,34 @@ public class DashboardFragment extends Fragment {
         switch (type) {
             case 0:
                 // Set up FirebaseRecyclerAdapter with the Query
-                mQuery = basicQuery(mDatabase);
+                mQuery = basicQuery();
                 break;
             case 1:
-                mQuery = categoryQuery(mDatabase);
+                mQuery = categoryQuery();
                 break;
         }
 
+        setData(mQuery);
+    }
+
+    public void postContinentView(String btnContinent){
+        if (mAdapter != null) {
+            mAdapter.stopListening();
+        }
+        cleanBasicListener();
+        cleanBasicQuery();
+
+        Log.i(TAG, "postContinentView " + btnContinent);
+
+        Query cquery = mDatabase.child("posts").orderByChild("continent").equalTo(btnContinent);
+        setData(cquery);
+        mAdapter.startListening();
+
+    }
+
+    private void setData(Query query) {
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<DashBoard>()
-                .setQuery(mQuery, DashBoard.class)
+                .setQuery(query, DashBoard.class)
                 .build();
 
         mAdapter = new FirebaseRecyclerAdapter<DashBoard, DashBoardViewHolder>(options) {
@@ -173,9 +196,6 @@ public class DashboardFragment extends Fragment {
                 // Set click listener for the whole post view
                 final String postKey = postRef.getKey();
 
-                Log.i(TAG,postKey);
-//                Log.i(TAG, getUid());
-                // TODO
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -241,43 +261,22 @@ public class DashboardFragment extends Fragment {
         countrySpinner.setAdapter(adpter);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if(mAdapter != null) {
-            Log.i(TAG, "onStart");
-//            mAdapter.startListening();
-//            basicQuery(mDatabase);
-
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if(mAdapter != null) {
-            Log.i(TAG, "onSTop");
-//            mAdapter.stopListening();
-//            cleanBasicListener();
-//            cleanBasicQuery();
-        }
-    }
 
 //    public String getUid() {
 //        return FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
 //    }
 
-    public Query basicQuery(DatabaseReference databaseReference) {
-        Query query = databaseReference.child("posts").limitToFirst(100);
+    public Query basicQuery() {
+        Query query = mDatabase.child("posts").limitToFirst(100);
         return query;
     }
 
-    public Query categoryQuery(DatabaseReference databaseReference){
+    public Query categoryQuery(){
         // [START recent_posts_query]
         // Last 100 posts, these are automatically the 100 most recent
         // due to sorting by push() keys
         Log.i(TAG, "카테고리" + category);
-        Query categoryQuery = databaseReference.child("posts").orderByChild("category").equalTo(category);
+        Query categoryQuery = mDatabase.child("posts").orderByChild("category").equalTo(category);
         return categoryQuery;
     }
 

@@ -1,6 +1,8 @@
 package edu.android.hashtravel;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -8,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -31,9 +32,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.ContinentSelectCallback {
 
     private static final int RC_SIGN_IN = 11;
     private TextView userId;
@@ -42,14 +45,11 @@ public class MainActivity extends AppCompatActivity
     private ViewPagerAdapter adapter;
     private MenuItem bottomMenuItem, logInAndOut, myInfo, Write;
 
-
-
-    // 구글 사용자 정보
+    // 구글 사용자 정보?
     private FirebaseAuth mAuth;
     // 구글 클라이언트
     private GoogleSignInClient mGoogleSignInClient;
 
-    // Bottom 네비게이션뷰 ViewPager로 구현
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -75,6 +75,9 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#ffffbb33")));
+        getWindow().setStatusBarColor(Color.parseColor("#ffffbb33"));
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -123,17 +126,16 @@ public class MainActivity extends AppCompatActivity
 
         // ViewPager에 Fragment 추가
         adapter.addFragment(new HomeFragment(), "homefragment");
-        Fragment dashboardFragment = new DashboardFragment(); // Fragment 생성
+        Fragment dashboardFragment = DashboardFragment.getInstance(); // Fragment 생성
         if(mAuth.getCurrentUser() == null){
-
-            adapter.addFragment(new DashboardFragment(), "dashboard");
+            adapter.addFragment(dashboardFragment, "dashboard");
         }else{
             Bundle bundle = new Bundle(1); // 파라미터는 전달할 데이터 개수
             bundle.putString("userId", mAuth.getCurrentUser().getDisplayName()); // key , value
             dashboardFragment.setArguments(bundle);
             adapter.addFragment(dashboardFragment, "dashboard");
         }
-        adapter.addFragment(new HotPostFragment(), "hotpost");
+        adapter.addFragment(new HotPostFragment(), "hotplace");
         viewPager.setAdapter(adapter);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -159,8 +161,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-    }
-
+    } // end onCreate()
     // [START onactivityresult]
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -168,8 +169,8 @@ public class MainActivity extends AppCompatActivity
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
@@ -178,8 +179,6 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(this, "Google sign in failed", Toast.LENGTH_SHORT).show();
                 // [START_EXCLUDE]
 
-
-                e.printStackTrace();
                 // [END_EXCLUDE]
             }
         }
@@ -262,10 +261,10 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.logInAndOut) {
             logInAndOut();
         } else if (id == R.id.myInfo) {
-          Intent intent = new Intent(this, UserInfo.class);
-          intent.putExtra("email", mAuth.getCurrentUser().getEmail());
-          intent.putExtra("name", mAuth.getCurrentUser().getDisplayName());
-          startActivity(intent);
+            Intent intent = new Intent(this, UserInfo.class);
+            intent.putExtra("email", mAuth.getCurrentUser().getEmail());
+            intent.putExtra("name", mAuth.getCurrentUser().getDisplayName());
+            startActivity(intent);
         } else if (id == R.id.write) {
             // 글쓰기 액티비티로 이동
             Intent intent = new Intent(this, WriteBordActivity.class);
@@ -297,7 +296,8 @@ public class MainActivity extends AppCompatActivity
                             Toast.makeText(MainActivity.this, "로그 아웃", Toast.LENGTH_SHORT).show();
                             logInAndOut.setTitle("로그인");
                             userId.setText("로그인 해주세요");
-
+                            myInfo.setEnabled(false);
+                            Write.setEnabled(false);
                         }
                     });
         }
@@ -333,11 +333,22 @@ public class MainActivity extends AppCompatActivity
                     public void onComplete(@NonNull Task<Void> task) {
                         logInAndOut.setTitle("로그인");
                         userId.setText("로그인 해주세요");
-
+                        myInfo.setEnabled(false);
+                        Write.setEnabled(false);
                         Toast.makeText(MainActivity.this, "User account deleted.", Toast.LENGTH_SHORT).show();
                     }
                 });
-        }
+    }
 
+    @Override
+    public void onContinentSelected(String selectContinent) {
+        DashboardFragment dashboardFragment = DashboardFragment.getInstance();
+//        getSupportFragmentManager()
+//                .beginTransaction()
+//                .add(, dashboardFragment)
+//                .commit();
+        viewPager.setCurrentItem(1);
+
+        dashboardFragment.postContinentView(selectContinent);
+    }
 }
-
