@@ -127,7 +127,7 @@ public class HotPostFragment extends Fragment {
 
     private void showPlaceDetail(int position) {
 
-        Intent intent = new Intent(getContext(), PostDetailActivity.class );
+        Intent intent = new Intent(getContext(), DetailDashboardView.class);
         // TODO position말고 게시글 넘버로 후에 구현
         intent.putExtra(KEY_PLACE_ID, position);
         startActivity(intent);

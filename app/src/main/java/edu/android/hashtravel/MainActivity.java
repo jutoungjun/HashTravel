@@ -32,8 +32,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.ContinentSelectCallback {
@@ -62,7 +60,7 @@ public class MainActivity extends AppCompatActivity
                 case R.id.navigation_dashboard:
                     viewPager.setCurrentItem(1);
                     return true;
-                case R.id.navigation_hotplace:
+                case R.id.navigation_hotpost:
                     viewPager.setCurrentItem(2);
                     return true;
             }
