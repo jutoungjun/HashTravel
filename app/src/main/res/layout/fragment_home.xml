@@ -71,35 +71,35 @@
                 app:layout_constraintTop_toBottomOf="@+id/button">
 
                 <TextView
-                    android:id="@+id/textView1"
+                    android:id="@+id/hashTag1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:maxLength="10"
-                    android:text="TextView" />
+                    android:text="#태그1" />
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/hashTag2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:maxLength="10"
-                    android:text="TextView" />
+                    android:text="#태그2" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/hashTag3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:maxLength="10"
-                    android:text="TextView" />
+                    android:text="#태그3" />
 
                 <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/hashTag4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TextView" />
+                    android:text="#태그4" />
             </LinearLayout>
 
             <android.support.constraint.Guideline

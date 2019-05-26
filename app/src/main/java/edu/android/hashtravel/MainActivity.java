@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity
                 case R.id.navigation_dashboard:
                     viewPager.setCurrentItem(1);
                     return true;
-                case R.id.navigation_hotplace:
+                case R.id.navigation_hotpost:
                     viewPager.setCurrentItem(2);
                     return true;
             }
@@ -126,10 +126,9 @@ public class MainActivity extends AppCompatActivity
 
         // ViewPager에 Fragment 추가
         adapter.addFragment(new HomeFragment(), "homefragment");
-        Fragment dashboardFragment = new DashboardFragment(); // Fragment 생성
+        Fragment dashboardFragment = DashboardFragment.getInstance(); // Fragment 생성
         if(mAuth.getCurrentUser() == null){
-
-            adapter.addFragment(new DashboardFragment(), "dashboard");
+            adapter.addFragment(dashboardFragment, "dashboard");
         }else{
             Bundle bundle = new Bundle(1); // 파라미터는 전달할 데이터 개수
             bundle.putString("userId", mAuth.getCurrentUser().getDisplayName()); // key , value
@@ -262,10 +261,10 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.logInAndOut) {
             logInAndOut();
         } else if (id == R.id.myInfo) {
-          Intent intent = new Intent(this, UserInfo.class);
-          intent.putExtra("email", mAuth.getCurrentUser().getEmail());
-          intent.putExtra("name", mAuth.getCurrentUser().getDisplayName());
-          startActivity(intent);
+            Intent intent = new Intent(this, UserInfo.class);
+            intent.putExtra("email", mAuth.getCurrentUser().getEmail());
+            intent.putExtra("name", mAuth.getCurrentUser().getDisplayName());
+            startActivity(intent);
         } else if (id == R.id.write) {
             // 글쓰기 액티비티로 이동
             Intent intent = new Intent(this, WriteBordActivity.class);
@@ -339,20 +338,14 @@ public class MainActivity extends AppCompatActivity
                         Toast.makeText(MainActivity.this, "User account deleted.", Toast.LENGTH_SHORT).show();
                     }
                 });
-        }
+    }
 
     @Override
-    public void onContinentSelected(String continent) {
-        DashboardFragment dashboardFragment = new DashboardFragment();
-//        getSupportFragmentManager()
-//                .beginTransaction()
-//                .add(, dashboardFragment)
-//                .commit();
+    public void onContinentSelected(String selectContinent) {
+        DashboardFragment dashboardFragment = DashboardFragment.getInstance();
         viewPager.setCurrentItem(1);
+        dashboardFragment.postContinentView(selectContinent);
 
-            Query continentQuery = FirebaseDatabase.getInstance().getReference().child("posts").orderByChild("continent").equalTo(continent);
 
-       dashboardFragment.postContinentView(continentQuery);
     }
 }
-
