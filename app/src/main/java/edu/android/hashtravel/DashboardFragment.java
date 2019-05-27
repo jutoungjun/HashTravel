@@ -87,9 +87,18 @@ public class DashboardFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
             holder.textSubject.setText(mList.get(position).getSubject());
             holder.textHashTag.setText(mList.get(position).getHashTag());
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), DetailDashboardActivity.class);
+                    intent.putExtra(DetailDashboardActivity.EXTRA_POST, mList.get(position));
+                    startActivity(intent);
+                }
+            });
 
         }
 
