@@ -4,6 +4,8 @@ package edu.android.hashtravel;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -28,6 +30,8 @@ import java.util.zip.Inflater;
  */
 public class HomeFragment extends Fragment {
 
+    private static final String KEY_TAGS = "key_tags";
+
     interface ContinentSelectCallback {
         void onContinentSelected(String continent);
     }
@@ -41,15 +45,29 @@ public class HomeFragment extends Fragment {
     private ImageButton btnAsia, btnEurope, btnAmerica, btnAfrica, btnOceania, btnSouthAmerica;
     private TextView hashTag1, hashTag2, hashTag3, hashTag4;
 
-
-
     private ValueEventListener listener;
+    private Thread th;
+    private boolean running;
 
-    private Query query;
+//    private Query query;
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            Bundle data = msg.getData();
+            if(data != null) {
+                String[] hashTags = data.getStringArray(KEY_TAGS);
+                hashTag1.setText(hashTags[0]);
+                hashTag2.setText(hashTags[1]);
+                hashTag3.setText(hashTags[2]);
+                hashTag4.setText(hashTags[3]);
+            }
+        }
+    };
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        // TODO 콜백 MainActivity에서 프래그먼트 교체하는거 생성
+        //  콜백 MainActivity에서 프래그먼트 교체하는거 생성
         if(context instanceof ContinentSelectCallback) {
             callback = (ContinentSelectCallback) context;
         } else {
@@ -80,14 +98,38 @@ public class HomeFragment extends Fragment {
 
                 for(DataSnapshot child : dataSnapshot.getChildren()){
                     DashBoard dashBoard = child.getValue(DashBoard.class);
-                    dashBoards.add(dashBoard);
+                    if(dashBoard.getLikes() >= 0) {
+                        dashBoards.add(dashBoard);
+                    }
 
                 }
-                int[] randomIndex = randomNum();
-                hashTag1.setText(dashBoards.get(randomIndex[0]).getHashTag());
-                hashTag2.setText(dashBoards.get(randomIndex[1]).getHashTag());
-                hashTag3.setText(dashBoards.get(randomIndex[2]).getHashTag());
-                hashTag4.setText(dashBoards.get(randomIndex[3]).getHashTag());
+                class TagRunnable implements Runnable {
+                    @Override
+                    public void run() {
+                        while (true) {
+                            Message msg = handler.obtainMessage();
+
+                            int[] randomIndex = randomNum();
+                            String[] hashTags = {dashBoards.get(randomIndex[0]).getHashTag(), dashBoards.get(randomIndex[1]).getHashTag(),
+                                    dashBoards.get(randomIndex[2]).getHashTag(), dashBoards.get(randomIndex[3]).getHashTag()  };
+                            Bundle data = new Bundle();
+                            data.putStringArray(KEY_TAGS, hashTags);
+                            msg.setData(data);
+
+                            handler.sendMessage(msg);
+
+                            try {
+                                Thread.sleep(5000);
+                            } catch (Exception e) {
+                                break;
+                            }
+                        }
+                    }
+                } // end class TagRunnable
+
+                th = new Thread(new TagRunnable());
+                th.start();
+
             }
 
             @Override
