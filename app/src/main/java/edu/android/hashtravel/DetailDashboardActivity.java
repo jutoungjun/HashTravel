@@ -107,22 +107,22 @@ R.drawable.album
                     return Transaction.success(mutableData);
                 }
 
-//                d.setLikes(d.getLikes() + 1);
+                d.setLikes(d.getLikes() + 1);
 
-                if(getUid() != null) {
-                    if (d.getStars().containsKey(getUid())) {
-                        // Unstar the post and remove self from stars
-                        d.setLikes(d.getLikes() - 1);
-                        d.stars.remove(getUid());
-                        Toast.makeText(DetailDashboardActivity.this, "좋아요 취소", Toast.LENGTH_SHORT).show();
-                    } else {
-                        // Star the post and add self to stars
-                        d.setLikes(d.getLikes() + 1);
-                        d.stars.put(getUid(), true);
-                        Toast.makeText(DetailDashboardActivity.this, "좋아요!", Toast.LENGTH_SHORT).show();
-                    }
-
-                }
+//                if(getUid() != null) {
+//                    if (d.getStars().containsKey(getUid())) {
+//                        // Unstar the post and remove self from stars
+//                        d.setLikes(d.getLikes() - 1);
+//                        d.stars.remove(getUid());
+//                        Toast.makeText(DetailDashboardActivity.this, "좋아요 취소", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        // Star the post and add self to stars
+//                        d.setLikes(d.getLikes() + 1);
+//                        d.stars.put(getUid(), true);
+//                        Toast.makeText(DetailDashboardActivity.this, "좋아요!", Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                }
                 // Set value and report transaction success
                 mutableData.setValue(d);
                 return Transaction.success(mutableData);
