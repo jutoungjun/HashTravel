@@ -11,7 +11,9 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -89,6 +91,10 @@ R.drawable.album
         startActivity(intent);
     }
 
+    private String getUid() {
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
+
     public void onClickLike(View view) {
         // TODO Firebase에 좋아요 수 업데이트 하기
         String postkey = getIntent().getStringExtra(EXTRA_REF);
@@ -101,18 +107,22 @@ R.drawable.album
                     return Transaction.success(mutableData);
                 }
 
-                d.setLikes(d.getLikes() + 1);
+//                d.setLikes(d.getLikes() + 1);
 
-//                if (p.stars.containsKey(getUid())) {
-//                    // Unstar the post and remove self from stars
-//                    p.starCount = p.starCount - 1;
-//                    p.stars.remove(getUid());
-//                } else {
-//                    // Star the post and add self to stars
-//                    p.starCount = p.starCount + 1;
-//                    p.stars.put(getUid(), true);
-//                }
+                if(getUid() != null) {
+                    if (d.getStars().containsKey(getUid())) {
+                        // Unstar the post and remove self from stars
+                        d.setLikes(d.getLikes() - 1);
+                        d.stars.remove(getUid());
+                        Toast.makeText(DetailDashboardActivity.this, "좋아요 취소", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Star the post and add self to stars
+                        d.setLikes(d.getLikes() + 1);
+                        d.stars.put(getUid(), true);
+                        Toast.makeText(DetailDashboardActivity.this, "좋아요!", Toast.LENGTH_SHORT).show();
+                    }
 
+                }
                 // Set value and report transaction success
                 mutableData.setValue(d);
                 return Transaction.success(mutableData);

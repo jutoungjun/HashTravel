@@ -23,7 +23,7 @@ public class DashBoard implements Serializable {
     private String hashTag; // 해쉬태그 내용
     private String date;
     private int likes; // 좋아요수
-    private Map<String, Boolean> stars = new HashMap<>();
+    public Map<String, Boolean> stars = new HashMap<>();
 
 
     // TODO : 사진 어떻게 DB에 저장할지 찾아보기 !
@@ -60,6 +60,7 @@ public class DashBoard implements Serializable {
         result.put("description", description);
         result.put("hashTag", hashTag);
         result.put("likes",likes);
+        result.put("stars", stars);
         result.put("photoId", photoId);
         return result;
     }
