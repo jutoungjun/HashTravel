@@ -11,6 +11,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -34,6 +36,7 @@ public class HomeFragment extends Fragment {
 
     interface ContinentSelectCallback {
         void onContinentSelected(String continent);
+        void onSearch(String text);
     }
 
     private ContinentSelectCallback callback;
@@ -42,6 +45,8 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
+    private EditText editText;
+    private Button btnSearch;
     private ImageButton btnAsia, btnEurope, btnAmerica, btnAfrica, btnOceania, btnSouthAmerica;
     private TextView hashTag1, hashTag2, hashTag3, hashTag4;
 
@@ -139,6 +144,15 @@ public class HomeFragment extends Fragment {
 
         ref.addValueEventListener(listener);
 
+        editText = view.findViewById(R.id.editText);
+        btnSearch = view.findViewById(R.id.btnTextSearch);
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callback.onSearch(editText.getText().toString());
+            }
+        });
 
         btnAsia = view.findViewById(R.id.btnAsia);
         btnEurope = view.findViewById(R.id.btnEurope);
@@ -152,7 +166,6 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 // 콜백 메소드 구현
                 callback.onContinentSelected("Asia");
-
             }
         });
 
@@ -160,14 +173,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 callback.onContinentSelected("Europe");
-
             }
         });
+
         btnAmerica.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 callback.onContinentSelected("America");
-
             }
         });
         btnAfrica.setOnClickListener(new View.OnClickListener() {

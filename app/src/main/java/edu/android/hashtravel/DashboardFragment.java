@@ -355,6 +355,47 @@ public class DashboardFragment extends Fragment {
         setData(mQuery);
     }
 
+    public void searchText(final String text) {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter = new MyRecycleAdapter(mList);
+        mDatabase.child("posts").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                DashBoard dashBoard = dataSnapshot.getValue(DashBoard.class);
+                adapter.notifyDataSetChanged();
+
+                if(dashBoard.getSubject().contains(text) || dashBoard.getDescription().contains(text)) {
+                    mList.add(dashBoard);
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        adapter.notifyDataSetChanged();
+        mRecyclerView.setAdapter(adapter);
+
+        mList = new ArrayList<>();
+    }
+
     public void postContinentView(String btnContinent){
         if (mAdapter != null) {
             mAdapter.stopListening();

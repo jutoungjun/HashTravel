@@ -348,4 +348,11 @@ public class MainActivity extends AppCompatActivity
 
 
     }
+
+    @Override
+    public void onSearch(String text) {
+        DashboardFragment dashboardFragment = DashboardFragment.getInstance();
+        viewPager.setCurrentItem(1);
+        dashboardFragment.searchText(text);
+    }
 }
