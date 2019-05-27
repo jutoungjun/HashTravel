@@ -6,6 +6,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -17,12 +19,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class DetailDashboardActivity extends AppCompatActivity {
 
     public static final String EXTRA_POST = "post_key";
     public static final String EXTRA_REF = "postref";
     private TextView detailPostUsername, detailPostDate, detailPostDesc, detailPostHashTag, likeNumber;
     private DashBoard dashBoard;
+    private RecyclerView recyclerView;
+    private DetailDashboardActivityAdapter adapter;
+    private  int res;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +45,8 @@ public class DetailDashboardActivity extends AppCompatActivity {
         detailPostHashTag = findViewById(R.id.detailPostHashTag);
         likeNumber = findViewById(R.id.likeNumber);
 
+
+
         Intent intent = getIntent();
         dashBoard = (DashBoard) intent.getSerializableExtra(EXTRA_POST);
 
@@ -45,9 +55,34 @@ public class DetailDashboardActivity extends AppCompatActivity {
         detailPostDesc.setText(dashBoard.getDescription());
         detailPostHashTag.setText(dashBoard.getHashTag());
         likeNumber.setText(dashBoard.getLikes()+"");
+        init();
+        getData();
 
     }
 
+
+    private void init() {
+
+        recyclerView = findViewById(R.id.imageRecyclerView);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        adapter = new DetailDashboardActivityAdapter();
+        recyclerView.setAdapter(adapter);
+
+    }
+    private void getData() {
+        List<Integer> listContent = Arrays.asList(
+R.drawable.common_google_signin_btn_icon_dark_normal_background,
+R.drawable.album
+        );
+        for(int i=0; i<listContent.size();i++){
+                DetailDashboardActivityModel model = new DetailDashboardActivityModel(res);
+                model.setRes(listContent.get(i));
+                adapter.addItem(model);
+
+
+        }
+    }
     public void onClickComment(View view) {
         Intent intent = new Intent(this, CommentActivity.class);
 

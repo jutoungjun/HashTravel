@@ -2,6 +2,7 @@ package edu.android.hashtravel;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.zip.Inflater;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,7 +62,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        final View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         hashTag1 = view.findViewById(R.id.hashTag1);
         hashTag2 = view.findViewById(R.id.hashTag2);
@@ -111,6 +113,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 // 콜백 메소드 구현
                 callback.onContinentSelected("Asia");
+
             }
         });
 
@@ -118,12 +121,14 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 callback.onContinentSelected("Europe");
+
             }
         });
         btnAmerica.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 callback.onContinentSelected("America");
+
             }
         });
         btnAfrica.setOnClickListener(new View.OnClickListener() {
