@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -61,12 +63,14 @@ public class DashboardFragment extends Fragment {
     private ChildEventListener mQueryListener;
 
     private FirebaseRecyclerAdapter<DashBoard, DashBoardViewHolder> mAdapter;
-    private MyRecycleAdapter adapter;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mManager;
     private String category, continent, country;
+    private Button btnSearch;
+    private EditText editSearch;
 
     //
+    private MyRecycleAdapter adapter;
     private List<DashBoard> mList = new ArrayList<>();
     class MyRecycleAdapter extends RecyclerView.Adapter<MyRecycleAdapter.MyViewHolder> {
 
@@ -116,6 +120,8 @@ public class DashboardFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
+        btnSearch = view.findViewById(R.id.btnSearch);
+        editSearch = view.findViewById(R.id.editSearch);
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         mRecyclerView = view.findViewById(R.id.dashBoardRecyclerView);
@@ -125,6 +131,50 @@ public class DashboardFragment extends Fragment {
         continentSpinner = view.findViewById(R.id.continentSpinner);
         countrySpinner = view.findViewById(R.id.countrySpinner);
 
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                adapter = new MyRecycleAdapter(mList);
+                mDatabase.child("posts").addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        DashBoard dashBoard = dataSnapshot.getValue(DashBoard.class);
+                        adapter.notifyDataSetChanged();
+
+                        if(dashBoard.getSubject().contains(editSearch.getText().toString()) || dashBoard.getDescription().contains(editSearch.getText().toString())) {
+                            mList.add(dashBoard);
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                adapter.notifyDataSetChanged();
+                mRecyclerView.setAdapter(adapter);
+
+                mList = new ArrayList<>();
+
+            }
+        });
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

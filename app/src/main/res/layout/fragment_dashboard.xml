@@ -20,7 +20,7 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText3">
+            app:layout_constraintTop_toBottomOf="@+id/editSearch">
 
             <Spinner
                 android:id="@+id/categorySpinner"
@@ -50,7 +50,7 @@
         </LinearLayout>
 
         <EditText
-            android:id="@+id/editText3"
+            android:id="@+id/editSearch"
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:layout_marginTop="36dp"
@@ -63,14 +63,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/btnSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="검색"
-            app:layout_constraintBottom_toBottomOf="@+id/editText3"
+            app:layout_constraintBottom_toBottomOf="@+id/editSearch"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/editText3" />
+            app:layout_constraintTop_toTopOf="@+id/editSearch" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/dashBoardRecyclerView"
