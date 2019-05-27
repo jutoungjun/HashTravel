@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -27,11 +28,14 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class DashboardFragment extends Fragment {
+
 
     private static DashboardFragment instance = null;
 
@@ -40,7 +44,7 @@ public class DashboardFragment extends Fragment {
     }
 
     public static DashboardFragment getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new DashboardFragment();
         }
         return instance;
@@ -48,7 +52,7 @@ public class DashboardFragment extends Fragment {
 
     private static final String TAG = "fragmentRecycle";
     private Spinner categorySpinner, continentSpinner, countrySpinner;
-    private String[] continents = {"All","Asia", "Europe", "America", "Africa", "Oceania", "South America"};
+    private String[] continents = {"All", "Asia", "Europe", "America", "Africa", "Oceania", "South America"};
 
     private DatabaseReference mDatabase;
     private DatabaseReference mRef;
@@ -57,9 +61,52 @@ public class DashboardFragment extends Fragment {
     private ChildEventListener mQueryListener;
 
     private FirebaseRecyclerAdapter<DashBoard, DashBoardViewHolder> mAdapter;
+    private MyRecycleAdapter adapter;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mManager;
     private String category, continent, country;
+
+    //
+    private List<DashBoard> mList = new ArrayList<>();
+    class MyRecycleAdapter extends RecyclerView.Adapter<MyRecycleAdapter.MyViewHolder> {
+
+        public MyRecycleAdapter(List<DashBoard> list) {
+            mList = list;
+
+        }
+
+        @NonNull
+        @Override
+        public MyRecycleAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.dashboard_item, viewGroup, false);
+            return new MyViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+            holder.textSubject.setText(mList.get(position).getSubject());
+            holder.textHashTag.setText(mList.get(position).getHashTag());
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return mList.size();
+        }
+
+        private class MyViewHolder extends RecyclerView.ViewHolder {
+            public TextView textSubject, textHashTag, textUserId;
+
+            public MyViewHolder(@NonNull View itemView) {
+                super(itemView);
+                textSubject = itemView.findViewById(R.id.textSubject);
+                textHashTag = itemView.findViewById(R.id.textHashTag);
+                textUserId = itemView.findViewById(R.id.textUserId);
+            }
+        }
+    }
+
+    // 여기까지
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -109,18 +156,116 @@ public class DashboardFragment extends Fragment {
                 setSpinnerCountry(position, countrySpinner);
                 continent = continentSpinner.getSelectedItem().toString();
 
-                if (mAdapter != null) {
-                    mAdapter.stopListening();
-                }
-                cleanBasicListener();
-                cleanBasicQuery();
+//                postCateContiView(category, continent);
+//                if (mAdapter != null) {
+//                    mAdapter.stopListening();
+//                }
+//                cleanBasicListener();
+//                cleanBasicQuery();
 
-                if(category.equals("전체")) {
-                    postView(0);
-                } else {
-                    postView(1);
-                }
-                mAdapter.startListening();
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                adapter = new MyRecycleAdapter(mList);
+                mDatabase.child("posts").addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        DashBoard dashBoard = dataSnapshot.getValue(DashBoard.class);
+                        adapter.notifyDataSetChanged();
+                        Log.i(TAG, category + " " + continent);
+                        if(category.equals("전체")) {
+                            if(dashBoard.getContinent().equals(continent)) {
+                                mList.add(dashBoard);
+                            }
+                        }
+                        if(dashBoard.getCategory().equals(category) && dashBoard.getContinent().equals(continent)) {
+                            mList.add(dashBoard);
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                adapter.notifyDataSetChanged();
+                mRecyclerView.setAdapter(adapter);
+
+                mList = new ArrayList<>();
+//                if(category.equals("전체")) {
+//                    postView(0);
+//                } else {
+//                    postView(1);
+//                }
+//                mAdapter.startListening();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                country = countrySpinner.getSelectedItem().toString();
+
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                adapter = new MyRecycleAdapter(mList);
+                mDatabase.child("posts").addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        DashBoard dashBoard = dataSnapshot.getValue(DashBoard.class);
+                        adapter.notifyDataSetChanged();
+                        Log.i(TAG, category + " " + continent);
+//                        if(category.equals("전체"))
+                        if(dashBoard.getCategory().equals(category) && dashBoard.getContinent().equals(continent) && dashBoard.getCountry().equals(country)) {
+                            mList.add(dashBoard);
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                adapter.notifyDataSetChanged();
+                mRecyclerView.setAdapter(adapter);
+
+                mList = new ArrayList<>();
+
+
             }
 
             @Override
@@ -191,6 +336,34 @@ public class DashboardFragment extends Fragment {
 //        }
 //        countrySpinner.setSelection(0);
 
+    }
+
+    public void postCateContiView(String category, final String continent) {
+        if (mAdapter != null) {
+            mAdapter.stopListening();
+        }
+        cleanBasicListener();
+        cleanBasicQuery();
+
+        Query cquery = mDatabase.child("posts").orderByChild("category").equalTo(category);
+//        cquery.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                    DashBoard dashBoard = dataSnapshot.getValue(DashBoard.class);
+//                    if(dashBoard.getContinent().equals(continent)) {
+//
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+        setData(cquery);
+        mAdapter.startListening();
     }
 
     private void setData(Query query) {
@@ -276,11 +449,6 @@ public class DashboardFragment extends Fragment {
         adpter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         countrySpinner.setAdapter(adpter);
     }
-
-
-//    public String getUid() {
-//        return FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-//    }
 
     public Query basicQuery() {
         Query query = mDatabase.child("posts").limitToFirst(100);

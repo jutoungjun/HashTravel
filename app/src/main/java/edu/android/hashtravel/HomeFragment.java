@@ -49,8 +49,6 @@ public class HomeFragment extends Fragment {
     private Thread th;
     private boolean running;
 
-//    private Query query;
-
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -94,11 +92,10 @@ public class HomeFragment extends Fragment {
         listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                Iterable<DataSnapshot> posts = dataSnapshot.getChildren();
 
                 for(DataSnapshot child : dataSnapshot.getChildren()){
                     DashBoard dashBoard = child.getValue(DashBoard.class);
-                    if(dashBoard.getLikes() >= 0) {
+                    if(dashBoard.getLikes() >= 0) { // TODO 좋아요수 몇개로 할건지
                         dashBoards.add(dashBoard);
                     }
 
