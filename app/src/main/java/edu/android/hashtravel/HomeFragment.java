@@ -151,6 +151,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 callback.onSearch(editText.getText().toString());
+                editText.setText("");
             }
         });
 

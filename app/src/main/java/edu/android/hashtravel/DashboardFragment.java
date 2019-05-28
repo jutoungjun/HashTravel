@@ -182,6 +182,7 @@ public class DashboardFragment extends Fragment {
                 mRecyclerView.setAdapter(adapter);
 
                 mList = new ArrayList<>();
+                editSearch.setText("");
 
             }
         });
@@ -196,11 +197,10 @@ public class DashboardFragment extends Fragment {
                 cleanBasicListener();
                 cleanBasicQuery();
 
-                if(category.equals("전체")) {
-                    postView(0);
-                } else {
-                    postView(1);
-                }
+                setData(basicQuery());
+                mAdapter.notifyDataSetChanged();
+
+                mRecyclerView.setAdapter(mAdapter);
 
                 mAdapter.startListening();
             }
@@ -216,56 +216,19 @@ public class DashboardFragment extends Fragment {
                 setSpinnerCountry(position, countrySpinner);
                 continent = continentSpinner.getSelectedItem().toString();
 
-//                postCateContiView(category, continent);
-//                if (mAdapter != null) {
-//                    mAdapter.stopListening();
-//                }
-//                cleanBasicListener();
-//                cleanBasicQuery();
+                if (mAdapter != null) {
+                    mAdapter.stopListening();
+                }
+                cleanBasicListener();
+                cleanBasicQuery();
 
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                adapter = new MyRecycleAdapter(mList);
-                mDatabase.child("posts").addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        DashBoard dashBoard = dataSnapshot.getValue(DashBoard.class);
-                        adapter.notifyDataSetChanged();
-                        Log.i(TAG, category + " " + continent);
-                        if(category.equals("전체")) {
-                            if(dashBoard.getContinent().equals(continent)) {
-                                mList.add(dashBoard);
-                            }
-                        }
-                        if(dashBoard.getCategory().equals(category) && dashBoard.getContinent().equals(continent)) {
-                            mList.add(dashBoard);
-                        }
-                    }
+                setData(basicQuery());
+                mAdapter.notifyDataSetChanged();
 
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                mRecyclerView.setAdapter(mAdapter);
 
-                    }
-
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-                adapter.notifyDataSetChanged();
-                mRecyclerView.setAdapter(adapter);
-
-                mList = new ArrayList<>();
+                mAdapter.startListening();
+//                mList = new ArrayList<>();
 //                if(category.equals("전체")) {
 //                    postView(0);
 //                } else {
@@ -439,33 +402,7 @@ public class DashboardFragment extends Fragment {
 
     }
 
-    public void postCateContiView(String category, final String continent) {
-        if (mAdapter != null) {
-            mAdapter.stopListening();
-        }
-        cleanBasicListener();
-        cleanBasicQuery();
 
-        Query cquery = mDatabase.child("posts").orderByChild("category").equalTo(category);
-//        cquery.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                    DashBoard dashBoard = dataSnapshot.getValue(DashBoard.class);
-//                    if(dashBoard.getContinent().equals(continent)) {
-//
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-        setData(cquery);
-        mAdapter.startListening();
-    }
 
     private void setData(Query query) {
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<DashBoard>()
@@ -479,6 +416,7 @@ public class DashboardFragment extends Fragment {
                 return new DashBoardViewHolder(inflater.inflate(R.layout.dashboard_item, viewGroup, false));
             }
 
+
             @Override
             protected void onBindViewHolder(DashBoardViewHolder viewHolder, int position, final DashBoard model) {
                 final DatabaseReference postRef = getRef(position);
@@ -491,6 +429,7 @@ public class DashboardFragment extends Fragment {
                     public void onClick(View v) {
                         Intent intent = new Intent(getActivity(), DetailDashboardActivity.class);
                         intent.putExtra(DetailDashboardActivity.EXTRA_POST, model);
+                        intent.putExtra(DetailDashboardActivity.EXTRA_REF, postRef.getKey());
                         startActivity(intent);
                     }
                 });
@@ -499,6 +438,37 @@ public class DashboardFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         DatabaseReference gpostRef = mDatabase.child("posts").child(postRef.getKey());
+                        gpostRef.addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                DashBoard dashBoard = dataSnapshot.getValue(DashBoard.class);
+                                mAdapter.notifyDataSetChanged();
+
+                                if(dashBoard.getCategory().equals(category) && dashBoard.getContinent().equals(continent) && dashBoard.getCountry().equals(country)) {
+                                    mList.add(dashBoard);
+                                }
+                            }
+
+                            @Override
+                            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                            }
+
+                            @Override
+                            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                            }
+
+                            @Override
+                            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
                         // Run two transactions
                         onlikeClicked(gpostRef);
                     }
