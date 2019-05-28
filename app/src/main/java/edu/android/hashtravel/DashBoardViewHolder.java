@@ -22,7 +22,7 @@ public class DashBoardViewHolder extends RecyclerView.ViewHolder {
     public void bindToPost(DashBoard dashBoard, View.OnClickListener likeClickListener) {
         textSubject.setText(dashBoard.getSubject());
         textHashTag.setText(dashBoard.getHashTag());
-        textUserId.setText(dashBoard.getUserId());
+        textUserId.setText(dashBoard.getUid());
 
 
     }

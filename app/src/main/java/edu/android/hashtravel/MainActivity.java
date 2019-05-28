@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -264,6 +265,8 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this, UserInfoActivity.class);
             intent.putExtra("email", mAuth.getCurrentUser().getEmail());
             intent.putExtra("name", mAuth.getCurrentUser().getDisplayName());
+            Log.i("taggg" , "uid " + mAuth.getCurrentUser().getDisplayName());
+            Log.i("taggg" , "uid " + mAuth.getCurrentUser().getUid());
             intent.putExtra("uid", mAuth.getCurrentUser().getUid());
             startActivity(intent);
         } else if (id == R.id.write) {
