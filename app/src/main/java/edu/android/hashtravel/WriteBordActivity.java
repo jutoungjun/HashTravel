@@ -187,7 +187,7 @@ public class WriteBordActivity extends AppCompatActivity {
 
             DashBoard dashBoard = null;
             if (!subject.equals("") && !desc.equals("") && !hashTag.equals("")) {
-                dashBoard = new DashBoard(firebaseUser.getUid(), firebaseUser.getDisplayName(), date, category, continent, country, subject, desc, hashTag, 0, null);
+                dashBoard = new DashBoard(key, firebaseUser.getUid(), firebaseUser.getDisplayName(), date, category, continent, country, subject, desc, hashTag, 0, null);
             }
 
             if (dashBoard != null) {

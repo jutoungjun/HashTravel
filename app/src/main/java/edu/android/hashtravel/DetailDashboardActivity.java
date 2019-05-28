@@ -33,6 +33,7 @@ public class DetailDashboardActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private DetailDashboardActivityAdapter adapter;
     private  int res;
+    private String postKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class DetailDashboardActivity extends AppCompatActivity {
         Intent intent = getIntent();
         dashBoard = (DashBoard) intent.getSerializableExtra(EXTRA_POST);
 
+        postKey = dashBoard.getPostKey();
         detailPostUsername.setText(dashBoard.getUsername());
         detailPostDate.setText(dashBoard.getDate());
         detailPostDesc.setText(dashBoard.getDescription());
@@ -95,8 +97,8 @@ R.drawable.album
 
     public void onClickLike(View view) {
         // TODO Firebase에 좋아요 수 업데이트 하기
-        String postkey = getIntent().getStringExtra(EXTRA_REF);
-        DatabaseReference postRef = FirebaseDatabase.getInstance().getReference().child("posts").child(postkey);
+//        String postkey = getIntent().getStringExtra(EXTRA_REF);
+        DatabaseReference postRef = FirebaseDatabase.getInstance().getReference().child("posts").child(postKey);
         postRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {

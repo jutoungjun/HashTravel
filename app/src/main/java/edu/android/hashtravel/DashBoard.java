@@ -33,7 +33,8 @@ public class DashBoard implements Serializable {
     public DashBoard() {}
 
 
-    public DashBoard(String uid, String username, String date, String category, String continent, String country, String subject, String description, String hashTag, int likes, String photoId) {
+    public DashBoard(String postKey, String uid, String username, String date, String category, String continent, String country, String subject, String description, String hashTag, int likes, String photoId) {
+        this.postKey = postKey;
         this.uid = uid;
         this.username = username;
         this.date = date;
@@ -50,6 +51,7 @@ public class DashBoard implements Serializable {
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
+        result.put("postKey", postKey);
         result.put("uid", uid);
         result.put("username" , username);
         result.put("date", date);
