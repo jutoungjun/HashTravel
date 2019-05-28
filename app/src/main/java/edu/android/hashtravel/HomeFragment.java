@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,7 +106,9 @@ public class HomeFragment extends Fragment {
                     }
 
                 }
+
                 class TagRunnable implements Runnable {
+
                     @Override
                     public void run() {
                         while (true) {
@@ -217,5 +220,30 @@ public class HomeFragment extends Fragment {
         }
         return a;
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.i("homefrag" , "onStop");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.i("homefrag" , "onDetach");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i("homefrag" , "onPause");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i("homefrag" , "onResume");
+    }
+
 
 }
