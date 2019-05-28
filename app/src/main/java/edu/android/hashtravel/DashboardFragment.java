@@ -345,8 +345,7 @@ public class DashboardFragment extends Fragment {
             if(dashBoard.getCategory().equals(category) && dashBoard.getContinent().equals(continent) && dashBoard.getCountry().equals(country)) {
                 mList.add(dashBoard);
             }
-        }
-        else if(category.equals("전체")) {
+        } else if(category.equals("전체") && !continent.equals("All") && !country.equals("All")) {
             if(dashBoard.getContinent().equals(continent) && dashBoard.getCountry().equals(country)) {
                 mList.add(dashBoard);
             }
