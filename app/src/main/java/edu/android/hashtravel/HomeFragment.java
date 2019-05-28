@@ -68,6 +68,7 @@ public class HomeFragment extends Fragment {
             }
         }
     };
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -134,6 +135,7 @@ public class HomeFragment extends Fragment {
 
                 th = new Thread(new TagRunnable());
                 th.start();
+//                running = true;
 
             }
 
@@ -223,7 +225,9 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onStop() {
+        // 쓰레드 인터럽트
         super.onStop();
+        running = false;
         Log.i("homefrag" , "onStop");
     }
 

@@ -114,6 +114,7 @@ public class DashboardFragment extends Fragment {
         categorySpinner = view.findViewById(R.id.categorySpinner);
         continentSpinner = view.findViewById(R.id.continentSpinner);
         countrySpinner = view.findViewById(R.id.countrySpinner);
+
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,15 +186,16 @@ public class DashboardFragment extends Fragment {
     }
 
     public void selectDatas () {
+        mList = new ArrayList<>();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new MyRecycleAdapter(mList);
         mDatabase.child("posts").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 DashBoard dashBoard = dataSnapshot.getValue(DashBoard.class);
-                adapter.notifyDataSetChanged();
-                Log.i(TAG, category + " " + continent);
+                Log.i(TAG, category + " " + continent + " " + country);
                 ifData(dashBoard);
+//                adapter.notifyDataSetChanged();
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -219,10 +221,11 @@ public class DashboardFragment extends Fragment {
         Log.i(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
         // Set up Layout Manager, reverse layout
-        mManager = new LinearLayoutManager(getActivity());
-        mManager.setReverseLayout(true);
-        mManager.setStackFromEnd(true);
-        mRecyclerView.setLayoutManager(mManager);
+//
+//        mManager = new LinearLayoutManager(getActivity());
+//        mManager.setReverseLayout(true);
+//        mManager.setStackFromEnd(true);
+//        mRecyclerView.setLayoutManager(mManager);
 
     } // end onActivityCreated()
 
@@ -351,4 +354,6 @@ public class DashboardFragment extends Fragment {
             }
         }
     }
+
+
 }
