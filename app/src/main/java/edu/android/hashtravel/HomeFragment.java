@@ -142,7 +142,6 @@ public class HomeFragment extends Fragment {
 
         };
 
-        // 수정
         ref.addValueEventListener(listener);
 
         editText = view.findViewById(R.id.editText);

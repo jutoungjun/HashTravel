@@ -5,13 +5,17 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class UserInfo extends AppCompatActivity {
+public class UserInfoActivity extends AppCompatActivity {
 
     private TextView textEmailInfo, textNAmeINfo;
     private ImageView imageView;
+    private Button btnMyPost;
+    private RecyclerView myRecycler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,14 +27,17 @@ public class UserInfo extends AppCompatActivity {
         Intent intent = getIntent();
         String userEmail = intent.getExtras().getString("email");
         String userName = intent.getExtras().getString("name");
+        String uid = intent.getExtras().getString("uid");
+
         textEmailInfo = findViewById(R.id.textEmailInfo);
         textNAmeINfo = findViewById(R.id.textNameInfo);
         imageView = findViewById(R.id.imageMyInfo);
-
+        btnMyPost = findViewById(R.id.btnMyPost);
+        myRecycler = findViewById(R.id.myRecyclerView);
 
         imageView.setImageResource(R.drawable.comment11);
-        textEmailInfo.setText(userEmail.toString());
-        textNAmeINfo.setText(userName.toString());
+        textEmailInfo.setText(userEmail);
+        textNAmeINfo.setText(userName);
 
     }
 

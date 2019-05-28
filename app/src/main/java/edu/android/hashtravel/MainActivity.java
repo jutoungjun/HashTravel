@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -33,8 +32,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.ContinentSelectCallback {
@@ -263,9 +260,11 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.logInAndOut) {
             logInAndOut();
         } else if (id == R.id.myInfo) {
-            Intent intent = new Intent(this, UserInfo.class);
+            // 내정보 보기 액티비티로 이동
+            Intent intent = new Intent(this, UserInfoActivity.class);
             intent.putExtra("email", mAuth.getCurrentUser().getEmail());
             intent.putExtra("name", mAuth.getCurrentUser().getDisplayName());
+            intent.putExtra("uid", mAuth.getCurrentUser().getUid());
             startActivity(intent);
         } else if (id == R.id.write) {
             // 글쓰기 액티비티로 이동
