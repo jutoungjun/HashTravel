@@ -82,12 +82,10 @@ R.drawable.album
                 model.setRes(listContent.get(i));
                 adapter.addItem(model);
 
-
         }
     }
     public void onClickComment(View view) {
         Intent intent = new Intent(this, CommentActivity.class);
-
         startActivity(intent);
     }
 
@@ -128,6 +126,7 @@ R.drawable.album
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
                 likeNumber.setText((dashBoard.getLikes()+1)+"");
+                Toast.makeText(DetailDashboardActivity.this, "좋아요!", Toast.LENGTH_SHORT).show();
             }
         });
     }
