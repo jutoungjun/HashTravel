@@ -64,6 +64,7 @@ public class DetailDashboardActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.imageRecyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager);
         adapter = new DetailDashboardActivityAdapter();
         recyclerView.setAdapter(adapter);
