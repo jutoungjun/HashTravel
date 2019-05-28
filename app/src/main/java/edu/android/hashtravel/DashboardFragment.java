@@ -255,122 +255,55 @@ public class DashboardFragment extends Fragment {
         mRecyclerView.setAdapter(adapter);
         mList = new ArrayList<>();
     }
-    public void postContinentView(String btnContinent){
-        if (mAdapter != null) {
-            mAdapter.stopListening();
-        }
-        cleanBasicListener();
-        cleanBasicQuery();
-        Log.i(TAG, "postContinentView " + btnContinent);
-        Query cquery = mDatabase.child("posts").orderByChild("continent").equalTo(btnContinent);
-        setData(cquery);
-        mAdapter.startListening();
-        // TODO 스피너 지정해주기
-//        categorySpinner.setSelection(0);
-//        if(btnContinent.equals(continents[1])) {
-//            continentSpinner.setSelection(1);
-//        } else if (btnContinent.equals(continents[2])) {
-//            continentSpinner.setSelection(2);
-//        } else if (btnContinent.equals(continents[3])) {
-//            continentSpinner.setSelection(3);
-//        } else if (btnContinent.equals(continents[4])) {
-//            continentSpinner.setSelection(4);
-//        } else if (btnContinent.equals(continents[5])) {
-//            continentSpinner.setSelection(5);
-//        } else if (btnContinent.equals(continents[6])) {
-//            continentSpinner.setSelection(6);
-//        }
-//        countrySpinner.setSelection(0);
-
-    }
-
-
-    private void setData(Query query) {
-        FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<DashBoard>()
-                .setQuery(query, DashBoard.class)
-                .build();
-        mAdapter = new FirebaseRecyclerAdapter<DashBoard, DashBoardViewHolder>(options) {
+    public void postContinentView(final String btnContinent){
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter = new MyRecycleAdapter(mList);
+        mDatabase.child("posts").addChildEventListener(new ChildEventListener() {
             @Override
-            public DashBoardViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-                LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-                return new DashBoardViewHolder(inflater.inflate(R.layout.dashboard_item, viewGroup, false));
-            }
-
-
-            @Override
-            protected void onBindViewHolder(DashBoardViewHolder viewHolder, int position, final DashBoard model) {
-                final DatabaseReference postRef = getRef(position);
-                // Set click listener for the whole post view
-                final String postKey = postRef.getKey();
-                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getActivity(), DetailDashboardActivity.class);
-                        intent.putExtra(DetailDashboardActivity.EXTRA_POST, model);
-                        intent.putExtra(DetailDashboardActivity.EXTRA_REF, postRef.getKey());
-                        startActivity(intent);
-                    }
-                });
-                viewHolder.bindToPost(model, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        DatabaseReference gpostRef = mDatabase.child("posts").child(postRef.getKey());
-                        gpostRef.addChildEventListener(new ChildEventListener() {
-                            @Override
-                            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                                DashBoard dashBoard = dataSnapshot.getValue(DashBoard.class);
-                                mAdapter.notifyDataSetChanged();
-
-                                if(dashBoard.getCategory().equals(category) && dashBoard.getContinent().equals(continent) && dashBoard.getCountry().equals(country)) {
-                                    mList.add(dashBoard);
-                                }
-                            }
-
-                            @Override
-                            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                            }
-
-                            @Override
-                            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                            }
-
-                            @Override
-                            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                        // Run two transactions
-                        onlikeClicked(gpostRef);
-                    }
-                });
-            }
-        };
-        mRecyclerView.setAdapter(mAdapter);
-    }
-    private void onlikeClicked(DatabaseReference postRef) {
-        postRef.runTransaction(new Transaction.Handler() {
-            @NonNull
-            @Override
-            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
-                DashBoard d = mutableData.getValue(DashBoard.class);
-                if(d == null) {
-                    return Transaction.success(mutableData);
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                DashBoard dashBoard = dataSnapshot.getValue(DashBoard.class);
+                adapter.notifyDataSetChanged();
+                if(dashBoard.getContinent().equals(btnContinent)) {
+                    mList.add(dashBoard);
                 }
-                mutableData.setValue(d);
-                return Transaction.success(mutableData);
             }
             @Override
-            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
+        adapter.notifyDataSetChanged();
+        mRecyclerView.setAdapter(adapter);
+        mList = new ArrayList<>();
+
+        categorySpinner.setSelection(0);
+
+        if(btnContinent.equals(continents[1])) {
+            continentSpinner.setSelection(1);
+        } else if (btnContinent.equals(continents[2])) {
+            continentSpinner.setSelection(2);
+        } else if (btnContinent.equals(continents[3])) {
+            continentSpinner.setSelection(3);
+        } else if (btnContinent.equals(continents[4])) {
+            continentSpinner.setSelection(4);
+        } else if (btnContinent.equals(continents[5])) {
+            continentSpinner.setSelection(5);
+        } else if (btnContinent.equals(continents[6])) {
+            continentSpinner.setSelection(6);
+        }
+        countrySpinner.setSelection(0);
+
     }
+
+
     public void setSpinnerCountry(int position, Spinner countrySpinner) {
         ArrayAdapter<CharSequence> adpter;
         if(position == 1) {
@@ -390,17 +323,6 @@ public class DashboardFragment extends Fragment {
         }
         adpter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         countrySpinner.setAdapter(adpter);
-    }
-
-    public void cleanBasicListener() {
-        if (mRef != null) {
-            mRef.removeEventListener(mListener);
-        }
-    }
-    public void cleanBasicQuery(){
-        if (mQuery != null && mQueryListener != null) {
-            mQuery.removeEventListener(mQueryListener);
-        }
     }
 
     public void ifData(DashBoard dashBoard) {
