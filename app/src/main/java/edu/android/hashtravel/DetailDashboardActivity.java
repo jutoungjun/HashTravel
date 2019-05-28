@@ -127,7 +127,7 @@ R.drawable.album
             }
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
-
+                likeNumber.setText((dashBoard.getLikes()+1)+"");
             }
         });
     }
