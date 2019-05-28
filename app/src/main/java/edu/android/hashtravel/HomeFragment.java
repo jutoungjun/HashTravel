@@ -142,6 +142,7 @@ public class HomeFragment extends Fragment {
 
         };
 
+        // 수정
         ref.addValueEventListener(listener);
 
         editText = view.findViewById(R.id.editText);
@@ -151,6 +152,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 callback.onSearch(editText.getText().toString());
+                editText.setText("");
             }
         });
 

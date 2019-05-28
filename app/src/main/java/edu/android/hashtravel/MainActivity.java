@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity
     private ViewPagerAdapter adapter;
     private MenuItem bottomMenuItem, logInAndOut, myInfo, Write;
 
-    // 구글 사용자 정보?
+    // 구글 사용자 정보
     private FirebaseAuth mAuth;
     // 구글 클라이언트
     private GoogleSignInClient mGoogleSignInClient;
