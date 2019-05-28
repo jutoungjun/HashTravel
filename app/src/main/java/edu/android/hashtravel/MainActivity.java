@@ -185,7 +185,6 @@ public class MainActivity extends AppCompatActivity
     }
     // [END onactivityresult]
 
-    //ㅇㅇ
     // [START auth_with_google]
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Toast.makeText(this, "firebaseAuthWithGoogle:" , Toast.LENGTH_SHORT).show();

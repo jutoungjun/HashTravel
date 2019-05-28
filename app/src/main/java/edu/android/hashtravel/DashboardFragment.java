@@ -90,6 +90,7 @@ public class DashboardFragment extends Fragment {
         public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
             holder.textSubject.setText(mList.get(position).getSubject());
             holder.textHashTag.setText(mList.get(position).getHashTag());
+            holder.textUserId.setText(mList.get(position).getUsername());
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
