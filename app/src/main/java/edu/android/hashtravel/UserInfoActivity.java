@@ -36,7 +36,7 @@ public class UserInfoActivity extends AppCompatActivity {
 
     private MyRecycleAdapter adapter;
     private List<DashBoard> mList = new ArrayList<>();
-    private String uid , userName;
+    private String uid;
 
     private DatabaseReference mDatabase;
 
@@ -92,9 +92,8 @@ public class UserInfoActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String userEmail = intent.getExtras().getString("email");
-        userName = intent.getExtras().getString("name");
+        String userName = intent.getExtras().getString("name");
         uid = intent.getExtras().getString("uid");
-        Log.i("taggg" , "getuid " + uid);
 
         textEmailInfo = findViewById(R.id.textEmailInfo);
         textNAmeINfo = findViewById(R.id.textNameInfo);
@@ -120,8 +119,10 @@ public class UserInfoActivity extends AppCompatActivity {
                 DashBoard dashBoard = dataSnapshot.getValue(DashBoard.class);
                 adapter.notifyDataSetChanged();
 
-                if(dashBoard.getUsername().equals(userName) ){
-                    mList.add(dashBoard);
+                if(dashBoard.getUid() != null) {
+                    if (dashBoard.getUid().equals(uid)) {
+                        mList.add(dashBoard);
+                    }
                 }
             }
 
