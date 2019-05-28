@@ -1,5 +1,7 @@
 package edu.android.hashtravel;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,16 +14,29 @@ import java.util.List;
 
 public class NoticeAdepter extends RecyclerView.Adapter<NoticeAdepter.ItemViewHolder> {
     private List<NoticeModel> modelList = new ArrayList<>();
+    private Context context;
+
+
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_notice_item,parent,false);
+        context =parent.getContext();
         return new ItemViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemViewHolder Holder, int postition) {
+    public void onBindViewHolder(@NonNull ItemViewHolder Holder, final int postition) {
         Holder.onBind(modelList.get(postition));
+        Holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context,NoticeDetail.class);
+                String Key = modelList.get(postition).getText().toString();
+                intent.putExtra("key",Key);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -43,5 +58,7 @@ public class NoticeAdepter extends RecyclerView.Adapter<NoticeAdepter.ItemViewHo
         void onBind(NoticeModel model){
             textView1.setText(model.getText());
         }
+
+
     }
 }

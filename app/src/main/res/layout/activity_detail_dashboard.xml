@@ -32,7 +32,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:layout_weight="0"
-                    app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
+                    app:srcCompat="@drawable/profile" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
