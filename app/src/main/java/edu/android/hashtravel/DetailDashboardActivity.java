@@ -91,10 +91,6 @@ R.drawable.album
         startActivity(intent);
     }
 
-    private String getUid() {
-        return FirebaseAuth.getInstance().getCurrentUser().getUid();
-    }
-
     public void onClickLike(View view) {
         // TODO Firebase에 좋아요 수 업데이트 하기
 //        String postkey = getIntent().getStringExtra(EXTRA_REF);
