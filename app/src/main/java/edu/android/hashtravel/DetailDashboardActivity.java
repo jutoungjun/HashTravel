@@ -47,8 +47,6 @@ public class DetailDashboardActivity extends AppCompatActivity {
         detailPostHashTag = findViewById(R.id.detailPostHashTag);
         likeNumber = findViewById(R.id.likeNumber);
 
-
-
         Intent intent = getIntent();
         dashBoard = (DashBoard) intent.getSerializableExtra(EXTRA_POST);
 
@@ -61,7 +59,6 @@ public class DetailDashboardActivity extends AppCompatActivity {
         getData();
 
     }
-
 
     private void init() {
 
@@ -109,16 +106,17 @@ R.drawable.album
 
                 d.setLikes(d.getLikes() + 1);
 
-//                if(getUid() != null) {
-//                    if (d.getStars().containsKey(getUid())) {
+                String uid = dashBoard.getUid();
+//                if(uid != null) {
+//                    if (d.getStars().containsKey(uid)) {
 //                        // Unstar the post and remove self from stars
 //                        d.setLikes(d.getLikes() - 1);
-//                        d.stars.remove(getUid());
+//                        d.stars.remove(uid);
 //                        Toast.makeText(DetailDashboardActivity.this, "좋아요 취소", Toast.LENGTH_SHORT).show();
 //                    } else {
 //                        // Star the post and add self to stars
 //                        d.setLikes(d.getLikes() + 1);
-//                        d.stars.put(getUid(), true);
+//                        d.stars.put(uid, true);
 //                        Toast.makeText(DetailDashboardActivity.this, "좋아요!", Toast.LENGTH_SHORT).show();
 //                    }
 //

@@ -83,8 +83,6 @@ public class WriteBordActivity extends AppCompatActivity {
                     finish();
 
                 }
-
-
             }
         });
 
@@ -123,8 +121,6 @@ public class WriteBordActivity extends AppCompatActivity {
 
             }
         });
-
-
 
     } // end onCreate()
 
@@ -207,8 +203,6 @@ public class WriteBordActivity extends AppCompatActivity {
                         uploadPhoto(uploadPhoto);
                     }
                 }
-
-
 
             }
             Toast.makeText(WriteBordActivity.this, "입력 완료", Toast.LENGTH_SHORT).show();
