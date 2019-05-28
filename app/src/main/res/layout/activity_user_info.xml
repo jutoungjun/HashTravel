@@ -8,25 +8,25 @@
 
     <LinearLayout
         android:id="@+id/linearLayout5"
-        android:layout_width="395dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_margin="8dp"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/textView20"
-                android:layout_margin="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="My InFo"
@@ -45,7 +45,7 @@
                 android:layout_height="80dp"
                 android:layout_margin="8dp"
                 android:layout_weight="0"
-                tools:srcCompat="@drawable/christ_the_redeemer" />
+                tools:srcCompat="@drawable/profile" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -125,11 +125,11 @@
 
                 <Button
                     android:id="@+id/btnMyPost"
-                    android:onClick="onClickMyPost"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
+                    android:onClick="onClickMyPost"
                     android:text="내글 보기" />
 
                 <Button

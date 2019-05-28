@@ -102,7 +102,7 @@ public class UserInfoActivity extends AppCompatActivity {
 
         myRecycler = findViewById(R.id.myRecyclerView);
 
-        imageView.setImageResource(R.drawable.comment11);
+        imageView.setImageResource(R.drawable.profile);
         textEmailInfo.setText(userEmail);
         textNAmeINfo.setText(userName);
 
