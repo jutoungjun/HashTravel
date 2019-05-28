@@ -153,24 +153,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 category = categorySpinner.getSelectedItem().toString();
-                Log.i(TAG, "태그선택" + category);
-                if (mAdapter != null) {
-                    mAdapter.stopListening();
-                }
-                cleanBasicListener();
-                cleanBasicQuery();
-
-                if(category.equals("전체")) {
-                    postView(0);
-                } else {
-                    postView(1);
-                }
-                setData(basicQuery());
-                mAdapter.notifyDataSetChanged();
-
-                mRecyclerView.setAdapter(mAdapter);
-
-                mAdapter.startListening();
+                selectDatas();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -181,73 +164,7 @@ public class DashboardFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 setSpinnerCountry(position, countrySpinner);
                 continent = continentSpinner.getSelectedItem().toString();
-
-//                postCateContiView(category, continent);
-//                if (mAdapter != null) {
-//                    mAdapter.stopListening();
-//                }
-//                cleanBasicListener();
-//                cleanBasicQuery();
-
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                adapter = new MyRecycleAdapter(mList);
-                mDatabase.child("posts").addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        DashBoard dashBoard = dataSnapshot.getValue(DashBoard.class);
-                        adapter.notifyDataSetChanged();
-                        Log.i(TAG, category + " " + continent);
-                        if(category.equals("전체")) {
-                            if(dashBoard.getContinent().equals(continent)) {
-                                mList.add(dashBoard);
-                            }
-                        }
-                        if(dashBoard.getCategory().equals(category) && dashBoard.getContinent().equals(continent)) {
-                            mList.add(dashBoard);
-                        }
-                    }
-
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        if (mAdapter != null) {
-                            mAdapter.stopListening();
-                        }
-                        cleanBasicListener();
-                        cleanBasicQuery();
-
-                    }
-                });
-                setData(basicQuery());
-                mAdapter.notifyDataSetChanged();
-
-                adapter.notifyDataSetChanged();
-                mRecyclerView.setAdapter(adapter);
-                mRecyclerView.setAdapter(mAdapter);
-
-                mList = new ArrayList<>();
-                mAdapter.startListening();
-//                mList = new ArrayList<>();
-//                if(category.equals("전체")) {
-//                    postView(0);
-//                } else {
-//                    postView(1);
-//                }
-//                mAdapter.startListening();
+                selectDatas();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -257,35 +174,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 country = countrySpinner.getSelectedItem().toString();
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                adapter = new MyRecycleAdapter(mList);
-                mDatabase.child("posts").addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        DashBoard dashBoard = dataSnapshot.getValue(DashBoard.class);
-                        adapter.notifyDataSetChanged();
-                        Log.i(TAG, category + " " + continent);
-//                        if(category.equals("전체"))
-                        if(dashBoard.getCategory().equals(category) && dashBoard.getContinent().equals(continent) && dashBoard.getCountry().equals(country)) {
-                            mList.add(dashBoard);
-                        }
-                    }
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                    }
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                    }
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
-                adapter.notifyDataSetChanged();
-                mRecyclerView.setAdapter(adapter);
-                mList = new ArrayList<>();
+                selectDatas();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -293,6 +182,37 @@ public class DashboardFragment extends Fragment {
         });
         return view;
     }
+
+    public void selectDatas () {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter = new MyRecycleAdapter(mList);
+        mDatabase.child("posts").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                DashBoard dashBoard = dataSnapshot.getValue(DashBoard.class);
+                adapter.notifyDataSetChanged();
+                Log.i(TAG, category + " " + continent);
+                ifData(dashBoard);
+            }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+        adapter.notifyDataSetChanged();
+        mRecyclerView.setAdapter(adapter);
+        mList = new ArrayList<>();
+    }
+
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         Log.i(TAG, "onActivityCreated");
@@ -302,19 +222,10 @@ public class DashboardFragment extends Fragment {
         mManager.setReverseLayout(true);
         mManager.setStackFromEnd(true);
         mRecyclerView.setLayoutManager(mManager);
+
     } // end onActivityCreated()
-    private void postView(int type) {
-        switch (type) {
-            case 0:
-                // Set up FirebaseRecyclerAdapter with the Query
-                mQuery = basicQuery();
-                break;
-            case 1:
-                mQuery = categoryQuery();
-                break;
-        }
-        setData(mQuery);
-    }
+
+
     public void searchText(final String text) {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new MyRecycleAdapter(mList);
@@ -373,33 +284,6 @@ public class DashboardFragment extends Fragment {
 
     }
 
-    public void postCateContiView(String category, final String continent) {
-        if (mAdapter != null) {
-            mAdapter.stopListening();
-        }
-        cleanBasicListener();
-        cleanBasicQuery();
-
-        Query cquery = mDatabase.child("posts").orderByChild("category").equalTo(category);
-//        cquery.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                    DashBoard dashBoard = dataSnapshot.getValue(DashBoard.class);
-//                    if(dashBoard.getContinent().equals(continent)) {
-//
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-        setData(cquery);
-        mAdapter.startListening();
-    }
 
     private void setData(Query query) {
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<DashBoard>()
@@ -507,18 +391,7 @@ public class DashboardFragment extends Fragment {
         adpter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         countrySpinner.setAdapter(adpter);
     }
-    public Query basicQuery() {
-        Query query = mDatabase.child("posts").limitToFirst(100);
-        return query;
-    }
-    public Query categoryQuery(){
-        // [START recent_posts_query]
-        // Last 100 posts, these are automatically the 100 most recent
-        // due to sorting by push() keys
-        Log.i(TAG, "카테고리" + category);
-        Query categoryQuery = mDatabase.child("posts").orderByChild("category").equalTo(category);
-        return categoryQuery;
-    }
+
     public void cleanBasicListener() {
         if (mRef != null) {
             mRef.removeEventListener(mListener);
@@ -527,6 +400,33 @@ public class DashboardFragment extends Fragment {
     public void cleanBasicQuery(){
         if (mQuery != null && mQueryListener != null) {
             mQuery.removeEventListener(mQueryListener);
+        }
+    }
+
+    public void ifData(DashBoard dashBoard) {
+        if(category.equals("전체") && continent.equals("All") && country.equals("All")) {
+            mList.add(dashBoard);
+        } else if(category.equals("전체") && !continent.equals("All") && country.equals("All")) {
+            if(dashBoard.getContinent().equals(continent)) {
+                mList.add(dashBoard);
+            }
+        } else if(!category.equals("전체") && continent.equals("All") && country.equals("All")) {
+            if(dashBoard.getCategory().equals(category)) {
+                mList.add(dashBoard);
+            }
+        } else if(!category.equals("전체") && !continent.equals("All") && country.equals("All")) {
+            if(dashBoard.getCategory().equals(category) && dashBoard.getContinent().equals(continent)) {
+                mList.add(dashBoard);
+            }
+        } else if(!category.equals("전체") && !continent.equals("All") && !country.equals("All")) {
+            if(dashBoard.getCategory().equals(category) && dashBoard.getContinent().equals(continent) && dashBoard.getCountry().equals(country)) {
+                mList.add(dashBoard);
+            }
+        }
+        else if(category.equals("전체")) {
+            if(dashBoard.getContinent().equals(continent) && dashBoard.getCountry().equals(country)) {
+                mList.add(dashBoard);
+            }
         }
     }
 }
