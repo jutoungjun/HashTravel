@@ -36,6 +36,7 @@ public class HotPostFragment extends Fragment {
         // Required empty public constructor
     }
 
+    private ImageView hopostImage;
     private DatabaseReference mDatabase;
     private FirebaseRecyclerAdapter<DashBoard, HotpostViewHolder> mAdapter;
     private RecyclerView mRecycler;

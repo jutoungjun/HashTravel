@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.ItemViewHo
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_notice_item,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.notice_item,parent,false);
         context =parent.getContext();
         return new ItemViewHolder(view);
     }
@@ -31,7 +32,7 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.ItemViewHo
         Holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, NoticeDetailActivity.class);
+                Intent intent = new Intent(context,NoticeDetailActivity.class);
                 String Key = modelList.get(postition).getText().toString();
                 intent.putExtra("key",Key);
                 context.startActivity(intent);
@@ -50,13 +51,17 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.ItemViewHo
     class ItemViewHolder extends RecyclerView.ViewHolder{
 
         private TextView textView1;
+        private ImageView imageView1;
 
         public  ItemViewHolder(@NonNull View itemView) {
             super(itemView);
           textView1 = itemView.findViewById(R.id.textNotice);
+          imageView1 = itemView.findViewById(R.id.imageNotice);
         }
         void onBind(NoticeModel model){
             textView1.setText(model.getText());
+            imageView1.setImageResource(model.getRes());
+
         }
 
 

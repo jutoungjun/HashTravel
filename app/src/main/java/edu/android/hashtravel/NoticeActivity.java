@@ -14,6 +14,7 @@ public class NoticeActivity extends AppCompatActivity {
 private String text;
 private NoticeAdapter adapter;
 private RecyclerView recyclerView;
+private int res;;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,8 @@ private RecyclerView recyclerView;
     private void init() {
         recyclerView = findViewById(R.id.recyclerNotice);
 
+
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         adapter = new NoticeAdapter();
@@ -37,11 +40,15 @@ private RecyclerView recyclerView;
     }
     private void getData() {
             List<String> textlist = Arrays.asList(
-                    "국화", "사막", "수국", "해파리", "코알라", "등대", "펭귄", "튤립"
+                    "첫번째 공지사항 입니다."
+            );
+            List<Integer> imageList  =Arrays.asList(
+                    R.drawable.notice
             );
             for(int i = 0; i<textlist.size();i++){
-                NoticeModel model = new NoticeModel(text);
+                NoticeModel model = new NoticeModel(text,res);
                 model.setText(textlist.get(i));
+                model.setRes(imageList.get(i));
                 adapter.addItem(model);
             }
     }
