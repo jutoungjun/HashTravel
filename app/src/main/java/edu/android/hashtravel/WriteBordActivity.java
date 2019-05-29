@@ -45,13 +45,14 @@ public class WriteBordActivity extends AppCompatActivity {
     private EditText textSubject, textDesc, textTag;
     private FirebaseUser firebaseUser;
     private static final int PICK_IMAGE_REQUEST = 1;
-    private Button loadGalleryButton, writeFinishButton;
+    private Button loadGalleryButton, writeFinishButton, imageDeleteButton;
     private ImageView writeImage1, writeImage2, writeImage3;
     private Uri uri;
     private List<Uri> uriList = new ArrayList<>();
     private StorageReference storageReference;
     private String date;
     private int fileNameCount = 0;
+    String key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,8 @@ public class WriteBordActivity extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         loadGalleryButton = findViewById(R.id.imageInputButton);
         writeFinishButton = findViewById(R.id.writeFinishButton);
+        imageDeleteButton = findViewById(R.id.imageDeleteButton);
+
         writeImage1 = findViewById(R.id.writeImage1);
         writeImage2 = findViewById(R.id.writeImage2);
         writeImage3 = findViewById(R.id.writeImage3);
@@ -75,6 +78,18 @@ public class WriteBordActivity extends AppCompatActivity {
         textDesc = findViewById(R.id.textDesc);
         textTag = findViewById(R.id.textTag);
 
+        imageDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uriList.clear();
+                writeImage1.setImageDrawable(null);
+                writeImage2.setImageDrawable(null);
+                writeImage3.setImageDrawable(null);
+                loadGalleryButton.setEnabled(true);
+                loadGalleryButton.setText("사진 추가");
+            }
+        });
+
         writeFinishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,6 +100,10 @@ public class WriteBordActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+
+
 
         loadGalleryButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -123,6 +142,16 @@ public class WriteBordActivity extends AppCompatActivity {
         });
 
     } // end onCreate()
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if(writeImage3.getDrawable() != null){
+            loadGalleryButton.setEnabled(false);
+            loadGalleryButton.setText("사진은 3장이 끝");
+        }
+
+    }
 
     private void openFileChooser() {
         Intent intent = new Intent();
@@ -166,7 +195,7 @@ public class WriteBordActivity extends AppCompatActivity {
         Intent intent = getIntent();
         firebaseUser = intent.getExtras().getParcelable("mAuth");
 
-        String key = mDatabase.child("posts").push().getKey();
+        key = mDatabase.child("posts").push().getKey();
 
         String subject = textSubject.getText().toString();
         String desc = textDesc.getText().toString();
@@ -216,7 +245,7 @@ public class WriteBordActivity extends AppCompatActivity {
     // end onClickInputDashBoard
 
     public void uploadPhoto(Uri uploadUri){
-        final String filename = date + fileNameCount + ".png";
+        final String filename = key + "_" + fileNameCount + ".png";
         fileNameCount ++;
 
         StorageReference riversRef = storageReference.getStorage().getReference ("images/" + filename);
