@@ -48,6 +48,7 @@ public class HotPostFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_hot_post, container, false);
 
+        hopostImage = view.findViewById(R.id.hotPostImage);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mRecycler = view.findViewById(R.id.hotPostRecyclerView);
         mRecycler.setHasFixedSize(true);
