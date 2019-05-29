@@ -165,8 +165,8 @@ public class DashboardFragment extends Fragment {
         continentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                setSpinnerCountry(position, countrySpinner);
                 continent = continentSpinner.getSelectedItem().toString();
+                setSpinnerCountry(position, countrySpinner);
                 selectDatas();
             }
             @Override

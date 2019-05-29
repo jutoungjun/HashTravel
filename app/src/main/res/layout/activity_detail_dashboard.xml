@@ -45,7 +45,7 @@
                         android:id="@+id/detailPostUsername"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
+                        android:layout_margin="4dp"
                         android:text="글 주인 ID"
                         android:textSize="16sp" />
 
@@ -53,7 +53,7 @@
                         android:id="@+id/detailPostDate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
+                        android:layout_margin="4dp"
                         android:maxLength="13"
                         android:text="날짜"
                         android:textSize="16sp" />
@@ -73,7 +73,8 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/imageRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"/>
 
             <TextView
                 android:id="@+id/detailPostHashTag"
@@ -110,8 +111,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_margin="4dp"
-                        android:layout_weight="0"
-                        android:text="숫자 넣어주세요" />
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        android:textSize="20sp"
+                        android:text="좋아요 수" />
 
                 </LinearLayout>
 
@@ -122,7 +125,7 @@
                     android:layout_margin="4dp"
                     android:layout_weight="1"
                     android:onClick="onClickComment"
-                    android:text="버튼에 댓글숫자 EX(댓글 : x) 넣어주세여" />
+                    android:text="댓글 작성" />
 
             </LinearLayout>
 
