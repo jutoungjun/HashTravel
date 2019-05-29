@@ -2,6 +2,8 @@ package edu.android.hashtravel;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +19,8 @@ import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,6 +28,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,6 +58,7 @@ public class HotPostFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mRecycler = view.findViewById(R.id.hotPostRecyclerView);
         mRecycler.setHasFixedSize(true);
+
 
         return view;
     }
@@ -127,6 +134,44 @@ public class HotPostFragment extends Fragment {
             hotTextTag.setText(dashBoard.getHashTag());
             hotLikeNum.setText(dashBoard.getLikes() +"");
 
+
+            StorageReference islandRef, islandRef2, islandRef3;
+            final long ONE_MEGABYTE = 1024 * 1024;
+
+            //firebaseStorage 인스턴스 생성
+            //하나의 Storage와 연동되어 있는 경우, getInstance()의 파라미터는 공백으로 두어도 됨
+            //하나의 앱이 두개 이상의 Storage와 연동이 되어있 경우, 원하는 저장소의 스킴을 입력
+            //getInstance()의 파라미터는 firebase console에서 확인 가능('gs:// ... ')
+            FirebaseStorage storage = FirebaseStorage.getInstance("gs://hashtravel-566a6.appspot.com/");
+
+            //생성된 FirebaseStorage를 참조하는 storage 생성
+            StorageReference storageRef = storage.getReference();
+
+
+
+
+            islandRef = storageRef.child("images/" + dashBoard.getPostKey() + "_0" + ".png");
+
+
+            if(islandRef != null) {
+                islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        // Data for "images/island.jpg" is returns, use this as needed
+
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        hotpostImage.setImageBitmap(bitmap);
+
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+
+                    }
+                });
+
+            }
         }
     }
 
