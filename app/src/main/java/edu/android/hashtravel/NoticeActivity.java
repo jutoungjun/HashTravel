@@ -12,7 +12,7 @@ import java.util.List;
 
 public class NoticeActivity extends AppCompatActivity {
 private String text;
-private NoticeAdepter adepter;
+private NoticeAdapter adapter;
 private RecyclerView recyclerView;
 
     @Override
@@ -31,8 +31,8 @@ private RecyclerView recyclerView;
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        adepter = new NoticeAdepter();
-        recyclerView.setAdapter(adepter);
+        adapter = new NoticeAdapter();
+        recyclerView.setAdapter(adapter);
 
     }
     private void getData() {
@@ -42,7 +42,7 @@ private RecyclerView recyclerView;
             for(int i = 0; i<textlist.size();i++){
                 NoticeModel model = new NoticeModel(text);
                 model.setText(textlist.get(i));
-                adepter.addItem(model);
+                adapter.addItem(model);
             }
     }
 

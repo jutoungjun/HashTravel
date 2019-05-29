@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NoticeAdepter extends RecyclerView.Adapter<NoticeAdepter.ItemViewHolder> {
+public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.ItemViewHolder> {
     private List<NoticeModel> modelList = new ArrayList<>();
     private Context context;
 
