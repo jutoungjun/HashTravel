@@ -34,6 +34,7 @@ public class UserInfoActivity extends AppCompatActivity {
     private Button btnMyPost;
     private RecyclerView myRecycler;
 
+    private LinearLayoutManager mManager;
     private MyRecycleAdapter adapter;
     private List<DashBoard> mList = new ArrayList<>();
     private String uid;
@@ -111,7 +112,10 @@ public class UserInfoActivity extends AppCompatActivity {
 
     //TODO 버튼을 눌렀을 때 리사이클러 뷰에 목록이 나와야 함
     public void onClickMyPost(View view) {
-        myRecycler.setLayoutManager(new LinearLayoutManager(this));
+        mManager = new LinearLayoutManager(this);
+        mManager.setReverseLayout(true);
+        mManager.setStackFromEnd(true);
+        myRecycler.setLayoutManager(mManager);
         adapter = new MyRecycleAdapter(mList);
         mDatabase.child("posts").addChildEventListener(new ChildEventListener() {
             @Override

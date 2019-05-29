@@ -48,6 +48,7 @@ public class HomeFragment extends Fragment {
     }
 
     private EditText editText;
+
     private Button btnSearch;
     private ImageButton btnAsia, btnEurope, btnAmerica, btnAfrica, btnOceania, btnSouthAmerica;
     private TextView hashTag1, hashTag2, hashTag3, hashTag4;
@@ -172,7 +173,6 @@ public class HomeFragment extends Fragment {
         super.onStart();
         Log.i("homefrag" , "onStart");
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("posts");
-//        query = ref.limitToFirst(randomIndex).limitToLast(4);
 
         final ArrayList<DashBoard> dashBoards = new ArrayList<>();
         listener = new ValueEventListener() {
