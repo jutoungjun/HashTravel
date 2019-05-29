@@ -1,23 +1,31 @@
 package edu.android.hashtravel;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,10 +36,8 @@ public class DetailDashboardActivity extends AppCompatActivity {
     public static final String EXTRA_REF = "postref";
     private TextView detailPostUsername, detailPostDate, detailPostDesc, detailPostHashTag, likeNumber;
     private DashBoard dashBoard;
-    private RecyclerView recyclerView;
-    private ImageAdapter adapter;
-    private  int res;
     private String postKey;
+    private ImageView imageView1, imageView2, imageView3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +52,11 @@ public class DetailDashboardActivity extends AppCompatActivity {
         detailPostHashTag = findViewById(R.id.detailPostHashTag);
         likeNumber = findViewById(R.id.likeNumber);
 
+        imageView1 = findViewById(R.id.imageView1);
+        imageView2 = findViewById(R.id.imageView2);
+        imageView3 = findViewById(R.id.imageView3);
+
+
         Intent intent = getIntent();
         dashBoard = (DashBoard) intent.getSerializableExtra(EXTRA_POST);
 
@@ -55,33 +66,108 @@ public class DetailDashboardActivity extends AppCompatActivity {
         detailPostDesc.setText(dashBoard.getDescription());
         detailPostHashTag.setText(dashBoard.getHashTag());
         likeNumber.setText(dashBoard.getLikes()+"");
-        init();
-        getData();
+        imageDownload();
 
     }
 
-    private void init() {
+    private void imageDownload() {
+        StorageReference islandRef, islandRef2, islandRef3;
+        final long ONE_MEGABYTE = 1024 * 1024;
 
-        recyclerView = findViewById(R.id.imageRecyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new ImageAdapter();
-        recyclerView.setAdapter(adapter);
 
-    }
-    private void getData() {
-        List<Integer> listContent = Arrays.asList(
-R.drawable.common_google_signin_btn_icon_dark_normal_background,
-R.drawable.album
-        );
-        for(int i=0; i<listContent.size();i++){
-                Image model = new Image(res);
-                model.setRes(listContent.get(i));
-                adapter.addItem(model);
+        //firebaseStorage 인스턴스 생성
+        //하나의 Storage와 연동되어 있는 경우, getInstance()의 파라미터는 공백으로 두어도 됨
+        //하나의 앱이 두개 이상의 Storage와 연동이 되어있 경우, 원하는 저장소의 스킴을 입력
+        //getInstance()의 파라미터는 firebase console에서 확인 가능('gs:// ... ')
+        FirebaseStorage storage = FirebaseStorage.getInstance("gs://hashtravel-566a6.appspot.com/");
+
+        //생성된 FirebaseStorage를 참조하는 storage 생성
+        StorageReference storageRef = storage.getReference();
+
+
+
+
+        islandRef = storageRef.child("images/" +postKey + "_0" + ".png");
+
+
+        if(islandRef != null) {
+            islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
+                    // Data for "images/island.jpg" is returns, use this as needed
+
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+//                        bitmapList.add(bitmap);
+                    imageView1.setImageBitmap(bitmap);
+
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+
+                }
+            });
 
         }
+
+
+        islandRef2 = storageRef.child("images/" +postKey + "_1" + ".png");
+
+        if(islandRef2 != null) {
+            islandRef2.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
+                    // Data for "images/island.jpg" is returns, use this as needed
+
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+//                    bitmapList.add(bitmap);
+                    imageView2.setImageBitmap(bitmap);
+
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+
+                }
+            });
+        }
+
+        islandRef3 = storageRef.child("images/" +postKey + "_2" + ".png");
+
+
+        if(islandRef3 != null) {
+            islandRef3.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
+                    // Data for "images/island.jpg" is returns, use this as needed
+
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+//                    bitmapList.add(bitmap);
+                    imageView3.setImageBitmap(bitmap);
+
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+
+                }
+            });
+
+        }
+
+
+//        for (Bitmap b : bitmapList) {
+//            imageView3.setImageBitmap(b);
+//            imageView4.setImageBitmap(b);
     }
+
+
+
+
+
     public void onClickComment(View view) {
         Intent intent = new Intent(this, CommentActivity.class);
         startActivity(intent);
