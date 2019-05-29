@@ -1,9 +1,9 @@
 package edu.android.hashtravel;
 
-public class DetailDashboardActivityModel {
+public class Image {
     private int res;
 
-    public DetailDashboardActivityModel(int res) {
+    public Image(int res) {
         this.res = res;
     }
 

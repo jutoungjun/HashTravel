@@ -10,12 +10,12 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DetailDashboardActivityAdapter extends RecyclerView.Adapter<DetailDashboardActivityAdapter.itemViewHolder> {
-    List<DetailDashboardActivityModel> modelList = new ArrayList<>();
+public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.itemViewHolder> {
+    List<Image> modelList = new ArrayList<>();
     @NonNull
     @Override
     public itemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int positon) {
-        View view  = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_detail_dashboardimage_item,parent,false);
+        View view  = LayoutInflater.from(parent.getContext()).inflate(R.layout.image_item,parent,false);
 
         return new itemViewHolder(view);
     }
@@ -29,7 +29,7 @@ public class DetailDashboardActivityAdapter extends RecyclerView.Adapter<DetailD
     public int getItemCount() {
         return modelList.size();
     }
-    void addItem(DetailDashboardActivityModel model) {
+    void addItem(Image model) {
         // 외부에서 item을 추가시킬 함수입니다.
         modelList.add(model);
     }
@@ -40,7 +40,7 @@ public class DetailDashboardActivityAdapter extends RecyclerView.Adapter<DetailD
             super(itemView);
             imageView = itemView.findViewById(R.id.dashboardimage);
         }
-        void  onBind(DetailDashboardActivityModel model){
+        void  onBind(Image model){
             imageView.setImageResource(model.getRes());
         }
     }

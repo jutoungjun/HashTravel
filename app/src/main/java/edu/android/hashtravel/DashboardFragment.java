@@ -119,7 +119,10 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final String searchKey = editSearch.getText().toString();
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                mManager = new LinearLayoutManager(getActivity());
+                mManager.setReverseLayout(true);
+                mManager.setStackFromEnd(true);
+                mRecyclerView.setLayoutManager(mManager);
                 adapter = new MyRecycleAdapter(mList);
                 mDatabase.child("posts").addChildEventListener(new ChildEventListener() {
                     @Override
@@ -187,8 +190,11 @@ public class DashboardFragment extends Fragment {
     }
 
     public void selectDatas () {
-        mList = new ArrayList<>();
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        mList = new ArrayList<>();
+        mManager = new LinearLayoutManager(getActivity());
+        mManager.setReverseLayout(true);
+        mManager.setStackFromEnd(true);
+        mRecyclerView.setLayoutManager(mManager);
         adapter = new MyRecycleAdapter(mList);
         mDatabase.child("posts").addChildEventListener(new ChildEventListener() {
             @Override
@@ -196,7 +202,7 @@ public class DashboardFragment extends Fragment {
                 DashBoard dashBoard = dataSnapshot.getValue(DashBoard.class);
                 Log.i(TAG, category + " " + continent + " " + country);
                 ifData(dashBoard);
-//                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -232,7 +238,10 @@ public class DashboardFragment extends Fragment {
 
 
     public void searchText(final String text) {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mManager = new LinearLayoutManager(getActivity());
+        mManager.setReverseLayout(true);
+        mManager.setStackFromEnd(true);
+        mRecyclerView.setLayoutManager(mManager);
         adapter = new MyRecycleAdapter(mList);
         mDatabase.child("posts").addChildEventListener(new ChildEventListener() {
             @Override
@@ -261,7 +270,10 @@ public class DashboardFragment extends Fragment {
         mList = new ArrayList<>();
     }
     public void postContinentView(final String btnContinent){
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mManager = new LinearLayoutManager(getActivity());
+        mManager.setReverseLayout(true);
+        mManager.setStackFromEnd(true);
+        mRecyclerView.setLayoutManager(mManager);
         adapter = new MyRecycleAdapter(mList);
         mDatabase.child("posts").addChildEventListener(new ChildEventListener() {
             @Override

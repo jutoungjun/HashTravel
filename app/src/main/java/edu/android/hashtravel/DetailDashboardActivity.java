@@ -8,12 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,7 +29,7 @@ public class DetailDashboardActivity extends AppCompatActivity {
     private TextView detailPostUsername, detailPostDate, detailPostDesc, detailPostHashTag, likeNumber;
     private DashBoard dashBoard;
     private RecyclerView recyclerView;
-    private DetailDashboardActivityAdapter adapter;
+    private ImageAdapter adapter;
     private  int res;
     private String postKey;
 
@@ -68,7 +66,7 @@ public class DetailDashboardActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new DetailDashboardActivityAdapter();
+        adapter = new ImageAdapter();
         recyclerView.setAdapter(adapter);
 
     }
@@ -78,7 +76,7 @@ R.drawable.common_google_signin_btn_icon_dark_normal_background,
 R.drawable.album
         );
         for(int i=0; i<listContent.size();i++){
-                DetailDashboardActivityModel model = new DetailDashboardActivityModel(res);
+                Image model = new Image(res);
                 model.setRes(listContent.get(i));
                 adapter.addItem(model);
 
