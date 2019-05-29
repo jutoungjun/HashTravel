@@ -31,7 +31,7 @@ public class NoticeAdepter extends RecyclerView.Adapter<NoticeAdepter.ItemViewHo
         Holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context,NoticeDetail.class);
+                Intent intent = new Intent(context, NoticeDetailActivity.class);
                 String Key = modelList.get(postition).getText().toString();
                 intent.putExtra("key",Key);
                 context.startActivity(intent);

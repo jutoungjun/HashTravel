@@ -3,7 +3,7 @@ package edu.android.hashtravel;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class NoticeDetail extends AppCompatActivity {
+public class NoticeDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
