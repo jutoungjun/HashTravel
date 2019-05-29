@@ -42,6 +42,7 @@ public class HomeFragment extends Fragment {
 
     private ContinentSelectCallback callback;
 
+    private int size;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -156,7 +157,7 @@ public class HomeFragment extends Fragment {
     public int[] randomNum() {
         int[] a = new int[4];
         for(int i = 0; i < 4; i++) {
-            a[i] = new Random().nextInt(10) + 1;
+            a[i] = new Random().nextInt(size);
             for(int j = 0; j < i; j++) {
                 if(a[i] == a[j]) {
                     i--;
@@ -178,7 +179,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                for(DataSnapshot child : dataSnapshot.getChildren()){
+                for(DataSnapshot child : dataSnapshot.getChildren()) {
                     DashBoard dashBoard = child.getValue(DashBoard.class);
                     if(dashBoard.getLikes() >= 0) { // TODO 좋아요수 몇개로 할건지
                         dashBoards.add(dashBoard);
@@ -186,6 +187,7 @@ public class HomeFragment extends Fragment {
 
                 }
 
+                size = dashBoards.size();
                 class TagRunnable implements Runnable {
 
                     @Override
