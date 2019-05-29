@@ -20,7 +20,7 @@
 
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/imageVieww"
                 android:layout_width="396dp"
                 android:layout_height="125dp"
                 android:layout_marginStart="8dp"
