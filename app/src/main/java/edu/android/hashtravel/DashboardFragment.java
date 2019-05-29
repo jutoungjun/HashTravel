@@ -49,10 +49,9 @@ public class DashboardFragment extends Fragment {
     private String[] continents = {"All", "Asia", "Europe", "America", "Africa", "Oceania", "South America"};
     private DatabaseReference mDatabase;
     private DatabaseReference mRef;
-    private Query mQuery;
+
     private ValueEventListener mListener;
-    private ChildEventListener mQueryListener;
-    private FirebaseRecyclerAdapter<DashBoard, DashBoardViewHolder> mAdapter;
+
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mManager;
     private String category, continent, country;
@@ -119,11 +118,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final String searchKey = editSearch.getText().toString();
-                mManager = new LinearLayoutManager(getActivity());
-                mManager.setReverseLayout(true);
-                mManager.setStackFromEnd(true);
-                mRecyclerView.setLayoutManager(mManager);
-                adapter = new MyRecycleAdapter(mList);
+                setManager();
                 mDatabase.child("posts").addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -148,7 +143,6 @@ public class DashboardFragment extends Fragment {
                 });
                 adapter.notifyDataSetChanged();
                 mRecyclerView.setAdapter(adapter);
-
                 mList = new ArrayList<>();
                 editSearch.setText("");
 
@@ -158,7 +152,6 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 category = categorySpinner.getSelectedItem().toString();
-
                 selectDatas();
             }
             @Override
@@ -189,16 +182,17 @@ public class DashboardFragment extends Fragment {
         return view;
     }
 
-    public void selectDatas () {
-
+    public void setManager() {
         mManager = new LinearLayoutManager(getActivity());
         mManager.setReverseLayout(true);
         mManager.setStackFromEnd(true);
         mRecyclerView.setLayoutManager(mManager);
-
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("posts");
         adapter = new MyRecycleAdapter(mList);
+    }
 
+    public void selectDatas () {
+        setManager();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("posts");
         mListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -221,13 +215,8 @@ public class DashboardFragment extends Fragment {
         mList = new ArrayList<>();
     }
 
-
     public void searchText(final String text) {
-        mManager = new LinearLayoutManager(getActivity());
-        mManager.setReverseLayout(true);
-        mManager.setStackFromEnd(true);
-        mRecyclerView.setLayoutManager(mManager);
-        adapter = new MyRecycleAdapter(mList);
+        setManager();
         mDatabase.child("posts").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -254,15 +243,10 @@ public class DashboardFragment extends Fragment {
         mRecyclerView.setAdapter(adapter);
         mList = new ArrayList<>();
     }
-    public void postContinentView(final String btnContinent){
-        mManager = new LinearLayoutManager(getActivity());
-        mManager.setReverseLayout(true);
-        mManager.setStackFromEnd(true);
-        mRecyclerView.setLayoutManager(mManager);
-        adapter = new MyRecycleAdapter(mList);
 
+    public void postContinentView(final String btnContinent){
+        setManager();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("posts");
-        adapter = new MyRecycleAdapter(mList);
 
         mListener = new ValueEventListener() {
             @Override
