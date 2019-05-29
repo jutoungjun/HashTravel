@@ -155,6 +155,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 category = categorySpinner.getSelectedItem().toString();
+
                 selectDatas();
             }
             @Override

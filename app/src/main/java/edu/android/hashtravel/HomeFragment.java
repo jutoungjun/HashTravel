@@ -92,63 +92,6 @@ public class HomeFragment extends Fragment {
         hashTag3 = view.findViewById(R.id.hashTag3);
         hashTag4 = view.findViewById(R.id.hashTag4);
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("posts");
-//        query = ref.limitToFirst(randomIndex).limitToLast(4);
-
-        final ArrayList<DashBoard> dashBoards = new ArrayList<>();
-        listener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                for(DataSnapshot child : dataSnapshot.getChildren()){
-                    DashBoard dashBoard = child.getValue(DashBoard.class);
-                    if(dashBoard.getLikes() >= 0) { // TODO 좋아요수 몇개로 할건지
-                        dashBoards.add(dashBoard);
-                    }
-
-                }
-
-                class TagRunnable implements Runnable {
-
-                    @Override
-                    public void run() {
-                        while (true) {
-                            Message msg = handler.obtainMessage();
-
-                            int[] randomIndex = randomNum();
-                            String[] hashTags = {dashBoards.get(randomIndex[0]).getHashTag(), dashBoards.get(randomIndex[1]).getHashTag(),
-                                    dashBoards.get(randomIndex[2]).getHashTag(), dashBoards.get(randomIndex[3]).getHashTag()  };
-                            Bundle data = new Bundle();
-                            data.putStringArray(KEY_TAGS, hashTags);
-                            msg.setData(data);
-
-                            handler.sendMessage(msg);
-
-                            try {
-                                Thread.sleep(5000);
-                            } catch (Exception e) {
-                                break;
-                            }
-                        }
-                    }
-                } // end class TagRunnable
-
-                th = new Thread(new TagRunnable());
-                th.start();
-//                running = true;
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-
-
-        };
-
-        ref.addValueEventListener(listener);
-
         editText = view.findViewById(R.id.editText);
         btnSearch = view.findViewById(R.id.btnTextSearch);
 
@@ -224,10 +167,74 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        Log.i("homefrag" , "onStart");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("posts");
+//        query = ref.limitToFirst(randomIndex).limitToLast(4);
+
+        final ArrayList<DashBoard> dashBoards = new ArrayList<>();
+        listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for(DataSnapshot child : dataSnapshot.getChildren()){
+                    DashBoard dashBoard = child.getValue(DashBoard.class);
+                    if(dashBoard.getLikes() >= 0) { // TODO 좋아요수 몇개로 할건지
+                        dashBoards.add(dashBoard);
+                    }
+
+                }
+
+                class TagRunnable implements Runnable {
+
+                    @Override
+                    public void run() {
+                        while (true) {
+                            Message msg = handler.obtainMessage();
+
+                            int[] randomIndex = randomNum();
+                            String[] hashTags = {dashBoards.get(randomIndex[0]).getHashTag(), dashBoards.get(randomIndex[1]).getHashTag(),
+                                    dashBoards.get(randomIndex[2]).getHashTag(), dashBoards.get(randomIndex[3]).getHashTag()  };
+                            Bundle data = new Bundle();
+                            data.putStringArray(KEY_TAGS, hashTags);
+                            msg.setData(data);
+
+                            handler.sendMessage(msg);
+
+                            try {
+                                Thread.sleep(5000);
+                            } catch (Exception e) {
+                                break;
+                            }
+                        }
+                    }
+                } // end class TagRunnable
+
+                if (th == null) {
+                    th = new Thread(new TagRunnable());
+                    th.start();
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+
+        };
+
+        ref.addValueEventListener(listener);
+    }
+
+    @Override
     public void onStop() {
         // 쓰레드 인터럽트
         super.onStop();
-        running = false;
+        if(th!= null) {
+            th.interrupt();
+            th = null;
+        }
+
         Log.i("homefrag" , "onStop");
     }
 
