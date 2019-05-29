@@ -190,51 +190,36 @@ public class DashboardFragment extends Fragment {
     }
 
     public void selectDatas () {
-//        mList = new ArrayList<>();
+
         mManager = new LinearLayoutManager(getActivity());
         mManager.setReverseLayout(true);
         mManager.setStackFromEnd(true);
         mRecyclerView.setLayoutManager(mManager);
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("posts");
         adapter = new MyRecycleAdapter(mList);
-        mDatabase.child("posts").addChildEventListener(new ChildEventListener() {
+
+        mListener = new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                DashBoard dashBoard = dataSnapshot.getValue(DashBoard.class);
-                Log.i(TAG, category + " " + continent + " " + country);
-                ifData(dashBoard);
-//                adapter.notifyDataSetChanged();
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot child : dataSnapshot.getChildren()){
+                    DashBoard dashBoard = child.getValue(DashBoard.class);
+                    ifData(dashBoard);
+                    adapter.notifyDataSetChanged();
+                }
             }
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            }
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-            }
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
-        });
+        };
+
+        ref.addValueEventListener(mListener);
         adapter.notifyDataSetChanged();
         mRecyclerView.setAdapter(adapter);
         mList = new ArrayList<>();
     }
-
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        Log.i(TAG, "onActivityCreated");
-        super.onActivityCreated(savedInstanceState);
-        // Set up Layout Manager, reverse layout
-//
-//        mManager = new LinearLayoutManager(getActivity());
-//        mManager.setReverseLayout(true);
-//        mManager.setStackFromEnd(true);
-//        mRecyclerView.setLayoutManager(mManager);
-
-    } // end onActivityCreated()
 
 
     public void searchText(final String text) {
@@ -275,48 +260,49 @@ public class DashboardFragment extends Fragment {
         mManager.setStackFromEnd(true);
         mRecyclerView.setLayoutManager(mManager);
         adapter = new MyRecycleAdapter(mList);
-        mDatabase.child("posts").addChildEventListener(new ChildEventListener() {
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("posts");
+        adapter = new MyRecycleAdapter(mList);
+
+        mListener = new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                DashBoard dashBoard = dataSnapshot.getValue(DashBoard.class);
-                adapter.notifyDataSetChanged();
-                if(dashBoard.getContinent().equals(btnContinent)) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot child : dataSnapshot.getChildren()){
+                    DashBoard dashBoard = child.getValue(DashBoard.class);
+                    if(dashBoard.getContinent().equals(btnContinent)) {
                     mList.add(dashBoard);
                 }
+                    adapter.notifyDataSetChanged();
+                }
             }
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            }
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-            }
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
-        });
+        };
+
+        ref.addValueEventListener(mListener);
         adapter.notifyDataSetChanged();
         mRecyclerView.setAdapter(adapter);
         mList = new ArrayList<>();
 
         categorySpinner.setSelection(0);
 
-//        if(btnContinent.equals(continents[1])) {
-//            continentSpinner.setSelection(1);
-//        } else if (btnContinent.equals(continents[2])) {
-//            continentSpinner.setSelection(2);
-//        } else if (btnContinent.equals(continents[3])) {
-//            continentSpinner.setSelection(3);
-//        } else if (btnContinent.equals(continents[4])) {
-//            continentSpinner.setSelection(4);
-//        } else if (btnContinent.equals(continents[5])) {
-//            continentSpinner.setSelection(5);
-//        } else if (btnContinent.equals(continents[6])) {
-//            continentSpinner.setSelection(6);
-//        }
-//        countrySpinner.setSelection(0);
+        if(btnContinent.equals(continents[1])) {
+            continentSpinner.setSelection(1);
+        } else if (btnContinent.equals(continents[2])) {
+            continentSpinner.setSelection(2);
+        } else if (btnContinent.equals(continents[3])) {
+            continentSpinner.setSelection(3);
+        } else if (btnContinent.equals(continents[4])) {
+            continentSpinner.setSelection(4);
+        } else if (btnContinent.equals(continents[5])) {
+            continentSpinner.setSelection(5);
+        } else if (btnContinent.equals(continents[6])) {
+            continentSpinner.setSelection(6);
+        }
+        countrySpinner.setSelection(0);
 
     }
 
