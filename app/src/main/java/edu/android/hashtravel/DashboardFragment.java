@@ -202,7 +202,7 @@ public class DashboardFragment extends Fragment {
                 DashBoard dashBoard = dataSnapshot.getValue(DashBoard.class);
                 Log.i(TAG, category + " " + continent + " " + country);
                 ifData(dashBoard);
-                adapter.notifyDataSetChanged();
+//                adapter.notifyDataSetChanged();
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -303,20 +303,20 @@ public class DashboardFragment extends Fragment {
 
         categorySpinner.setSelection(0);
 
-        if(btnContinent.equals(continents[1])) {
-            continentSpinner.setSelection(1);
-        } else if (btnContinent.equals(continents[2])) {
-            continentSpinner.setSelection(2);
-        } else if (btnContinent.equals(continents[3])) {
-            continentSpinner.setSelection(3);
-        } else if (btnContinent.equals(continents[4])) {
-            continentSpinner.setSelection(4);
-        } else if (btnContinent.equals(continents[5])) {
-            continentSpinner.setSelection(5);
-        } else if (btnContinent.equals(continents[6])) {
-            continentSpinner.setSelection(6);
-        }
-        countrySpinner.setSelection(0);
+//        if(btnContinent.equals(continents[1])) {
+//            continentSpinner.setSelection(1);
+//        } else if (btnContinent.equals(continents[2])) {
+//            continentSpinner.setSelection(2);
+//        } else if (btnContinent.equals(continents[3])) {
+//            continentSpinner.setSelection(3);
+//        } else if (btnContinent.equals(continents[4])) {
+//            continentSpinner.setSelection(4);
+//        } else if (btnContinent.equals(continents[5])) {
+//            continentSpinner.setSelection(5);
+//        } else if (btnContinent.equals(continents[6])) {
+//            continentSpinner.setSelection(6);
+//        }
+//        countrySpinner.setSelection(0);
 
     }
 
