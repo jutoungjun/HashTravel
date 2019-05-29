@@ -61,7 +61,7 @@ public class HomeFragment extends Fragment {
         @Override
         public void handleMessage(Message msg) {
             Bundle data = msg.getData();
-            if(data != null) {
+            if(data != null && size >=4) {
                 String[] hashTags = data.getStringArray(KEY_TAGS);
                 hashTag1.setText(hashTags[0]);
                 hashTag2.setText(hashTags[1]);
@@ -157,11 +157,13 @@ public class HomeFragment extends Fragment {
 
     public int[] randomNum() {
         int[] a = new int[4];
-        for(int i = 0; i < 4; i++) {
-            a[i] = new Random().nextInt(size);
-            for(int j = 0; j < i; j++) {
-                if(a[i] == a[j]) {
-                    i--;
+        if(size >= 4) {
+            for (int i = 0; i < 4; i++) {
+                a[i] = new Random().nextInt(size);
+                for (int j = 0; j < i; j++) {
+                    if (a[i] == a[j]) {
+                        i--;
+                    }
                 }
             }
         }
@@ -196,12 +198,14 @@ public class HomeFragment extends Fragment {
                             Message msg = handler.obtainMessage();
 
                             int[] randomIndex = randomNum();
-                            String[] hashTags = {dashBoards.get(randomIndex[0]).getHashTag(), dashBoards.get(randomIndex[1]).getHashTag(),
-                                    dashBoards.get(randomIndex[2]).getHashTag(), dashBoards.get(randomIndex[3]).getHashTag()  };
-                            Bundle data = new Bundle();
-                            data.putStringArray(KEY_TAGS, hashTags);
-                            msg.setData(data);
+                            if(size >= 4) {
+                                String[] hashTags = {dashBoards.get(randomIndex[0]).getHashTag(), dashBoards.get(randomIndex[1]).getHashTag(),
+                                        dashBoards.get(randomIndex[2]).getHashTag(), dashBoards.get(randomIndex[3]).getHashTag()};
+                                Bundle data = new Bundle();
+                                data.putStringArray(KEY_TAGS, hashTags);
+                                msg.setData(data);
 
+                            }
                             handler.sendMessage(msg);
 
                             try {
