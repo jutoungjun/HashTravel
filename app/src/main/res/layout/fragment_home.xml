@@ -21,8 +21,8 @@
 
             <ImageView
                 android:id="@+id/imageView2"
-                android:layout_width="0dp"
-                android:layout_height="149dp"
+                android:layout_width="396dp"
+                android:layout_height="125dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
@@ -39,12 +39,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="172dp"
+                android:layout_marginTop="160dp"
                 android:layout_marginEnd="8dp"
                 android:ems="10"
                 android:hint="제목 또는 내용 입력"
                 android:inputType="textPersonName"
                 app:layout_constraintEnd_toStartOf="@+id/btnTextSearch"
+                app:layout_constraintHorizontal_bias="0.467"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -225,7 +226,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.45" />
+                app:layout_constraintGuide_percent="0.44" />
 
             <ImageButton
                 android:id="@+id/btnEurope"

@@ -112,9 +112,10 @@
                         android:layout_height="match_parent"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        android:textAlignment="center"
-                        android:textSize="20sp"
-                        android:text="좋아요 수" />
+
+                        android:elegantTextHeight="false"
+                        android:text="좋아요 수"
+                        android:textSize="20sp" />
 
                 </LinearLayout>
 
