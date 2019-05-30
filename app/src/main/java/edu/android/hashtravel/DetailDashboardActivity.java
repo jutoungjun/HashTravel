@@ -69,7 +69,7 @@ public class DetailDashboardActivity extends AppCompatActivity {
 
     private void imageDownload() {
         StorageReference islandRef, islandRef2, islandRef3;
-        final long ONE_MEGABYTE = 1024 * 1024;
+        final long TEN_MEGABYTE = 1024 * 1024 * 10;
 
 
         //firebaseStorage 인스턴스 생성
@@ -85,7 +85,7 @@ public class DetailDashboardActivity extends AppCompatActivity {
 
 
         if(islandRef != null) {
-            islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            islandRef.getBytes(TEN_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
                 public void onSuccess(byte[] bytes) {
                     // Data for "images/island.jpg" is returns, use this as needed
@@ -109,7 +109,7 @@ public class DetailDashboardActivity extends AppCompatActivity {
         islandRef2 = storageRef.child("images/" +postKey + "_1" + ".png");
 
         if(islandRef2 != null) {
-            islandRef2.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            islandRef2.getBytes(TEN_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
                 public void onSuccess(byte[] bytes) {
                     // Data for "images/island.jpg" is returns, use this as needed
@@ -132,7 +132,7 @@ public class DetailDashboardActivity extends AppCompatActivity {
 
 
         if(islandRef3 != null) {
-            islandRef3.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            islandRef3.getBytes(TEN_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
                 public void onSuccess(byte[] bytes) {
                     // Data for "images/island.jpg" is returns, use this as needed
