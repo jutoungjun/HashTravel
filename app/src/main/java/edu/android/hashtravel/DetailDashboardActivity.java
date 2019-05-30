@@ -116,9 +116,6 @@ public class DetailDashboardActivity extends AppCompatActivity {
         }
     }
 
-
-
-
     public String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
@@ -150,11 +147,13 @@ public class DetailDashboardActivity extends AppCompatActivity {
                 if (d.stars.containsKey(getUid())) {
                     // Unstar the post and remove self from stars
                     like = false;
+                    currentLike = d.likes;
                     d.likes = d.likes - 1;
                     d.stars.remove(getUid());
                 } else {
                     // Star the post and add self to stars
                     like = true;
+                    currentLike = d.likes;
                     d.likes = d.likes + 1;
                     d.stars.put(getUid(), true);
                 }
@@ -168,9 +167,9 @@ public class DetailDashboardActivity extends AppCompatActivity {
                 if(databaseError == null ) {
                     if (like) {
                         Toast.makeText(DetailDashboardActivity.this, "좋아요!", Toast.LENGTH_SHORT).show();
-                        likeNumber.setText((dashBoard.getLikes()+1)+"");
+                        likeNumber.setText((currentLike+1)+"");
                     } else {
-                        likeNumber.setText((dashBoard.getLikes()-1)+"");
+                        likeNumber.setText((currentLike-1)+"");
                         Toast.makeText(DetailDashboardActivity.this, "좋아요 취소", Toast.LENGTH_SHORT).show();
                     }
                 } else {
