@@ -65,6 +65,7 @@ public class CommentActivity extends AppCompatActivity {
                 .child("post-comments").child(mPostKey);
 
         textCommentUsername = findViewById(R.id.textCommentUsername);
+
         editCommentBody = findViewById(R.id.editTextComment);
         textCommentcount = findViewById(R.id.textCommentCount);
         commentRecycler = findViewById(R.id.commentRecycler);

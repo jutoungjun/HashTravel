@@ -155,7 +155,7 @@
                     android:layout_margin="4dp"
                     android:layout_weight="1"
                     android:onClick="onClickComment"
-                    android:text="댓글 작성" />
+                    android:text="댓글작성/보기" />
 
             </LinearLayout>
 
