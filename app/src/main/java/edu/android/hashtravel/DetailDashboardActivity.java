@@ -38,7 +38,6 @@ public class DetailDashboardActivity extends AppCompatActivity {
     private ImageView imageView1, imageView2, imageView3;
     private FirebaseAuth mAuth;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -155,7 +154,6 @@ public class DetailDashboardActivity extends AppCompatActivity {
 
         }
 
-
 //        for (Bitmap b : bitmapList) {
 //            imageView3.setImageBitmap(b);
 //            imageView4.setImageBitmap(b);
@@ -176,6 +174,7 @@ public class DetailDashboardActivity extends AppCompatActivity {
     }
 
     private boolean like;
+    private int currentLike;
 
     public void onClickLike(View view) {
 
@@ -191,11 +190,13 @@ public class DetailDashboardActivity extends AppCompatActivity {
                 if (d.stars.containsKey(getUid())) {
                     // Unstar the post and remove self from stars
                     like = false;
+                    currentLike = d.likes;
                     d.likes = d.likes - 1;
                     d.stars.remove(getUid());
                 } else {
                     // Star the post and add self to stars
                     like = true;
+                    currentLike = d.likes;
                     d.likes = d.likes + 1;
                     d.stars.put(getUid(), true);
                 }
@@ -209,9 +210,9 @@ public class DetailDashboardActivity extends AppCompatActivity {
                 if(databaseError == null ) {
                     if (like) {
                         Toast.makeText(DetailDashboardActivity.this, "좋아요!", Toast.LENGTH_SHORT).show();
-                        likeNumber.setText((dashBoard.getLikes()+1)+"");
+                        likeNumber.setText((currentLike+1)+"");
                     } else {
-                        likeNumber.setText((dashBoard.getLikes()-1)+"");
+                        likeNumber.setText((currentLike-1)+"");
                         Toast.makeText(DetailDashboardActivity.this, "좋아요 취소", Toast.LENGTH_SHORT).show();
                     }
                 } else {
