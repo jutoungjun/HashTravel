@@ -163,6 +163,8 @@ public class DetailDashboardActivity extends AppCompatActivity {
             Intent intent = new Intent(this, CommentActivity.class);
             intent.putExtra(CommentActivity.EXTRA_COMMENT, dashBoard);
             startActivity(intent);
+        } else {
+            Toast.makeText(this, "댓글 보고싶음 로그인해요~", Toast.LENGTH_SHORT).show();
         }
     }
 
