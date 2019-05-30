@@ -102,9 +102,6 @@ public class WriteBordActivity extends AppCompatActivity {
         });
 
 
-
-
-
         loadGalleryButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){

@@ -79,9 +79,6 @@ public class DetailDashboardActivity extends AppCompatActivity {
         //생성된 FirebaseStorage를 참조하는 storage 생성
         StorageReference storageRef = storage.getReference();
 
-
-
-
         islandRef = storageRef.child("images/" +postKey + "_0" + ".png");
 
 
@@ -159,12 +156,9 @@ public class DetailDashboardActivity extends AppCompatActivity {
 //            imageView4.setImageBitmap(b);
     }
 
-
-
-
-
     public void onClickComment(View view) {
         Intent intent = new Intent(this, CommentActivity.class);
+        intent.putExtra(CommentActivity.EXTRA_COMMENT, dashBoard);
         startActivity(intent);
     }
 

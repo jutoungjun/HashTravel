@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#ffffbb33")));
         getWindow().setStatusBarColor(Color.parseColor("#ffffbb33"));
 
@@ -122,6 +123,7 @@ public class MainActivity extends AppCompatActivity
             myInfo.setEnabled(true);
             Write.setEnabled(true);
         }
+
 
         // ViewPager에 Fragment 추가
         adapter.addFragment(new HomeFragment(), "homefragment");
@@ -218,6 +220,7 @@ public class MainActivity extends AppCompatActivity
                         // [END_EXCLUDE]
                     }
                 });
+
     }
     // [END auth_with_google]
 
