@@ -158,6 +158,10 @@ public class DetailDashboardActivity extends AppCompatActivity {
 //            imageView4.setImageBitmap(b);
     }
 
+    public String getUid() {
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
+
     public void onClickComment(View view) {
         if(mAuth.getInstance().getCurrentUser() != null) {
             Intent intent = new Intent(this, CommentActivity.class);
@@ -180,32 +184,31 @@ public class DetailDashboardActivity extends AppCompatActivity {
                     return Transaction.success(mutableData);
                 }
 
-                d.setLikes(d.getLikes() + 1);
+                if(getUid() != null) {
+                    if (d.stars.containsKey(getUid())) {
+                        // Unstar the post and remove self from stars
+                        d.setLikes(d.getLikes() - 1);
+                        likeNumber.setText((dashBoard.getLikes() - 1) + "");
+                        d.stars.remove(getUid());
+                        Toast.makeText(DetailDashboardActivity.this, "좋아요 취소", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Star the post and add self to stars
+                        d.setLikes(d.getLikes() + 1);
+                        likeNumber.setText((dashBoard.getLikes() + 1) + "");
+                        d.stars.put(getUid(), true);
+                        Toast.makeText(DetailDashboardActivity.this, "좋아요!", Toast.LENGTH_SHORT).show();
+                    }
 
-                String uid = dashBoard.getUid();
-//                if(uid != null) {
-//                    if (d.getStars().containsKey(uid)) {
-//                        // Unstar the post and remove self from stars
-//                        d.setLikes(d.getLikes() - 1);
-//                        d.stars.remove(uid);
-//                        Toast.makeText(DetailDashboardActivity.this, "좋아요 취소", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        // Star the post and add self to stars
-//                        d.setLikes(d.getLikes() + 1);
-//                        d.stars.put(uid, true);
-//                        Toast.makeText(DetailDashboardActivity.this, "좋아요!", Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                }
-                // Set value and report transaction success
+                } else {
+                    Toast.makeText(DetailDashboardActivity.this, "좋아요누르려면 로그인해요 ~", Toast.LENGTH_SHORT).show();
+                }
                 mutableData.setValue(d);
                 return Transaction.success(mutableData);
 
             }
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
-                likeNumber.setText((dashBoard.getLikes()+1)+"");
-                Toast.makeText(DetailDashboardActivity.this, "좋아요!", Toast.LENGTH_SHORT).show();
+
             }
         });
     }
