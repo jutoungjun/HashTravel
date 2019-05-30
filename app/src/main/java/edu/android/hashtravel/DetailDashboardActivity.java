@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,6 +34,7 @@ public class DetailDashboardActivity extends AppCompatActivity {
     private DashBoard dashBoard;
     private String postKey;
     private ImageView imageView1, imageView2, imageView3;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,9 +159,11 @@ public class DetailDashboardActivity extends AppCompatActivity {
     }
 
     public void onClickComment(View view) {
-        Intent intent = new Intent(this, CommentActivity.class);
-        intent.putExtra(CommentActivity.EXTRA_COMMENT, dashBoard);
-        startActivity(intent);
+        if(mAuth.getInstance().getCurrentUser() != null) {
+            Intent intent = new Intent(this, CommentActivity.class);
+            intent.putExtra(CommentActivity.EXTRA_COMMENT, dashBoard);
+            startActivity(intent);
+        }
     }
 
     public void onClickLike(View view) {

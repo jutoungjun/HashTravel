@@ -70,8 +70,12 @@ public class CommentActivity extends AppCompatActivity {
         textCommentcount = findViewById(R.id.textCommentCount);
         commentRecycler = findViewById(R.id.commentRecycler);
 
+
         myName = mAuth.getInstance().getCurrentUser().getDisplayName();
         myUid = mAuth.getInstance().getCurrentUser().getUid();
+        if(myName ==null || myUid == null) {
+            Toast.makeText(this, "댓글 쓰려면 로그인을 해주세요", Toast.LENGTH_SHORT).show();
+        }
         textCommentUsername.setText(myName);
 
         commentRecycler.setLayoutManager(new LinearLayoutManager(this));
