@@ -71,6 +71,7 @@
 
                         <Button
                             android:id="@+id/button3"
+                            android:onClick="onClickCommentCancel"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="2dp"

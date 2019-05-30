@@ -118,6 +118,10 @@ public class CommentActivity extends AppCompatActivity {
                 });
     }
 
+    public void onClickCommentCancel(View view) {
+        this.finish();
+    }
+
     private static class CommentViewHolder extends RecyclerView.ViewHolder {
 
         public TextView authorView;
