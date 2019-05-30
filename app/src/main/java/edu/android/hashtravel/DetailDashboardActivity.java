@@ -9,7 +9,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +38,7 @@ public class DetailDashboardActivity extends AppCompatActivity {
     private ImageView imageView1, imageView2, imageView3;
     private FirebaseAuth mAuth;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +50,7 @@ public class DetailDashboardActivity extends AppCompatActivity {
         detailPostDate = findViewById(R.id.detailPostDate);
         detailPostDesc = findViewById(R.id.detailPostDesc);
         detailPostHashTag = findViewById(R.id.detailPostHashTag);
+
         likeNumber = findViewById(R.id.likeNumber);
 
         imageView1 = findViewById(R.id.imageView1);
@@ -104,7 +108,6 @@ public class DetailDashboardActivity extends AppCompatActivity {
             });
 
         }
-
 
         islandRef2 = storageRef.child("images/" +postKey + "_1" + ".png");
 
@@ -172,9 +175,10 @@ public class DetailDashboardActivity extends AppCompatActivity {
         }
     }
 
+    private boolean like;
+
     public void onClickLike(View view) {
-        // TODO Firebase에 좋아요 수 업데이트 하기
-//        String postkey = getIntent().getStringExtra(EXTRA_REF);
+
         DatabaseReference postRef = FirebaseDatabase.getInstance().getReference().child("posts").child(postKey);
         postRef.runTransaction(new Transaction.Handler() {
             @Override
@@ -184,31 +188,35 @@ public class DetailDashboardActivity extends AppCompatActivity {
                     return Transaction.success(mutableData);
                 }
 
-                if(getUid() != null) {
-                    if (d.stars.containsKey(getUid())) {
-                        // Unstar the post and remove self from stars
-                        d.setLikes(d.getLikes() - 1);
-                        likeNumber.setText((dashBoard.getLikes() - 1) + "");
-                        d.stars.remove(getUid());
-                        Toast.makeText(DetailDashboardActivity.this, "좋아요 취소", Toast.LENGTH_SHORT).show();
-                    } else {
-                        // Star the post and add self to stars
-                        d.setLikes(d.getLikes() + 1);
-                        likeNumber.setText((dashBoard.getLikes() + 1) + "");
-                        d.stars.put(getUid(), true);
-                        Toast.makeText(DetailDashboardActivity.this, "좋아요!", Toast.LENGTH_SHORT).show();
-                    }
-
+                if (d.stars.containsKey(getUid())) {
+                    // Unstar the post and remove self from stars
+                    like = false;
+                    d.likes = d.likes - 1;
+                    d.stars.remove(getUid());
                 } else {
-                    Toast.makeText(DetailDashboardActivity.this, "좋아요누르려면 로그인해요 ~", Toast.LENGTH_SHORT).show();
+                    // Star the post and add self to stars
+                    like = true;
+                    d.likes = d.likes + 1;
+                    d.stars.put(getUid(), true);
                 }
+
                 mutableData.setValue(d);
                 return Transaction.success(mutableData);
 
             }
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
-
+                if(databaseError == null ) {
+                    if (like) {
+                        Toast.makeText(DetailDashboardActivity.this, "좋아요!", Toast.LENGTH_SHORT).show();
+                        likeNumber.setText((dashBoard.getLikes()+1)+"");
+                    } else {
+                        likeNumber.setText((dashBoard.getLikes()-1)+"");
+                        Toast.makeText(DetailDashboardActivity.this, "좋아요 취소", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(DetailDashboardActivity.this, "로그인 하세요", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

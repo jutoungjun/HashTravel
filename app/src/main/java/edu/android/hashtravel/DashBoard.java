@@ -22,7 +22,7 @@ public class DashBoard implements Serializable {
     // TODO 해쉬태그 List<String> ?
     private String hashTag; // 해쉬태그 내용
     private String date;
-    private int likes; // 좋아요수
+    public int likes; // 좋아요수
     public Map<String, Boolean> stars = new HashMap<>();
 
 

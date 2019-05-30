@@ -127,12 +127,12 @@
 
                     <ImageButton
                         android:id="@+id/btnLike"
+                        android:onClick="onClickLike"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_margin="4dp"
                         android:layout_weight="0"
                         android:backgroundTint="@color/fui_bgGoogle"
-                        android:onClick="onClickLike"
                         app:srcCompat="@drawable/like2" />
 
                     <TextView
