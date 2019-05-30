@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity
             logInAndOut.setTitle("로그인");
             userId.setText("로그인 해주세요");
         }else{
-            logInAndOut.setTitle("로그 아웃");
+            logInAndOut.setTitle("로그아웃");
             userId.setText(mAuth.getCurrentUser().getEmail());
             myInfo.setEnabled(true);
             Write.setEnabled(true);
