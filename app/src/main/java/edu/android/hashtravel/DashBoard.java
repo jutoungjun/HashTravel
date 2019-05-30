@@ -29,7 +29,7 @@ public class DashBoard implements Serializable {
     // TODO : 사진 어떻게 DB에 저장할지 찾아보기 !
     private String photoId; // 사진 리소스 아이디(Storage 사용)
 
-    // TODO : 생성자 생각해보기
+    // 기본 생성자 필요함
     public DashBoard() {}
 
 

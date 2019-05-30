@@ -148,6 +148,7 @@ public class DashboardFragment extends Fragment {
 
             }
         });
+
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -158,17 +159,19 @@ public class DashboardFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
         continentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                continent = continentSpinner.getSelectedItem().toString();
                 setSpinnerCountry(position, countrySpinner);
+                continent = continentSpinner.getSelectedItem().toString();
                 selectDatas();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
         countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -208,7 +211,6 @@ public class DashboardFragment extends Fragment {
 
             }
         };
-
         ref.addValueEventListener(mListener);
         adapter.notifyDataSetChanged();
         mRecyclerView.setAdapter(adapter);

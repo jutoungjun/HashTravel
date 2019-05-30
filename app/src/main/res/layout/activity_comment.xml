@@ -110,29 +110,20 @@
                             android:gravity="center"
                             android:text="댓글 : 11" />
 
-                        <ImageButton
-                            android:id="@+id/imagelike"
-                            android:onClick="onClicklike"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_margin="4dp"
-                            android:layout_weight="0"
-                            android:backgroundTint="@color/fui_bgGoogle"
-                            app:srcCompat="@drawable/like1" />
-
                         <TextView
                             android:id="@+id/textView"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_weight="0"
-                            android:gravity="center"
-                            android:text="12" />
+                            android:text="TextView" />
+
                     </LinearLayout>
 
                     <android.support.v7.widget.RecyclerView
+                        android:id="@+id/commentRecycler"
                         android:layout_width="match_parent"
-                        android:layout_margin="8dp"
-                        android:layout_height="252dp" />
+                        android:layout_height="252dp"
+                        android:layout_margin="8dp" />
 
 
                 </LinearLayout>
