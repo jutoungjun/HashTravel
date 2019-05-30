@@ -28,6 +28,8 @@ import com.google.firebase.database.Transaction;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
+
 public class DetailDashboardActivity extends AppCompatActivity {
 
     public static final String EXTRA_POST = "post_key";
@@ -36,6 +38,9 @@ public class DetailDashboardActivity extends AppCompatActivity {
     private DashBoard dashBoard;
     private String postKey;
     private ImageView imageView1, imageView2, imageView3;
+    private ArrayList<ImageView> imageViews = new ArrayList<>();
+    private int imgCount = 0;
+
     private FirebaseAuth mAuth;
 
     @Override
@@ -71,7 +76,12 @@ public class DetailDashboardActivity extends AppCompatActivity {
     }
 
     private void imageDownload() {
-        StorageReference islandRef, islandRef2, islandRef3;
+
+        imageViews.add(imageView1);
+        imageViews.add(imageView2);
+        imageViews.add(imageView3);
+
+        StorageReference islandRef;
         final long TEN_MEGABYTE = 1024 * 1024 * 10;
 
 
@@ -84,80 +94,30 @@ public class DetailDashboardActivity extends AppCompatActivity {
         //생성된 FirebaseStorage를 참조하는 storage 생성
         StorageReference storageRef = storage.getReference();
 
-        islandRef = storageRef.child("images/" +postKey + "_0" + ".png");
+        for (; imgCount<3; imgCount++) {
+            final int imageCount = imgCount;
+            islandRef = storageRef.child("images/" + postKey + "_" + imageCount + ".png");
 
-
-        if(islandRef != null) {
-            islandRef.getBytes(TEN_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                @Override
-                public void onSuccess(byte[] bytes) {
-                    // Data for "images/island.jpg" is returns, use this as needed
-
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-//                        bitmapList.add(bitmap);
-                    imageView1.setImageBitmap(bitmap);
-
-
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-
-                }
-            });
-
+            if (islandRef != null) {
+                islandRef.getBytes(TEN_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        imageViews.get(imageCount).setImageBitmap(bitmap);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // 해당 이미지가 없으니 메소드를 끝내자
+                        return;
+                    }
+                });
+            }
         }
-
-        islandRef2 = storageRef.child("images/" +postKey + "_1" + ".png");
-
-        if(islandRef2 != null) {
-            islandRef2.getBytes(TEN_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                @Override
-                public void onSuccess(byte[] bytes) {
-                    // Data for "images/island.jpg" is returns, use this as needed
-
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-//                    bitmapList.add(bitmap);
-                    imageView2.setImageBitmap(bitmap);
-
-
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-
-                }
-            });
-        }
-
-        islandRef3 = storageRef.child("images/" +postKey + "_2" + ".png");
-
-
-        if(islandRef3 != null) {
-            islandRef3.getBytes(TEN_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                @Override
-                public void onSuccess(byte[] bytes) {
-                    // Data for "images/island.jpg" is returns, use this as needed
-
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-//                    bitmapList.add(bitmap);
-                    imageView3.setImageBitmap(bitmap);
-
-
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-
-                }
-            });
-
-        }
-
-//        for (Bitmap b : bitmapList) {
-//            imageView3.setImageBitmap(b);
-//            imageView4.setImageBitmap(b);
     }
+
+
+
 
     public String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -190,13 +150,11 @@ public class DetailDashboardActivity extends AppCompatActivity {
                 if (d.stars.containsKey(getUid())) {
                     // Unstar the post and remove self from stars
                     like = false;
-                    currentLike = d.likes;
                     d.likes = d.likes - 1;
                     d.stars.remove(getUid());
                 } else {
                     // Star the post and add self to stars
                     like = true;
-                    currentLike = d.likes;
                     d.likes = d.likes + 1;
                     d.stars.put(getUid(), true);
                 }
@@ -210,9 +168,9 @@ public class DetailDashboardActivity extends AppCompatActivity {
                 if(databaseError == null ) {
                     if (like) {
                         Toast.makeText(DetailDashboardActivity.this, "좋아요!", Toast.LENGTH_SHORT).show();
-                        likeNumber.setText((currentLike+1)+"");
+                        likeNumber.setText((dashBoard.getLikes()+1)+"");
                     } else {
-                        likeNumber.setText((currentLike-1)+"");
+                        likeNumber.setText((dashBoard.getLikes()-1)+"");
                         Toast.makeText(DetailDashboardActivity.this, "좋아요 취소", Toast.LENGTH_SHORT).show();
                     }
                 } else {

@@ -82,7 +82,7 @@
                     <ImageView
                         android:id="@+id/imageView1"
                         android:layout_margin="8dp"
-                        android:layout_width="150dp"
+                        android:layout_width="250dp"
                         android:layout_height="200dp"
                         android:layout_weight="1"
                        />
@@ -90,7 +90,7 @@
                     <ImageView
                         android:id="@+id/imageView2"
                         android:layout_margin="8dp"
-                        android:layout_width="150dp"
+                        android:layout_width="250dp"
                         android:layout_height="200dp"
                         android:layout_weight="1"
                          />
@@ -98,7 +98,7 @@
                     <ImageView
                         android:id="@+id/imageView3"
                         android:layout_margin="8dp"
-                        android:layout_width="150dp"
+                        android:layout_width="250dp"
                         android:layout_height="200dp"
                         android:layout_weight="1"
                         />
